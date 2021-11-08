@@ -11,10 +11,10 @@ def hello_world():
     return "Hello World"
 
 
-if __name__ == 'main':
-    app.run()
-
-
-@app.route('/User/user', methods=['GET'])
+@app.route('/User/users', methods=['GET'])
 def handleUsers():
     return BaseUser().getAllUsers()
+
+
+if __name__ == 'main':
+    app.run()
