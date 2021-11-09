@@ -13,36 +13,35 @@ class UserDAO:
         self.conn = psycopg2.connect(connection_url)
 
     # Create
-    def createNewUser(self, user_email, user_password, user_first_name, user_last_name):
+    def createNewRoom(self, room_name):
         cursor = self.conn.cursor()
-        query = 'insert into "User" (user_email, user_password, user_first_name, user_last_name) values (%s,%s,%s,%s) returning user_id;'
-        cursor.execute(query, (user_email, user_password, user_first_name, user_last_name,))
-        user_id = cursor.fetchone()[0]
+        query = 'insert into "Room" (room_name) values (%s) returning room_id;'
+        cursor.execute(query, (room_name,))
+        room_id = cursor.fetchone()[0]
         self.conn.commit()
-        return user_id
+        return room_id
 
     # Read
-    def getAllUsers(self):
+    def getAllRooms(self):
         cursor = self.conn.cursor()
-        query = 'select user_id, user_email, user_password, user_first_name, user_last_name from "User";'
+        query = 'select room_id, room_name from "Room";'
         cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getUserById(self, user_id):
+    def getRoomById(self, room_id):
         cursor = self.conn.cursor()
-        query = 'select user_id, user_email, user_password, user_first_name, user_last_name ' \
-                'from "User" where user_id = %s;'
-        cursor.execute(query, (user_id,))
+        query = 'select room_id, room_name from "Room" where room_id = %s;'
+        cursor.execute(query, (room_id,))
         result = cursor.fetchone()
         return result
 
-    def getAllUnavailableUsers(self):
+    def getAllUnavailableRooms(self):
         cursor = self.conn.cursor()
-        query = 'select unavailable_id, unavailable_time_start, unavailable_time_end, user_id ' \
-                'from "UnavailableTimeUser";'
+        query = 'select unavailable_id, unavailable_time_start, unavailable_time_end, room_id ' \
+                'from "UnavailableTimeRoom";'
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -50,19 +49,18 @@ class UserDAO:
         return result
 
     # Update
-    def updateUser(self, user_id, user_email, user_password, user_first_name, user_last_name):
+    def updateRoom(self, room_id, room_name):
         cursor = self.conn.cursor()
-        query = 'update "User" ' \
-                'set user_email = %s, user_password = %s, user_first_name = %s, user_last_name = %s where user_id = %s'
-        cursor.execute(query, (user_email, user_password, user_first_name, user_last_name, user_id))
+        query = 'update "Room" set room_name = %s where room_id = %s;'
+        cursor.execute(query, (room_name, room_id))
         self.conn.commit()
         return True
 
     # Delete
-    def deleteUser(self, user_id):
+    def deleteRoom(self, room_id):
         cursor = self.conn.cursor()
-        query = 'delete from "User" where user_id = %s;'
-        cursor.execute(query, (user_id,))
+        query = 'delete from "Room" where room_id = %s;'
+        cursor.execute(query, (room_id,))
         # determine affected rows
         affected_rows = cursor.rowcount
         self.conn.commit()
@@ -70,9 +68,4 @@ class UserDAO:
         # otherwise, it was deleted, so check if affected_rows != 0
         return affected_rows != 0
 
-    #TODO: deleteUserFromBooking (Unavailable User)
-
-
-
-
-
+    #TODO: deleteRoomFromBooking (Unavailable Room)
