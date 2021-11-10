@@ -48,6 +48,13 @@ class RoomDAO:
             result.append(row)
         return result
 
+    def getRoomByName(self, room_name):
+        cursor = self.conn.cursor()
+        query = 'select room_id, room_name, room_type_id from "Room" where room_name = %s;'
+        cursor.execute(query, (room_name,))
+        result = cursor.fetchone()
+        return result
+
     # Update
     def updateRoom(self, current_room_id, room_name, room_type_id):
         cursor = self.conn.cursor()

@@ -74,12 +74,12 @@ class BaseUser:
         role_id = json['role_id']
         dao = UserDAO()
         existing_user = dao.getUserById(user_id)
-        existing_new_email = dao.getUserByEmail(user_email)
+        existing_email = dao.getUserByEmail(user_email)
 
         if not existing_user:  # User does not exist
             return jsonify("User Not Found"), 404
         # New email is different from current and new one is used
-        elif existing_user[1] != user_email and existing_new_email:
+        elif existing_user[1] != user_email and existing_email:
             return jsonify("An user with that email address already exists"), 409
         else:
             dao.updateUser(user_id, user_email, user_password, user_first_name, user_last_name, role_id,)
