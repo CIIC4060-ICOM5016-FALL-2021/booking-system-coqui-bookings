@@ -65,6 +65,10 @@ class BaseUser:
             result_list.append(obj)
         return jsonify(result_list)
 
+    def verifyAvailableUserAtTimeFrame(self, user_id, start_time, start_finish):
+        # If available return true
+        return False
+
     # Update
     def updateUser(self, user_id, json):
         user_email = json['user_email']

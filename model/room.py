@@ -55,6 +55,10 @@ class RoomDAO:
         result = cursor.fetchone()
         return result
 
+    def verifyAvailableRoomAtTimeFrame(self, room_id, start_time, end_time):
+        # If room is available return True
+        return False
+
     # Update
     def updateRoom(self, current_room_id, room_name, room_type_id):
         cursor = self.conn.cursor()
