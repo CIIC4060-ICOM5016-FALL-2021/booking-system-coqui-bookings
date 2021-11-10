@@ -66,16 +66,13 @@ class BaseUser:
         return jsonify(result_list)
 
     # verify if user is available, return True if available 
-    def verifyAvailableUserAtTimeFrame(self, user_id, start_time, start_finish):
+    def verifyAvailableUserAtTimeFrame(self, user_id, start_time, finish_time):
         dao = UserDAO()
-        user_times = dao.getUnavailableTimeForUser(user_id)
+        user_times = dao.getUnavailableUserById(user_id)
 
         if not user_times: return True
 
         
-
-
-
 
 
         return False

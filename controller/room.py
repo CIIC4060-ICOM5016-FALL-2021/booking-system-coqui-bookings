@@ -61,6 +61,28 @@ class BaseRoom:
             result_list.append(obj)
         return jsonify(result_list)
 
+    def getUnavailableRoomById(self, room_id):
+        dao = RoomDAO()
+        unavailable_room_tuple = dao.getUnavailableRoomById(room_id)
+        if not unavailable_room_tuple:  # Unavailable Room Not Found
+            return jsonify("Unavailable Room Not Found"), 404
+        else:
+            result = self.build_unavailable_time_room_dict(unavailable_room_tuple)
+            return jsonify(result), 200
+
+    # verify if room is available 
+    def verifyAvailableRoomAtTimeFrame(self, room_id, start_time, end_time):
+        # If room is available return True
+        dao = RoomDAO()
+        unavailable_room = dao.getUnavailableRoomById(room_id)
+
+        if not unavailable_room: return True
+            
+
+
+
+        return False
+
     # Update
     def updateRoom(self, room_id, json):
         room_name = json['room_name']

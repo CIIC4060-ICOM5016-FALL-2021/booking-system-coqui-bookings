@@ -70,6 +70,16 @@ def handleRoomById(room_id):
     else:
         return jsonify("Method Not Allowed"), 405
 
+@app.route('/coqui-bookings/Room/unavailable-rooms', methods=['GET'])
+def handleUnavailableRooms():
+    return BaseRoom().getAllUnavailableRooms()
+
+@app.route('/coqui-bookings/Room/unavailable-rooms/<int:room_id>', methods=['GET'])
+def handleUnavailableRoomById(room_id):
+    if request.method == 'GET':
+        return BaseRoom().getUnavailableRoomById(room_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
 
 # --------------------------------------------------------------------------------------
 # Booking
