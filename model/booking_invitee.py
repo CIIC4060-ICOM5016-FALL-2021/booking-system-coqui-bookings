@@ -3,7 +3,7 @@ import psycopg2
 from config.dbconfig import db_root_config
 
 
-class BookingDAO:
+class UserDAO:
     def __init__(self):
         connection_url = "dbname=%s user=%s password=%s port=%s host=%s" % (db_root_config['dbname'],
                                                                             db_root_config['user'],
@@ -13,46 +13,46 @@ class BookingDAO:
         self.conn = psycopg2.connect(connection_url)
 
     # Create
-    def createNewBooking(self, booking_name, booking_time_start, booking_time_end, user_id, room_id):
+    def createNewInvitee(self, user_id, booking_id):
         cursor = self.conn.cursor()
-        query = 'insert into "Booking" (booking_name, booking_start, booking_finish, user_id, room_id)' \
-                'values (%s,%s,%s,%s,%s) returning booking_id;'
-        cursor.execute(query, (booking_name, booking_time_start, booking_time_end, user_id, room_id))
-        booking_id = cursor.fetchone()[0]
+        query = 'insert into "BookingInvitee" (user_id, booking_id) values (%s,' \
+                '%s,%s,%s,%s)  '
+        cursor.execute(query, (user_id, booking_id,))
         self.conn.commit()
-        return booking_id
+        return True
 
     # Read
-    def getAllBookings(self):
+    def getAllInvitees(self):
         cursor = self.conn.cursor()
-        query = 'select booking_id, booking_name, booking_start, booking_finish, user_id, room_id from "Booking";'
+        query = 'select user_id, booking_id from "User" natural inner join "Booking" natural inner join "BookingInvitee";'
         cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getBookingById(self, booking_id):
+    def getInviteeById(self, booking_id):
         cursor = self.conn.cursor()
-        query = 'select booking_id, booking_name, booking_start, booking_finish , user_id, room_id from "Booking"' \
-                'where booking_id = %s;'
+        query = 'select user_id, booking_id ' \
+                'from "User" natural inner join "Booking" natural inner join "BookingInvitee" where booking_id = %s;'
         cursor.execute(query, (booking_id,))
         result = cursor.fetchone()
         return result
 
     # Update
-    def updateBooking(self, booking_id, booking_name, booking_time_start, booking_time_end, user_id, room_id):
+    def updateInvitee(self, booking_id, user_id):
         cursor = self.conn.cursor()
-        query = 'update "Booking" set booking_name = %s, booking_start = %s, booking_finish = %s, user_id = %s,' \
-                'room_id = %s where booking_id = %s'
-        cursor.execute(query, (booking_name, booking_time_start, booking_time_end, user_id, room_id, booking_id))
+        query = 'update "BookingInvitee" ' \
+                'set user_id = %s ' \
+                'where booking_id = %s '
+        cursor.execute(query, (user_id, booking_id,))
         self.conn.commit()
         return True
 
     # Delete
-    def deleteBooking(self, booking_id):
+    def deleteInvitee(self, booking_id):
         cursor = self.conn.cursor()
-        query = 'delete from "Booking" where booking_id = %s;'
+        query = 'delete from "BookingInvitee" where booking_id = %s;'
         cursor.execute(query, (booking_id,))
         # determine affected rows
         affected_rows = cursor.rowcount
@@ -60,3 +60,5 @@ class BookingDAO:
         # if affected rows == 0, the part was not found and hence not deleted
         # otherwise, it was deleted, so check if affected_rows != 0
         return affected_rows != 0
+
+    # TODO: deleteUserFromBooking (Unavailable User)
