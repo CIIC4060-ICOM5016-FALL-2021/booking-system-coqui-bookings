@@ -66,6 +66,10 @@ class UserDAO:
         result = cursor.fetchone()
         return result
 
+    # TODO Implement
+    def verifyAvailableUserAtTimeFrame(self, user_id, booking_start, booking_finish):
+        pass
+
     # Update
     def updateUser(self, user_id, user_email, user_password, user_first_name, user_last_name, role_id):
         cursor = self.conn.cursor()
@@ -87,5 +91,3 @@ class UserDAO:
         # if affected rows == 0, the part was not found and hence not deleted
         # otherwise, it was deleted, so check if affected_rows != 0
         return affected_rows != 0
-
-    # TODO: deleteUserFromBooking (Unavailable User)
