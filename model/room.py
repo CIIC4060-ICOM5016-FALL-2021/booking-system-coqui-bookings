@@ -49,10 +49,10 @@ class RoomDAO:
         return result
 
     # Update
-    def updateRoom(self, room_id, room_name, room_type_id):
+    def updateRoom(self, current_room_id, room_name, room_type_id):
         cursor = self.conn.cursor()
         query = 'update "Room" set room_name = %s, room_type_id = %s where room_id = %s;'
-        cursor.execute(query, (room_name, room_type_id, room_id,))
+        cursor.execute(query, (room_name, room_type_id, current_room_id,))
         self.conn.commit()
         return True
 

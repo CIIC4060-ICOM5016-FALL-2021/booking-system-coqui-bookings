@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 from controller.booking import BaseBooking
+from controller.booking_invitee import BaseBookingInvitee
 from controller.user import BaseUser
 from controller.room import BaseRoom
 
@@ -14,7 +15,7 @@ def hello_world():
     return "Hello World"
 
 
-# User
+######################################## User ########################################
 @app.route('/coqui-bookings/User/users', methods=['GET', 'POST'])
 def handleUsers():
     if request.method == 'POST':
@@ -35,7 +36,7 @@ def handleUserById(user_id):
         return jsonify("Method Not Allowed"), 405
 
 
-# Room
+######################################## Room ########################################
 @app.route('/coqui-bookings/Room/rooms', methods=['GET', 'POST'])
 def handleRooms():
     if request.method == 'POST':
@@ -56,7 +57,7 @@ def handleRoomById(room_id):
         return jsonify("Method Not Allowed"), 405
 
 
-# Booking
+####################################### Booking #######################################
 @app.route('/coqui-bookings/Booking/bookings', methods=['GET', 'POST'])
 def handleBookings():
     if request.method == 'POST':
@@ -76,6 +77,14 @@ def handleBookingById(booking_id):
     else:
         return jsonify("Method Not Allowed"), 405
 
+################################## Booking Invitee ###################################
+@app.route('/coqui-bookings/BookingInvitee/bookingInvitees', methods=['POST'])
+def handleBookingInvitees():
+    if request.method == 'POST':
+        return BaseBookingInvitee().createNewInvitee(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
 
+######################################## Main ########################################
 if __name__ == 'main':
     app.run()

@@ -59,14 +59,13 @@ class BaseRoom:
     def updateRoom(self, current_room_id, json):
         room_name = json['room_name']
         room_type_id = json['room_type_id']
-        room_id = json['room_id']
         dao = RoomDAO()
         existentRoom = dao.getRoomById(current_room_id)
         if not existentRoom:
             return jsonify("Not Found"), 404
         else:
-            dao.updateRoom(room_name, room_type_id)
-            result = self.build_room_attr_dict(room_id, room_name, room_type_id)
+            dao.updateRoom(current_room_id, room_name, room_type_id)
+            result = self.build_room_attr_dict(current_room_id, room_name, room_type_id)
             return jsonify(result), 200
 
     # Delete

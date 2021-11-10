@@ -3,7 +3,7 @@ import psycopg2
 from config.dbconfig import db_root_config
 
 
-class UserDAO:
+class BookingInviteeDAO:
     def __init__(self):
         connection_url = "dbname=%s user=%s password=%s port=%s host=%s" % (db_root_config['dbname'],
                                                                             db_root_config['user'],
@@ -13,38 +13,44 @@ class UserDAO:
         self.conn = psycopg2.connect(connection_url)
 
     # Create
-    def createNewInvitee(self, user_id, booking_id):
+    def createNewInvitee(self, booking_id, user_id):
         cursor = self.conn.cursor()
-        query = 'insert into "BookingInvitee" (user_id, booking_id) values (%s,' \
-                '%s,%s,%s,%s)  '
-        cursor.execute(query, (user_id, booking_id,))
+        query = 'insert into "BookingInvitee" (booking_id, user_id) values (%s,%s)'
+        cursor.execute(query, (booking_id, user_id,))
         self.conn.commit()
         return True
 
     # Read
     def getAllInvitees(self):
         cursor = self.conn.cursor()
-        query = 'select user_id, booking_id from "User" natural inner join "Booking" natural inner join "BookingInvitee";'
+        query = 'select booking_id, user_id ' \
+                'from "User" natural inner join "Booking" natural inner join "BookingInvitee";'
         cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getInviteeById(self, booking_id):
+    def getInviteesByBookingId(self, booking_id):
         cursor = self.conn.cursor()
-        query = 'select user_id, booking_id ' \
-                'from "User" natural inner join "Booking" natural inner join "BookingInvitee" where booking_id = %s;'
+        query = 'select booking_id, user_id ' \
+                'from "User" natural inner join "Booking" natural inner join "BookingInvitee"' \
+                'where booking_id = %s;'
         cursor.execute(query, (booking_id,))
+        result = cursor.fetchone()
+        return result
+
+    def verifyInviteeInBooking(self, booking_id, user_id):
+        cursor = self.conn.cursor()
+        query = 'select booking_id, user_id from "BookingInvitee" where booking_id = %s and user_id = %s;'
+        cursor.execute(query, (booking_id,user_id,))
         result = cursor.fetchone()
         return result
 
     # Update
     def updateInvitee(self, booking_id, user_id):
         cursor = self.conn.cursor()
-        query = 'update "BookingInvitee" ' \
-                'set user_id = %s ' \
-                'where booking_id = %s '
+        query = 'update "BookingInvitee" set user_id = %s where booking_id = %s'
         cursor.execute(query, (user_id, booking_id,))
         self.conn.commit()
         return True
