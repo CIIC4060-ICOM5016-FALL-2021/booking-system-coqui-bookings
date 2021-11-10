@@ -3,7 +3,7 @@ import psycopg2
 from config.dbconfig import db_root_config
 
 
-class UserDAO:
+class RoomDAO:
     def __init__(self):
         connection_url = "dbname=%s user=%s password=%s port=%s host=%s" % (db_root_config['dbname'],
                                                                             db_root_config['user'],

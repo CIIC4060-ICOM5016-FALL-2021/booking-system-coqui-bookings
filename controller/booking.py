@@ -1,29 +1,33 @@
 from flask import jsonify
-from model.booking import UserDAO
+from model.booking import BookingDAO
 
 
 class BaseBooking:
     def build_booking_dict(self, row):
-        result = {'booking_id': row[0], 'booking_start': row[1], 'booking_finish': row[2]}
+        result = {'booking_id': row[0], 'booking_name': row[1], 'booking_start': row[2], 'booking_finish': row[3],
+                  'user_id': row[4], 'room_id': row[5]}
         return result
 
-    def build_booking_attr_dict(self, booking_id, booking_start, booking_finish):
-        result = {'booking_id': booking_id, 'booking_start': booking_start,
-                  'booking_finish': booking_finish}
+    def build_booking_attr_dict(self, booking_id, booking_name, booking_start, booking_finish, user_id, room_id):
+        result = {'booking_id': booking_id, 'booking_name': booking_name, 'booking_start': booking_start,
+                  'booking_finish': booking_finish, 'user_id': user_id, 'room_id': room_id}
         return result
 
     # Create
     def createNewBooking(self, json):
-        booking_start = json['booking_start']
-        booking_finish = json['booking_finish']
-        dao = UserDAO()
-        booking_id = dao.createNewBooking(booking_start, booking_finish)
-        result = self.build_booking_attr_dict(booking_id, booking_start, booking_finish)
+        booking_name = json['booking_name']
+        booking_start = json['booking_start_date'] + " " + json['booking_start_time']
+        booking_finish = json['booking_finish_date'] + " " + json['booking_finish_time']
+        user_id = json['creator_user_id']
+        room_id = json['room_id']
+        dao = BookingDAO()
+        booking_id = dao.createNewBooking(booking_name, booking_start, booking_finish, user_id, room_id)
+        result = self.build_booking_attr_dict(booking_id, booking_name, booking_start, booking_finish, user_id, room_id)
         return jsonify(result), 201
 
     # Read
     def getAllBookings(self):
-        dao = UserDAO()
+        dao = BookingDAO()
         bookings_list = dao.getAllBookings()
         result_list = []
         for row in bookings_list:
@@ -32,7 +36,7 @@ class BaseBooking:
             return jsonify(result_list)
 
     def getBookingById(self, booking_id):
-        dao = UserDAO()
+        dao = BookingDAO()
         booking_tuple = dao.getBookingById(booking_id)
         if not booking_tuple:
             return jsonify("Not Found"), 404
@@ -41,18 +45,25 @@ class BaseBooking:
             return jsonify(result), 200
 
     # Update
-    def updateBooking(self, json):
-        booking_start = json['booking_start']
-        booking_finish = json['booking_finish']
-        booking_id = json['booking_id']
-        dao = UserDAO()
-        updated_code = dao.updateBooking(booking_id, booking_start, booking_finish)  # TODO FIX
-        result = self.build_booking_attr_dict(booking_id, booking_start, booking_finish)
-        return jsonify(result), 200
+    def updateBooking(self, booking_id, json):
+        booking_name = json['booking_name']
+        booking_start = json['booking_start_date'] + " " + json['booking_start_time']
+        booking_finish = json['booking_finish_date'] + " " + json['booking_finish_time']
+        user_id = json['creator_user_id']
+        room_id = json['room_id']
+        dao = BookingDAO()
+        existentBooking = dao.getBookingById(booking_id)
+        if not existentBooking:
+            return jsonify("Not Found"), 404
+        else:
+            dao.updateBooking(booking_id, booking_name, booking_start, booking_finish, user_id, room_id)
+            result = self.build_booking_attr_dict(booking_id, booking_name, booking_start, booking_finish, user_id,
+                                                  room_id)
+            return jsonify(result), 200
 
     # Delete
     def deleteBooking(self, booking_id):
-        dao = UserDAO()
+        dao = BookingDAO()
         result = dao.deleteBooking(booking_id)
         if result:
             return jsonify("DELETED"), 200

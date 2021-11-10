@@ -70,7 +70,7 @@ def handleBookingById(booking_id):
     if request.method == 'GET':
         return BaseBooking().getBookingById(booking_id)
     elif request.method == 'PUT':
-        return BaseBooking().updateBooking(request.json)
+        return BaseBooking().updateBooking(booking_id, request.json)
     elif request.method == 'DELETE':
         return BaseBooking().deleteBooking(booking_id)
     else:

@@ -1,5 +1,5 @@
 from flask import jsonify
-from model.room import UserDAO
+from model.room import RoomDAO
 
 
 class BaseRoom:
@@ -20,14 +20,14 @@ class BaseRoom:
     # Create
     def createNewRoom(self, json):
         room_name = json['room_name']
-        dao = UserDAO()
+        dao = RoomDAO()
         room_id = dao.createNewRoom(room_name)
         result = self.build_room_attr_dict(room_id, room_name)
         return jsonify(result), 201
 
     # Read
     def getAllRooms(self):
-        dao = UserDAO()
+        dao = RoomDAO()
         rooms_list = dao.getAllRooms()
         result_list = []
         for row in rooms_list:
@@ -36,7 +36,7 @@ class BaseRoom:
         return jsonify(result_list)
 
     def getRoomById(self, room_id):
-        dao = UserDAO()
+        dao = RoomDAO()
         room_tuple = dao.getRoomById(room_id)
         if not room_tuple:
             return jsonify("Not Found"), 404
@@ -45,7 +45,7 @@ class BaseRoom:
             return jsonify(result), 200
 
     def getAllUnavailableRooms(self):
-        dao = UserDAO()
+        dao = RoomDAO()
         unavailable_rooms_list = dao.getAllUnavailableRooms()
         result_list = []
         for row in unavailable_rooms_list:
@@ -57,14 +57,14 @@ class BaseRoom:
     def updateRoom(self, json):
         room_name = json['room_name']
         room_id = json['room_id']
-        dao = UserDAO()
+        dao = RoomDAO()
         updated_code = dao.updateRoom(room_id, room_name)  # TODO FIX
         result = self.build_room_attr_dict(room_id, room_name)
         return jsonify(result), 200
 
     # Delete
     def deleteRoom(self, room_id):
-        dao = UserDAO()
+        dao = RoomDAO()
         result = dao.deleteRoom(room_id)
         if result:
             return jsonify("DELETED"), 200
