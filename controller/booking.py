@@ -4,23 +4,21 @@ from model.booking import UserDAO
 
 class BaseBooking:
     def build_booking_dict(self, row):
-        result = {'booking_id': row[0], 'booking_time_start': row[1], 'booking_time_end': row[2]}
+        result = {'booking_id': row[0], 'booking_start': row[1], 'booking_finish': row[2]}
         return result
 
-    def build_booking_attr_dict(self, booking_id, booking_time_start, booking_time_end):
-        result = {}
-        result['booking_id'] = booking_id
-        result['booking_time_start'] = booking_time_start
-        result['booking_time_end'] = booking_time_end
+    def build_booking_attr_dict(self, booking_id, booking_start, booking_finish):
+        result = {'booking_id': booking_id, 'booking_start': booking_start,
+                  'booking_finish': booking_finish}
         return result
 
     # Create
     def createNewBooking(self, json):
-        booking_time_start = json['booking_time_start']
-        booking_time_end = json['booking_time_end']
+        booking_start = json['booking_start']
+        booking_finish = json['booking_finish']
         dao = UserDAO()
-        booking_id = dao.createNewBooking(booking_time_start, booking_time_end)
-        result = self.build_booking_attr_attr_dict(booking_id, booking_time_start, booking_time_end)
+        booking_id = dao.createNewBooking(booking_start, booking_finish)
+        result = self.build_booking_attr_dict(booking_id, booking_start, booking_finish)
         return jsonify(result), 201
 
     # Read
@@ -44,12 +42,12 @@ class BaseBooking:
 
     # Update
     def updateBooking(self, json):
-        booking_time_start = json['booking_time_start']
-        booking_time_end = json['booking_time_end']
+        booking_start = json['booking_start']
+        booking_finish = json['booking_finish']
         booking_id = json['booking_id']
         dao = UserDAO()
-        updated_code = dao.updateBooking(booking_id, booking_time_start, booking_time_end)
-        result = self.build_booking_attr_dict(booking_id, booking_time_start, booking_time_end)
+        updated_code = dao.updateBooking(booking_id, booking_start, booking_finish)  # TODO FIX
+        result = self.build_booking_attr_dict(booking_id, booking_start, booking_finish)
         return jsonify(result), 200
 
     # Delete

@@ -15,7 +15,8 @@ class UserDAO:
     # Create
     def createNewUser(self, user_email, user_password, user_first_name, user_last_name, role_id):
         cursor = self.conn.cursor()
-        query = 'insert into "User" (user_email, user_password, user_first_name, user_last_name, role_id) values (%s,%s,%s,%s,%s) returning user_id;'
+        query = 'insert into "User" (user_email, user_password, user_first_name, user_last_name, role_id) values (%s,' \
+                '%s,%s,%s,%s) returning user_id; '
         cursor.execute(query, (user_email, user_password, user_first_name, user_last_name, role_id,))
         user_id = cursor.fetchone()[0]
         self.conn.commit()
@@ -41,7 +42,7 @@ class UserDAO:
 
     def getAllUnavailableUsers(self):
         cursor = self.conn.cursor()
-        query = 'select unavailable_id, unavailable_time_start, unavailable_time_end, user_id ' \
+        query = 'select unavailable_time_user_id, unavailable_time_user_start, unavailable_time_user_finish, user_id ' \
                 'from "UnavailableTimeUser";'
         cursor.execute(query)
         result = []
@@ -53,7 +54,8 @@ class UserDAO:
     def updateUser(self, user_id, user_email, user_password, user_first_name, user_last_name, role_id):
         cursor = self.conn.cursor()
         query = 'update "User" ' \
-                'set user_email = %s, user_password = %s, user_first_name = %s, user_last_name = %s , role_id = %s where user_id = %s'
+                'set user_email = %s, user_password = %s, user_first_name = %s, user_last_name = %s , role_id = %s ' \
+                'where user_id = %s '
         cursor.execute(query, (user_email, user_password, user_first_name, user_last_name, role_id, user_id))
         self.conn.commit()
         return True
@@ -70,9 +72,4 @@ class UserDAO:
         # otherwise, it was deleted, so check if affected_rows != 0
         return affected_rows != 0
 
-    #TODO: deleteUserFromBooking (Unavailable User)
-
-
-
-
-
+    # TODO: deleteUserFromBooking (Unavailable User)

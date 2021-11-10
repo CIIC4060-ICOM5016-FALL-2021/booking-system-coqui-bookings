@@ -22,6 +22,7 @@ def handleUsers():
     else:
         return BaseUser().getAllUsers()
 
+
 @app.route('/coqui-bookings/User/users/<int:user_id>', methods=['GET', 'PUT', 'DELETE'])
 def handleUserById(user_id):
     if request.method == 'GET':
@@ -42,6 +43,7 @@ def handleRooms():
     else:
         return BaseRoom().getAllRooms()
 
+
 @app.route('/coqui-bookings/Room/rooms/<int:room_id>', methods=['GET', 'PUT', 'DELETE'])
 def handleRoomById(room_id):
     if request.method == 'GET':
@@ -53,6 +55,7 @@ def handleRoomById(room_id):
     else:
         return jsonify("Method Not Allowed"), 405
 
+
 # Booking
 @app.route('/coqui-bookings/Booking/bookings', methods=['GET', 'POST'])
 def handleBookings():
@@ -60,6 +63,7 @@ def handleBookings():
         return BaseBooking().createNewBooking(request.json)
     else:
         return BaseBooking().getAllBookings()
+
 
 @app.route('/coqui-bookings/Booking/bookings/<int:booking_id>', methods=['GET', 'PUT', 'DELETE'])
 def handleBookingById(booking_id):
@@ -71,6 +75,7 @@ def handleBookingById(booking_id):
         return BaseBooking().deleteBooking(booking_id)
     else:
         return jsonify("Method Not Allowed"), 405
+
 
 if __name__ == 'main':
     app.run()

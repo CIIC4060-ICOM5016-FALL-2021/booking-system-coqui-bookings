@@ -40,7 +40,7 @@ class UserDAO:
 
     def getAllUnavailableRooms(self):
         cursor = self.conn.cursor()
-        query = 'select unavailable_id, unavailable_time_start, unavailable_time_end, room_id ' \
+        query = 'select unavailable_time_room_id, unavailable_time_room_start, unavailable_time_room_finish, room_id ' \
                 'from "UnavailableTimeRoom";'
         cursor.execute(query)
         result = []
@@ -68,4 +68,4 @@ class UserDAO:
         # otherwise, it was deleted, so check if affected_rows != 0
         return affected_rows != 0
 
-    #TODO: deleteRoomFromBooking (Unavailable Room)
+    # TODO: deleteRoomFromBooking (Unavailable Room)

@@ -9,16 +9,15 @@ class BaseRoom:
         return result
 
     def build_room_attr_dict(self, room_id, room_name):
-        result = {}
-        result['room_id'] = room_id
-        result['room_name'] = room_name
+        result = {'room_id': room_id, 'room_name': room_name}
         return result
 
-    def build_unavailable_room_dict(self, row):
-        result = {'unavailable_id': row[0], 'unavailable_time_start': row[1], 'unavailable_time_end': row[2],
+    def build_unavailable_time_room_dict(self, row):
+        result = {'unavailable_time_room_id': row[0], 'unavailable_time_room_start': row[1], 'unavailable_time_room_finish': row[2],
                   'room_id': row[3]}
         return result
-# Create
+
+    # Create
     def createNewRoom(self, json):
         room_name = json['room_name']
         dao = UserDAO()
@@ -26,7 +25,7 @@ class BaseRoom:
         result = self.build_room_attr_dict(room_id, room_name)
         return jsonify(result), 201
 
-# Read
+    # Read
     def getAllRooms(self):
         dao = UserDAO()
         rooms_list = dao.getAllRooms()
@@ -50,7 +49,7 @@ class BaseRoom:
         unavailable_rooms_list = dao.getAllUnavailableRooms()
         result_list = []
         for row in unavailable_rooms_list:
-            obj = self.build_unavailable_room_dict(row)
+            obj = self.build_unavailable_time_room_dict(row)
             result_list.append(obj)
         return jsonify(result_list)
 
@@ -59,7 +58,7 @@ class BaseRoom:
         room_name = json['room_name']
         room_id = json['room_id']
         dao = UserDAO()
-        updated_code = dao.updateRoom(room_id, room_name)
+        updated_code = dao.updateRoom(room_id, room_name)  # TODO FIX
         result = self.build_room_attr_dict(room_id, room_name)
         return jsonify(result), 200
 
@@ -71,7 +70,3 @@ class BaseRoom:
             return jsonify("DELETED"), 200
         else:
             return jsonify("NOT FOUND"), 404
-
-
-
-

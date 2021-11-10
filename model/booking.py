@@ -15,7 +15,7 @@ class UserDAO:
     # Create
     def createNewBooking(self, booking_time_start, booking_time_end):
         cursor = self.conn.cursor()
-        query = 'insert into "Booking" (booking_time_start, booking_time_end) values (%s,%s) returning booking_id;'
+        query = 'insert into "Booking" (booking_start, booking_finish) values (%s,%s) returning booking_id;'
         cursor.execute(query, (booking_time_start, booking_time_end))
         booking_id = cursor.fetchone()[0]
         self.conn.commit()
@@ -24,7 +24,7 @@ class UserDAO:
     # Read
     def getAllBookings(self):
         cursor = self.conn.cursor()
-        query = 'select booking_id, booking_time_start, booking_time_end from "Booking";'
+        query = 'select booking_id, booking_start, booking_finish from "Booking";'
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -33,7 +33,7 @@ class UserDAO:
 
     def getBookingById(self, booking_id):
         cursor = self.conn.cursor()
-        query = 'select booking_id, booking_time_start, booking_time_end from "Booking" where booking_id = %s;'
+        query = 'select booking_id, booking_start, booking_finish from "Booking" where booking_id = %s;'
         cursor.execute(query, (booking_id,))
         result = cursor.fetchone()
         return result
@@ -42,7 +42,7 @@ class UserDAO:
     def updateBooking(self, booking_id, booking_time_start, booking_time_end):
         cursor = self.conn.cursor()
         query = 'update "Booking" ' \
-                'set booking_time_start = %s, booking_time_end = %s'
+                'set booking_start = %s, booking_finish = %s'
         cursor.execute(query, (booking_time_start, booking_time_end, booking_id))
         self.conn.commit()
         return True
