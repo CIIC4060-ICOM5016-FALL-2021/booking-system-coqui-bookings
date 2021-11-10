@@ -1,9 +1,11 @@
 from flask import jsonify
 from model.booking import BookingDAO
+from model.room import RoomDAO
+from model.user import UserDAO
 
 
 class BaseBooking:
-    def build_booking_dict(self, row):
+    def build_booking_map_dict(self, row):
         result = {'booking_id': row[0], 'booking_name': row[1], 'booking_start': row[2], 'booking_finish': row[3],
                   'user_id': row[4], 'room_id': row[5]}
         return result
@@ -20,28 +22,44 @@ class BaseBooking:
         booking_finish = json['booking_finish_date'] + " " + json['booking_finish_time']
         user_id = json['creator_user_id']
         room_id = json['room_id']
-        dao = BookingDAO()
-        booking_id = dao.createNewBooking(booking_name, booking_start, booking_finish, user_id, room_id)
-        result = self.build_booking_attr_dict(booking_id, booking_name, booking_start, booking_finish, user_id, room_id)
-        return jsonify(result), 201
+        booking_dao = BookingDAO()
+        room_dao = RoomDAO()
+        user_dao = UserDAO()
+
+        # Verification if another room is available during booking time
+        available_room = room_dao.verifyAvailableRoomAtTimeFrame(room_id, booking_start, booking_finish)
+        # Verification if user is available during
+        available_user = user_dao.verifyAvailableUserAtTimeFrame(user_id, booking_start, booking_finish)
+
+        if not available_room:
+            return jsonify("Room is not available during specified time"), 409
+        elif not available_user:
+            return jsonify("User is not available during specified time"), 409
+        else:
+            booking_id = booking_dao.createNewBooking(booking_name, booking_start, booking_finish, user_id, room_id)
+            result = self.build_booking_attr_dict(booking_id, booking_name, booking_start, booking_finish, user_id, room_id)
+            return jsonify(result), 201
 
     # Read
     def getAllBookings(self):
         dao = BookingDAO()
         bookings_list = dao.getAllBookings()
-        result_list = []
-        for row in bookings_list:
-            obj = self.build_booking_dict(row)
-            result_list.append(obj)
-            return jsonify(result_list)
+        if not bookings_list:  # No existing Bookings
+            return jsonify("No Bookings Found"), 404
+        else:
+            result_list = []
+            for row in bookings_list:
+                obj = self.build_booking_map_dict(row)
+                result_list.append(obj)
+                return jsonify(result_list)
 
     def getBookingById(self, booking_id):
         dao = BookingDAO()
         booking_tuple = dao.getBookingById(booking_id)
         if not booking_tuple:
-            return jsonify("Not Found"), 404
+            return jsonify("Booking Not Found"), 404
         else:
-            result = self.build_booking_dict(booking_tuple)
+            result = self.build_booking_map_dict(booking_tuple)
             return jsonify(result), 200
 
     # Update
@@ -51,12 +69,21 @@ class BaseBooking:
         booking_finish = json['booking_finish_date'] + " " + json['booking_finish_time']
         user_id = json['creator_user_id']
         room_id = json['room_id']
-        dao = BookingDAO()
-        existentBooking = dao.getBookingById(booking_id)
-        if not existentBooking:
-            return jsonify("Not Found"), 404
+        booking_dao = BookingDAO()
+        room_dao = RoomDAO()
+        user_dao = UserDAO()
+
+        # Verification if another room is available during booking time
+        available_room = room_dao.verifyAvailableRoomAtTimeFrame(room_id, booking_start, booking_finish)
+        # Verification if user is available during
+        available_user = user_dao.verifyAvailableUserAtTimeFrame(user_id, booking_start, booking_finish)
+
+        if not available_room:
+            return jsonify("Room is not available during specified time"), 409
+        elif not available_user:
+            return jsonify("User is not available during specified time"), 409
         else:
-            dao.updateBooking(booking_id, booking_name, booking_start, booking_finish, user_id, room_id)
+            booking_dao.updateBooking(booking_id, booking_name, booking_start, booking_finish, user_id, room_id)
             result = self.build_booking_attr_dict(booking_id, booking_name, booking_start, booking_finish, user_id,
                                                   room_id)
             return jsonify(result), 200
