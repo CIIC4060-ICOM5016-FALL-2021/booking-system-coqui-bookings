@@ -13,6 +13,13 @@ class UserDAO:
         self.conn = psycopg2.connect(connection_url)
 
     # Create
+    def createNewBooking(self, booking_time_start, booking_time_end):
+        cursor = self.conn.cursor()
+        query = 'insert into "Booking" (booking_time_start, booking_time_end) values (%s,%s) returning booking_id;'
+        cursor.execute(query, (booking_time_start, booking_time_end))
+        booking_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return booking_id
 
     # Read
     def getAllBookings(self):
@@ -30,7 +37,15 @@ class UserDAO:
         cursor.execute(query, (booking_id,))
         result = cursor.fetchone()
         return result
+
     # Update
+    def updateBooking(self, booking_id, booking_time_start, booking_time_end):
+        cursor = self.conn.cursor()
+        query = 'update "Booking" ' \
+                'set booking_time_start = %s, booking_time_end = %s'
+        cursor.execute(query, (booking_time_start, booking_time_end, booking_id))
+        self.conn.commit()
+        return True
 
     # Delete
     def deleteBooking(self, booking_id):

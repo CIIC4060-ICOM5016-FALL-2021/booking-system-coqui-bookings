@@ -5,16 +5,17 @@ from model.user import UserDAO
 class BaseUser:
     def build_map_dict(self, row):
         result = {'user_id': row[0], 'user_email': row[1], 'user_password': row[2], 'user_first_name': row[3],
-                  'user_last_name': row[4]}
+                  'user_last_name': row[4], 'role_id': row[5]}
         return result
 
-    def build_user_attr_dict(self, user_id, user_email, user_password, user_first_name, user_last_name):
+    def build_user_attr_dict(self, user_id, user_email, user_password, user_first_name, user_last_name, role_id):
         result = {}
         result['user_id'] = user_id
         result['user_email'] = user_email
         result['user_password'] = user_password
         result['user_first_name'] = user_first_name
         result['user_last_name'] = user_last_name
+        result['role_id'] = role_id
         return result
 
     def build_unavailable_user_dict(self, row):
@@ -27,9 +28,10 @@ class BaseUser:
         user_password = json['user_password']
         user_first_name = json['user_first_name']
         user_last_name = json['user_last_name']
+        role_id = json['role_id']
         dao = UserDAO()
-        user_id = dao.createNewUser(user_email, user_password, user_first_name, user_last_name)
-        result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name)
+        user_id = dao.createNewUser(user_email, user_password, user_first_name, user_last_name, role_id)
+        result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name, role_id)
         return jsonify(result), 201
 
 # Read
@@ -66,11 +68,16 @@ class BaseUser:
         user_password = json['user_password']
         user_first_name = json['user_first_name']
         user_last_name = json['user_last_name']
+        role_id = json['role_id']
         user_id = json['user_id']
         dao = UserDAO()
-        updated_code = dao.updateUser(user_id, user_email, user_password, user_first_name, user_last_name,)
-        result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name,)
-        return jsonify(result), 200
+        updated_code = dao.updateUser(user_id, user_email, user_password, user_first_name, user_last_name, role_id,)
+        if not updated_code:
+            return jsonify("Not Found"), 404
+        else:
+            result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name, role_id,)
+
+            return jsonify(result), 200
 
     # Delete
     def deleteUser(self, user_id):

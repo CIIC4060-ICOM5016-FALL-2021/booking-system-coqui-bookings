@@ -46,10 +46,17 @@ class BaseBooking:
     def updateBooking(self, json):
         booking_time_start = json['booking_time_start']
         booking_time_end = json['booking_time_end']
-        user_id = json['user_id']
+        booking_id = json['booking_id']
         dao = UserDAO()
-        updated_code = dao.updateUser(user_id, user_email, user_password, user_first_name, user_last_name,)
-        result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name,)
+        updated_code = dao.updateBooking(booking_id, booking_time_start, booking_time_end)
+        result = self.build_booking_attr_dict(booking_id, booking_time_start, booking_time_end)
         return jsonify(result), 200
 
     # Delete
+    def deleteBooking(self, booking_id):
+        dao = UserDAO()
+        result = dao.deleteBooking(booking_id)
+        if result:
+            return jsonify("DELETED"), 200
+        else:
+            return jsonify("NOT FOUND"), 404

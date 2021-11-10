@@ -13,10 +13,10 @@ class UserDAO:
         self.conn = psycopg2.connect(connection_url)
 
     # Create
-    def createNewUser(self, user_email, user_password, user_first_name, user_last_name):
+    def createNewUser(self, user_email, user_password, user_first_name, user_last_name, role_id):
         cursor = self.conn.cursor()
-        query = 'insert into "User" (user_email, user_password, user_first_name, user_last_name) values (%s,%s,%s,%s) returning user_id;'
-        cursor.execute(query, (user_email, user_password, user_first_name, user_last_name,))
+        query = 'insert into "User" (user_email, user_password, user_first_name, user_last_name, role_id) values (%s,%s,%s,%s,%s) returning user_id;'
+        cursor.execute(query, (user_email, user_password, user_first_name, user_last_name, role_id,))
         user_id = cursor.fetchone()[0]
         self.conn.commit()
         return user_id
@@ -24,7 +24,7 @@ class UserDAO:
     # Read
     def getAllUsers(self):
         cursor = self.conn.cursor()
-        query = 'select user_id, user_email, user_password, user_first_name, user_last_name from "User";'
+        query = 'select user_id, user_email, user_password, user_first_name, user_last_name, role_id from "User";'
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -33,7 +33,7 @@ class UserDAO:
 
     def getUserById(self, user_id):
         cursor = self.conn.cursor()
-        query = 'select user_id, user_email, user_password, user_first_name, user_last_name ' \
+        query = 'select user_id, user_email, user_password, user_first_name, user_last_name, role_id ' \
                 'from "User" where user_id = %s;'
         cursor.execute(query, (user_id,))
         result = cursor.fetchone()
@@ -50,11 +50,11 @@ class UserDAO:
         return result
 
     # Update
-    def updateUser(self, user_id, user_email, user_password, user_first_name, user_last_name):
+    def updateUser(self, user_id, user_email, user_password, user_first_name, user_last_name, role_id):
         cursor = self.conn.cursor()
         query = 'update "User" ' \
-                'set user_email = %s, user_password = %s, user_first_name = %s, user_last_name = %s where user_id = %s'
-        cursor.execute(query, (user_email, user_password, user_first_name, user_last_name, user_id))
+                'set user_email = %s, user_password = %s, user_first_name = %s, user_last_name = %s , role_id = %s where user_id = %s'
+        cursor.execute(query, (user_email, user_password, user_first_name, user_last_name, role_id, user_id))
         self.conn.commit()
         return True
 
