@@ -50,6 +50,14 @@ class UserDAO:
             result.append(row)
         return result
 
+    def getUserByEmail(self, user_email):
+        cursor = self.conn.cursor()
+        query = 'select user_id, user_email, user_password, user_first_name, user_last_name, role_id ' \
+                'from "User" where user_email = %s;'
+        cursor.execute(query, (user_email,))
+        result = cursor.fetchone()
+        return result
+
     # Update
     def updateUser(self, user_id, user_email, user_password, user_first_name, user_last_name, role_id):
         cursor = self.conn.cursor()

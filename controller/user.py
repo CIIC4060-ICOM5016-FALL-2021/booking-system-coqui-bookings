@@ -26,25 +26,32 @@ class BaseUser:
         user_last_name = json['user_last_name']
         role_id = json['role_id']
         dao = UserDAO()
-        user_id = dao.createNewUser(user_email, user_password, user_first_name, user_last_name, role_id)
-        result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name, role_id)
-        return jsonify(result), 201
+        existing_user = dao.getUserByEmail(user_email)
+        if not existing_user:  # User with that email does not exists
+            user_id = dao.createNewUser(user_email, user_password, user_first_name, user_last_name, role_id)
+            result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name, role_id)
+            return jsonify(result), 201
+        else:
+            return jsonify("An user with that email address already exists"), 409
 
     # Read
     def getAllUsers(self):
         dao = UserDAO()
         users_list = dao.getAllUsers()
-        result_list = []
-        for row in users_list:
-            obj = self.build_user_map_dict(row)
-            result_list.append(obj)
-        return jsonify(result_list)
+        if not users_list:  # User List is empty
+            return jsonify("No Users Found"), 404
+        else:
+            result_list = []
+            for row in users_list:
+                obj = self.build_user_map_dict(row)
+                result_list.append(obj)
+            return jsonify(result_list), 200
 
     def getUserById(self, user_id):
         dao = UserDAO()
         user_tuple = dao.getUserById(user_id)
-        if not user_tuple:
-            return jsonify("Not Found"), 404
+        if not user_tuple:  # User Not Found
+            return jsonify("User Not Found"), 404
         else:
             result = self.build_user_map_dict(user_tuple)
             return jsonify(result), 200
@@ -59,21 +66,25 @@ class BaseUser:
         return jsonify(result_list)
 
     # Update
-    def updateUser(self, json):
+    def updateUser(self, user_id, json):
         user_email = json['user_email']
         user_password = json['user_password']
         user_first_name = json['user_first_name']
         user_last_name = json['user_last_name']
         role_id = json['role_id']
-        user_id = json['user_id']
         dao = UserDAO()
-        updated_code = dao.updateUser(user_id, user_email, user_password, user_first_name, user_last_name, role_id, )
-        if not updated_code:
-            return jsonify("Not Found"), 404
-        else:
-            result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name,
-                                               role_id, )
+        existing_user = dao.getUserById(user_id)
+        existing_new_email = dao.getUserByEmail(user_email)
 
+        if not existing_user:  # User does not exist
+            return jsonify("User Not Found"), 404
+        # New email is different from current and new one is used
+        elif existing_user[1] != user_email and existing_new_email:
+            return jsonify("An user with that email address already exists"), 409
+        else:
+            dao.updateUser(user_id, user_email, user_password, user_first_name, user_last_name, role_id,)
+            result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name,
+                                               role_id,)
             return jsonify(result), 200
 
     # Delete
@@ -81,6 +92,6 @@ class BaseUser:
         dao = UserDAO()
         result = dao.deleteUser(user_id)
         if result:
-            return jsonify("DELETED"), 200
+            return jsonify("User Deleted Successfully"), 200
         else:
-            return jsonify("NOT FOUND"), 404
+            return jsonify("User Not Found"), 404
