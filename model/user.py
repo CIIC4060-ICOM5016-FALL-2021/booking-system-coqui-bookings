@@ -50,15 +50,12 @@ class UserDAO:
             result.append(row)
         return result
 
-    def getUnavailableTimeForUser(self, user_id):
+    def getUnavailableUserById(self, user_id):
         cursor = self.conn.cursor()
-        query = 'select unavailable_time_user_id, unavailable_time_user_start, unavailable_time_user_finish, user_id ' \
-                f'where user_id = {user_id}' \
-                'from "UnavailableTimeUser";'
-        cursor.execute(query)
-        result=[]
-        for row in cursor:
-            result.append(row)
+        query = 'select user_id, unavailable_time_user_id, unavailable_time_user_start, unavailable_time_user_finish ' \
+                'from "UnavailableTimeUser" where user_id = %s;'
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchone()
         return result
 
     def getUserByEmail(self, user_email):

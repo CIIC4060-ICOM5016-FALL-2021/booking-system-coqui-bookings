@@ -80,6 +80,15 @@ class BaseUser:
 
         return False
 
+    def getUnavailableUserById(self, user_id):
+        dao = UserDAO()
+        unavailable_user_tuple = dao.getUnavailableUserById(user_id)
+        if not unavailable_user_tuple:  # Unavailable User Not Found
+            return jsonify("Unavailable User Not Found"), 404
+        else:
+            result = self.build_unavailable_time_user_dict(unavailable_user_tuple)
+            return jsonify(result), 200
+
     # Update
     def updateUser(self, user_id, json):
         user_email = json['user_email']

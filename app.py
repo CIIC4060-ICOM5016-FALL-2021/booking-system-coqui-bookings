@@ -37,6 +37,16 @@ def handleUserById(user_id):
     else:
         return jsonify("Method Not Allowed"), 405
 
+@app.route('/coqui-bookings/User/unavailable-users', methods=['GET'])
+def handleUnavailableUsers():
+    return BaseUser().getAllUnavailableUsers()
+
+@app.route('/coqui-bookings/User/unavailable-users/<int:user_id>', methods=['GET'])
+def handleUnavailableUsersById(user_id):
+    if request.method == 'GET':
+        return BaseUser().getUnavailableUserById(user_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
 
 # --------------------------------------------------------------------------------------
 # Room
