@@ -3,7 +3,7 @@ import psycopg2
 from config.dbconfig import db_root_config
 
 
-class UserDAO:
+class RoomDAO:
     def __init__(self):
         connection_url = "dbname=%s user=%s password=%s port=%s host=%s" % (db_root_config['dbname'],
                                                                             db_root_config['user'],
@@ -13,10 +13,10 @@ class UserDAO:
         self.conn = psycopg2.connect(connection_url)
 
     # Create
-    def createNewRoom(self, room_name):
+    def createNewRoom(self, room_name, room_type_id):
         cursor = self.conn.cursor()
-        query = 'insert into "Room" (room_name) values (%s) returning room_id;'
-        cursor.execute(query, (room_name,))
+        query = 'insert into "Room" (room_name, room_type_id) values (%s, %s) returning room_id;'
+        cursor.execute(query, (room_name, room_type_id,))
         room_id = cursor.fetchone()[0]
         self.conn.commit()
         return room_id
@@ -24,7 +24,7 @@ class UserDAO:
     # Read
     def getAllRooms(self):
         cursor = self.conn.cursor()
-        query = 'select room_id, room_name from "Room";'
+        query = 'select room_id, room_name, room_type_id from "Room";'
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -33,7 +33,7 @@ class UserDAO:
 
     def getRoomById(self, room_id):
         cursor = self.conn.cursor()
-        query = 'select room_id, room_name from "Room" where room_id = %s;'
+        query = 'select room_id, room_name, room_type_id from "Room" where room_id = %s;'
         cursor.execute(query, (room_id,))
         result = cursor.fetchone()
         return result
@@ -49,10 +49,10 @@ class UserDAO:
         return result
 
     # Update
-    def updateRoom(self, room_id, room_name):
+    def updateRoom(self, room_id, room_name, room_type_id):
         cursor = self.conn.cursor()
-        query = 'update "Room" set room_name = %s where room_id = %s;'
-        cursor.execute(query, (room_name, room_id))
+        query = 'update "Room" set room_name = %s, room_type_id = %s where room_id = %s;'
+        cursor.execute(query, (room_name, room_type_id, room_id,))
         self.conn.commit()
         return True
 
