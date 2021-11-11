@@ -1,7 +1,8 @@
 from flask import jsonify
+
+from controller.room import BaseRoom
+from controller.user import BaseUser
 from model.booking import BookingDAO
-from model.room import RoomDAO
-from model.user import UserDAO
 
 
 class BaseBooking:
@@ -16,20 +17,18 @@ class BaseBooking:
         return result
 
     # Create
-    def createNewBooking(self, json):
+    def createNewBooking(self, json):  # TODO Limit By Role
         booking_name = json['booking_name']
         booking_start = json['booking_start_date'] + " " + json['booking_start_time']
         booking_finish = json['booking_finish_date'] + " " + json['booking_finish_time']
         user_id = json['creator_user_id']
         room_id = json['room_id']
         booking_dao = BookingDAO()
-        room_dao = RoomDAO()
-        user_dao = UserDAO()
 
         # Verification if another room is available during booking time
-        available_room = room_dao.verifyAvailableRoomAtTimeFrame(room_id, booking_start, booking_finish)
+        available_room = BaseRoom().verifyAvailableRoomAtTimeFrame(room_id, booking_start, booking_finish)
         # Verification if user is available during
-        available_user = user_dao.verifyAvailableUserAtTimeFrame(user_id, booking_start, booking_finish)
+        available_user = BaseUser().verifyAvailableUserAtTimeFrame(user_id, booking_start, booking_finish)
 
         if not available_room:
             return jsonify("Room is not available during specified time"), 409
@@ -37,7 +36,8 @@ class BaseBooking:
             return jsonify("User is not available during specified time"), 409
         else:
             booking_id = booking_dao.createNewBooking(booking_name, booking_start, booking_finish, user_id, room_id)
-            result = self.build_booking_attr_dict(booking_id, booking_name, booking_start, booking_finish, user_id, room_id)
+            result = self.build_booking_attr_dict(booking_id, booking_name, booking_start, booking_finish, user_id,
+                                                  room_id)
             return jsonify(result), 201
 
     # Read
@@ -63,20 +63,18 @@ class BaseBooking:
             return jsonify(result), 200
 
     # Update
-    def updateBooking(self, booking_id, json):
+    def updateBooking(self, booking_id, json): # TODO Limit By ID
         booking_name = json['booking_name']
         booking_start = json['booking_start_date'] + " " + json['booking_start_time']
         booking_finish = json['booking_finish_date'] + " " + json['booking_finish_time']
         user_id = json['creator_user_id']
         room_id = json['room_id']
         booking_dao = BookingDAO()
-        room_dao = RoomDAO()
-        user_dao = UserDAO()
 
         # Verification if another room is available during booking time
-        available_room = room_dao.verifyAvailableRoomAtTimeFrame(room_id, booking_start, booking_finish)
+        available_room = BaseRoom().verifyAvailableRoomAtTimeFrame(room_id, booking_start, booking_finish)
         # Verification if user is available during
-        available_user = user_dao.verifyAvailableUserAtTimeFrame(user_id, booking_start, booking_finish)
+        available_user = BaseUser().verifyAvailableUserAtTimeFrame(user_id, booking_start, booking_finish)
 
         if not available_room:
             return jsonify("Room is not available during specified time"), 409

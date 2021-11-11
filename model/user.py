@@ -24,9 +24,9 @@ class UserDAO:
 
     def createUserUnavailableTimeSlot(self, user_id, unavailable_time_user_start, unavailable_time_user_finish):
         cursor = self.conn.cursor()
-        query = 'insert into "UnavailableTimeUser" (unavailable_time_user_start, unavailable_time_user_finish, user_id) values (%s, %s, %s); '
+        query = 'insert into "UnavailableTimeUser" ' \
+                '(unavailable_time_user_start, unavailable_time_user_finish, user_id) values (%s, %s, %s);'
         cursor.execute(query, (unavailable_time_user_start, unavailable_time_user_finish, user_id,))
-        #user_id = cursor.fetchone()[0]
         self.conn.commit()
         return True
 
@@ -56,7 +56,7 @@ class UserDAO:
         result = cursor.fetchone()
         return result
 
-    def getAllUnavailableUsers(self):
+    def getAllUnavailableTimeOfUsers(self):
         cursor = self.conn.cursor()
         query = 'select unavailable_time_user_id, unavailable_time_user_start, unavailable_time_user_finish, user_id ' \
                 'from "UnavailableTimeUser";'
@@ -66,9 +66,9 @@ class UserDAO:
             result.append(row)
         return result
 
-    def getUnavailableUserById(self, user_id):
+    def getUnavailableTimeOfUserById(self, user_id):
         cursor = self.conn.cursor()
-        query = 'select user_id, unavailable_time_user_id, unavailable_time_user_start, unavailable_time_user_finish ' \
+        query = 'select unavailable_time_user_id, unavailable_time_user_start, unavailable_time_user_finish, user_id ' \
                 'from "UnavailableTimeUser" where user_id = %s;'
         cursor.execute(query, (user_id,))
         result = []
@@ -83,10 +83,6 @@ class UserDAO:
         cursor.execute(query, (user_email,))
         result = cursor.fetchone()
         return result
-
-    # TODO Implement
-    def verifyAvailableUserAtTimeFrame(self, user_id, booking_start, booking_finish):
-        pass
 
     # Update
     def updateUser(self, user_id, user_email, user_password, user_first_name, user_last_name, role_id):
