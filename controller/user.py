@@ -1,5 +1,6 @@
 from flask import jsonify
 from model.user import UserDAO
+import datetime
 
 
 class BaseUser:
@@ -34,6 +35,20 @@ class BaseUser:
         else:
             return jsonify("An user with that email address already exists"), 409
 
+    def createUserUnavailableTimeSlot(self, user_id, json):
+        unavailable_time_user_start = json['unavailable_time_user_start']
+        unavailable_time_user_finish = json['unavailable_time_user_finish']
+        # unavailable_time_user_id = json['unavailable_time_user_id']
+        dao = UserDAO()
+        existing_user = dao.getUserById(user_id)
+        if not existing_user:
+            return jsonify("User does not exist"), 409
+        verify_slot = self.verifyAvailabilityOfUserAtTimeSlot(user_id, unavailable_time_user_start, unavailable_time_user_finish)
+        if verify_slot:
+            result = dao.createUserUnavailableTimeSlot(user_id, unavailable_time_user_start, unavailable_time_user_finish)
+            return jsonify(result), 201
+        else:
+            return jsonify("Time slot overlaps"), 409
     # Read
     def getAllUsers(self):
         dao = UserDAO()
@@ -65,25 +80,6 @@ class BaseUser:
             result_list.append(obj)
         return jsonify(result_list)
 
-    # verify if user is available, return True if available 
-    def verifyAvailableUserAtTimeSlot(self, user_id, start_time, finish_time):
-        dao = UserDAO()
-        user_times = dao.getUnavailableUserById(user_id)
-        
-        if not user_times: return True
-
-        for row in user_times:
-            # print("START!!!", row.unavailable_time_user_start)
-            # print("END!!! ", row.unavailable_time_user_end)
-            # if (start_time > row.unavailable_time_user_start and start_time < row.unavailable_time_user_end) \
-            #     or (finish_time>row.unavailable_time_user_start and finish_time < row.unavailable_time_user_end):
-            if (start_time > row[2] and start_time < row[3]) \
-                 or (finish_time>row[2] and finish_time < row[3]):
-                
-                return False
-
-        return True
-
     def getUnavailableUserById(self, user_id):
         dao = UserDAO()
         unavailable_user_tuple = dao.getUnavailableUserById(user_id)
@@ -93,21 +89,27 @@ class BaseUser:
             result = self.build_unavailable_time_user_dict(unavailable_user_tuple)
             return jsonify(result), 200
 
-    def createUnavailableSlot(self, user_id, json):
-        start_time = json['unavailable_time_user_start']
-        end_time = json['unavailable_time_user_finish']
-        # unavailable_time_user_id = json['unavailable_time_user_id']
+    # verify if user is available, return True if available
+    def verifyAvailabilityOfUserAtTimeSlot(self, user_id, unavailable_time_user_start, unavailable_time_user_finish):
         dao = UserDAO()
-        existing_user = dao.getUserById(user_id)
-        if not existing_user: 
-            return jsonify("User does not exist"), 409
-        verify_slot =  self.verifyAvailableUserAtTimeSlot(user_id, start_time, end_time)
-        if verify_slot: 
-            result = dao.createUnavailableSlot(user_id, start_time, end_time)
-            return jsonify(result), 201
-        else:
-            return jsonify("Time slot overlaps"), 409
+        start_format = datetime.datetime.strptime(unavailable_time_user_start, '%Y-%m-%d %H:%M')
+        finish_format = datetime.datetime.strptime(unavailable_time_user_finish, '%Y-%m-%d %H:%M')
 
+        user_unavailable_time_slots = dao.getUnavailableUserById(user_id)
+        if not user_unavailable_time_slots:
+            return True
+
+        for row in user_unavailable_time_slots:
+            print(row[2] < start_format < row[3])
+            # print("START!!!", row.unavailable_time_user_start)
+            # print("END!!! ", row.unavailable_time_user_end)
+            # if (start_time > row.unavailable_time_user_start and start_time < row.unavailable_time_user_end) \
+            #     or (finish_time>row.unavailable_time_user_start and finish_time < row.unavailable_time_user_end):
+            if ():
+
+                return False
+
+        return True
 
     # Update
     def updateUser(self, user_id, json):

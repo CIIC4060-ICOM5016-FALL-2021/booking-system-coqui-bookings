@@ -51,7 +51,7 @@ def handleUnavailableUsersById(user_id):
 @app.route('/coqui-bookings/User/<int:user_id>/unavailable-slot/', methods=['POST'])
 def handleUserAvailability(user_id):
     if request.method == 'POST':
-        return BaseUser().createUnavailableSlot(user_id, request.json)
+        return BaseUser().createUserUnavailableTimeSlot(user_id, request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
@@ -87,6 +87,7 @@ def handleUnavailableRoomById(room_id):
         return BaseRoom().getUnavailableRoomById(room_id)
     else:
         return jsonify("Method Not Allowed"), 405
+
 
 # --------------------------------------------------------------------------------------
 # Booking

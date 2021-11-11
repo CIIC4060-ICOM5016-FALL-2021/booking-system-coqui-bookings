@@ -22,7 +22,7 @@ class UserDAO:
         self.conn.commit()
         return user_id
 
-    def createUnavailableSlot(self, user_id, unavailable_time_user_start, unavailable_time_user_finish):
+    def createUserUnavailableTimeSlot(self, user_id, unavailable_time_user_start, unavailable_time_user_finish):
         cursor = self.conn.cursor()
         query = 'insert into "UnavailableTimeUser" (unavailable_time_user_start, unavailable_time_user_finish, user_id) values (%s, %s, %s); '
         cursor.execute(query, (unavailable_time_user_start, unavailable_time_user_finish, user_id,))
