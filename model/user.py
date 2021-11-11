@@ -22,6 +22,14 @@ class UserDAO:
         self.conn.commit()
         return user_id
 
+    def createUnavailableSlot(self, user_id, unavailable_time_user_start, unavailable_time_user_finish):
+        cursor = self.conn.cursor()
+        query = 'insert into "UnavailableTimeUser" (unavailable_time_user_start, unavailable_time_user_finish, user_id) values (%s, %s, %s); '
+        cursor.execute(query, (unavailable_time_user_start, unavailable_time_user_finish, user_id,))
+        #user_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return True
+
     # Read
     def getAllUsers(self):
         cursor = self.conn.cursor()
@@ -55,7 +63,10 @@ class UserDAO:
         query = 'select user_id, unavailable_time_user_id, unavailable_time_user_start, unavailable_time_user_finish ' \
                 'from "UnavailableTimeUser" where user_id = %s;'
         cursor.execute(query, (user_id,))
-        result = cursor.fetchone()
+        result = []
+        for row in cursor:
+            result.append(row)
+        print(result)
         return result
 
     def getUserByEmail(self, user_email):

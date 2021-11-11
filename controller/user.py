@@ -66,16 +66,23 @@ class BaseUser:
         return jsonify(result_list)
 
     # verify if user is available, return True if available 
-    def verifyAvailableUserAtTimeFrame(self, user_id, start_time, finish_time):
+    def verifyAvailableUserAtTimeSlot(self, user_id, start_time, finish_time):
         dao = UserDAO()
         user_times = dao.getUnavailableUserById(user_id)
-
+        
         if not user_times: return True
 
-        
+        for row in user_times:
+            # print("START!!!", row.unavailable_time_user_start)
+            # print("END!!! ", row.unavailable_time_user_end)
+            # if (start_time > row.unavailable_time_user_start and start_time < row.unavailable_time_user_end) \
+            #     or (finish_time>row.unavailable_time_user_start and finish_time < row.unavailable_time_user_end):
+            if (start_time > row[2] and start_time < row[3]) \
+                 or (finish_time>row[2] and finish_time < row[3]):
+                
+                return False
 
-
-        return False
+        return True
 
     def getUnavailableUserById(self, user_id):
         dao = UserDAO()
@@ -85,6 +92,22 @@ class BaseUser:
         else:
             result = self.build_unavailable_time_user_dict(unavailable_user_tuple)
             return jsonify(result), 200
+
+    def createUnavailableSlot(self, user_id, json):
+        start_time = json['unavailable_time_user_start']
+        end_time = json['unavailable_time_user_finish']
+        # unavailable_time_user_id = json['unavailable_time_user_id']
+        dao = UserDAO()
+        existing_user = dao.getUserById(user_id)
+        if not existing_user: 
+            return jsonify("User does not exist"), 409
+        verify_slot =  self.verifyAvailableUserAtTimeSlot(user_id, start_time, end_time)
+        if verify_slot: 
+            result = dao.createUnavailableSlot(user_id, start_time, end_time)
+            return jsonify(result), 201
+        else:
+            return jsonify("Time slot overlaps"), 409
+
 
     # Update
     def updateUser(self, user_id, json):
