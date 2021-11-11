@@ -49,6 +49,7 @@ class BaseUser:
             return jsonify(result), 201
         else:
             return jsonify("Time slot overlaps"), 409
+
     # Read
     def getAllUsers(self):
         dao = UserDAO()
@@ -89,7 +90,6 @@ class BaseUser:
             result = self.build_unavailable_time_user_dict(unavailable_user_tuple)
             return jsonify(result), 200
 
-    # verify if user is available, return True if available
     def verifyAvailabilityOfUserAtTimeSlot(self, user_id, unavailable_time_user_start, unavailable_time_user_finish):
         dao = UserDAO()
         start_format = datetime.datetime.strptime(unavailable_time_user_start, '%Y-%m-%d %H:%M')
@@ -100,12 +100,12 @@ class BaseUser:
             return True
 
         for row in user_unavailable_time_slots:
-            print(row[2] < start_format < row[3])
-            # print("START!!!", row.unavailable_time_user_start)
-            # print("END!!! ", row.unavailable_time_user_end)
-            # if (start_time > row.unavailable_time_user_start and start_time < row.unavailable_time_user_end) \
-            #     or (finish_time>row.unavailable_time_user_start and finish_time < row.unavailable_time_user_end):
-            if ():
+            existing_start = row[2]
+            existing_end = row[3]
+            if (existing_start<start_format<finish_format<existing_end) \
+                or (start_format<existing_start<existing_end<finish_format)\
+                    or (start_format<existing_start<finish_format<existing_end)\
+                        or (existing_start<finish_format<existing_end<finish_format):
 
                 return False
 
