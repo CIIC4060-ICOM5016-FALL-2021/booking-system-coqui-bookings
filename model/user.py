@@ -48,6 +48,14 @@ class UserDAO:
         result = cursor.fetchone()
         return result
 
+    def getUserRoleById(self, user_id):
+        cursor = self.conn.cursor()
+        query = 'select role_id ' \
+                'from "User" where user_id = %s;'
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchone()
+        return result
+
     def getAllUnavailableUsers(self):
         cursor = self.conn.cursor()
         query = 'select unavailable_time_user_id, unavailable_time_user_start, unavailable_time_user_finish, user_id ' \

@@ -18,6 +18,10 @@ class BaseUser:
         result = {'unavailable_time_user_id': row[0], 'unavailable_time_user_start': row[1], 'unavailable_time_user_finish': row[2],
                   'user_id': row[3]}
         return result
+    
+    def build_role_dict(self, row):
+        result = {'role_id': row[0]}
+        return result
 
     # Create
     def createNewUser(self, json):
@@ -70,6 +74,16 @@ class BaseUser:
             return jsonify("User Not Found"), 404
         else:
             result = self.build_user_map_dict(user_tuple)
+            return jsonify(result), 200
+
+    def getUserRoleById(self, user_id):
+        dao = UserDAO()
+        user_role = dao.getUserRoleById(user_id)
+        if not user_role:  # User Not Found
+            return jsonify("User Role Not Found"), 404
+        else:
+            result = self.build_role_dict(user_role)
+            print(result)
             return jsonify(result), 200
 
     def getAllUnavailableUsers(self):
