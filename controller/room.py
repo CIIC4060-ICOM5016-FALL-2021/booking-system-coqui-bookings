@@ -1,6 +1,8 @@
 from flask import jsonify
 from model.room import RoomDAO
+import datetime
 
+from model.user import UserDAO
 
 class BaseRoom:
 
@@ -29,6 +31,32 @@ class BaseRoom:
             return jsonify(result), 201
         else:
             return jsonify("A room with that name already exists"), 409
+
+    def createRoomUnavailableTimeSlot(self, user_id, room_id, json):
+        unavailable_time_room_start = json['unavailable_time_room_start']
+        unavailable_time_room_finish = json['unavailable_time_room_finish']
+        dao_room = RoomDAO()
+        dao_user = UserDAO()
+        existing_room = dao_room.getRoomById(room_id)
+        existing_user = dao_user.getUserById(user_id)
+        existing_user_role = dao_user.getUserRoleById(user_id)
+
+        if not existing_user:
+            return jsonify("User Not Found"), 404
+
+        elif existing_user_role[0]==3:
+            if not existing_room:
+                return jsonify("Room Not Found"), 404
+
+            verify_slot = self.verifyAvailabilityOfRoomAtTimeSlot(room_id, unavailable_time_room_start, unavailable_time_room_finish)
+            if verify_slot:
+                result = dao_room.createRoomUnavailableTimeSlot(room_id, unavailable_time_room_start, unavailable_time_room_finish)
+                return jsonify("Successfully inserted unavailable slot"), 200
+            else:
+                return jsonify("Time slot overlaps"), 409
+
+        else:
+            return jsonify("User does not have permissison to create"), 403
 
     # Read
     def getAllRooms(self):
@@ -70,18 +98,27 @@ class BaseRoom:
             result = self.build_unavailable_time_room_dict(unavailable_room_tuple)
             return jsonify(result), 200
 
-    # verify if room is available 
-    def verifyAvailableRoomAtTimeFrame(self, room_id, start_time, end_time):
-        # If room is available return True
+
+    def verifyAvailabilityOfRoomAtTimeSlot(self, room_id, unavailable_time_room_start, unavailable_time_room_finish):
         dao = RoomDAO()
-        unavailable_room = dao.getUnavailableRoomById(room_id)
+        start_format = datetime.datetime.strptime(unavailable_time_room_start, '%Y-%m-%d %H:%M')
+        finish_format = datetime.datetime.strptime(unavailable_time_room_finish, '%Y-%m-%d %H:%M')
 
-        if not unavailable_room: return True
-            
+        room_unavailable_time_slots = dao.getUnavailableRoomById(room_id)
+        if not room_unavailable_time_slots:
+            return True
 
+        for row in room_unavailable_time_slots:
+            existing_start = row[2]
+            existing_end = row[3]
+            if (existing_start<start_format<finish_format<existing_end) \
+                or (start_format<existing_start<existing_end<finish_format)\
+                    or (start_format<existing_start<finish_format<existing_end)\
+                        or (existing_start<finish_format<existing_end<finish_format):
 
+                return False
 
-        return False
+        return True
 
     # Update
     def updateRoom(self, room_id, json):

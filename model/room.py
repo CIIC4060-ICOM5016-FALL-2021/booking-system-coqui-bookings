@@ -21,6 +21,14 @@ class RoomDAO:
         self.conn.commit()
         return room_id
 
+    def createRoomUnavailableTimeSlot(self, room_id, unavailable_time_room_start, unavailable_time_room_finish):
+        cursor = self.conn.cursor()
+        query = 'insert into "UnavailableTimeRoom" (unavailable_time_room_start, unavailable_time_room_finish, room_id) values (%s, %s, %s); '
+        cursor.execute(query, (unavailable_time_room_start, unavailable_time_room_finish, room_id,))
+        #user_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return True
+
     # Read
     def getAllRooms(self):
         cursor = self.conn.cursor()
