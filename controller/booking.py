@@ -93,6 +93,6 @@ class BaseBooking:
         dao = BookingDAO()
         result = dao.deleteBooking(booking_id)
         if result:
-            return jsonify("DELETED"), 200
+            return jsonify("Booking Deleted Successfully"), 200
         else:
-            return jsonify("NOT FOUND"), 404
+            return jsonify("Booking Not Found"), 404
