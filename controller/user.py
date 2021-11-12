@@ -1,8 +1,6 @@
-import time
-
+import datetime as dt
 from flask import jsonify
 from model.user import UserDAO
-import datetime as dt
 
 
 class BaseUser:
@@ -16,13 +14,13 @@ class BaseUser:
                   'user_first_name': user_first_name, 'user_last_name': user_last_name, 'role_id': role_id}
         return result
 
+    def build_role_map_dict(self, user_role):
+        result = {'role_id': user_role}
+        return result
+
     def build_unavailable_time_user_map_dict(self, row):
         result = {'unavailable_time_user_id': row[0], 'unavailable_time_user_start': row[1],
                   'unavailable_time_user_finish': row[2], 'user_id': row[3]}
-        return result
-
-    def build_role_map_dict(self, row):
-        result = {'role_id': row[0]}
         return result
 
     # Create
@@ -38,13 +36,13 @@ class BaseUser:
             user_id = dao.createNewUser(user_email, user_password, user_first_name, user_last_name, role_id)
             result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name,
                                                role_id)
-            return jsonify("result"), 201
+            return jsonify(result), 201
         else:
             return jsonify("An user with that email address already exists"), 409
 
-    def createUserUnavailableTimeSlot(self, user_id, json):
-        unavailable_time_user_start = json['unavailable_time_user_start']
-        unavailable_time_user_finish = json['unavailable_time_user_finish']
+    def createUserUnavailableTimeFrame(self, user_id, json):
+        unavailable_time_user_start = json['start_date'] + " " + json['start_time']
+        unavailable_time_user_finish = json['finish_date'] + " " + json['finish_time']
         dao = UserDAO()
         existing_user = dao.getUserById(user_id)
         if not existing_user:
@@ -52,11 +50,11 @@ class BaseUser:
         available_user = self.verifyAvailableUserAtTimeFrame(user_id, unavailable_time_user_start,
                                                              unavailable_time_user_finish)
         if not available_user:
-            return jsonify("Time slot overlaps"), 409
+            return jsonify("Time Frame Already Marked as Unavailable"), 409
         else:
             dao.createUserUnavailableTimeSlot(user_id, unavailable_time_user_start,
-                                                       unavailable_time_user_finish)
-            return jsonify('Successfully inserted unavailable slot'), 201
+                                              unavailable_time_user_finish)
+            return jsonify('Successfully Marked Time Frame as Unavailable'), 201
 
     # Read
     def getAllUsers(self):
@@ -86,7 +84,7 @@ class BaseUser:
         if not user_role:  # User Not Found
             return jsonify("User Not Found"), 404
         else:
-            result = self.build_role_map_dict(user_role)
+            result = self.build_role_map_dict(user_role[0])
             return jsonify(result), 200
 
     def getAllUnavailableTimeOfUsers(self):
@@ -103,6 +101,7 @@ class BaseUser:
         user = dao.getUserById(user_id)
         if not user:  # User Not Found
             return jsonify("User Not Found"), 404
+
         unavailable_user_tuple = dao.getUnavailableTimeOfUserById(user_id)
         if not unavailable_user_tuple:  # Unavailable Time Slot Not Found
             return jsonify("No Unavailable Time Slots Found for this User"), 404
@@ -115,6 +114,7 @@ class BaseUser:
 
     def verifyAvailableUserAtTimeFrame(self, user_id, start_time_to_verify, finish_time_to_verify):
         dao = UserDAO()
+
         new_start = dt.datetime.strptime(start_time_to_verify, '%Y-%m-%d %H:%M')
         new_end = dt.datetime.strptime(finish_time_to_verify, '%Y-%m-%d %H:%M')
 
@@ -124,12 +124,12 @@ class BaseUser:
         else:
             for row in user_unavailable_time_slots:
                 old_start = row[1]
-                old_end = row[2]      
+                old_end = row[2]
                 if (old_start < new_start < new_end < old_end) \
                         or (new_start < old_start < old_end < new_end) \
                         or (new_start < old_start < new_end < old_end) \
-                        or (old_start < new_start < old_end < new_end)\
-                        or (new_start==old_start or new_end==old_end):
+                        or (old_start < new_start < old_end < new_end) \
+                        or (new_start == old_start or new_end == old_end):
                     return False
             return True
 

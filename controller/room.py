@@ -37,33 +37,33 @@ class BaseRoom:
         else:
             return jsonify("A room with that name already exists"), 409
 
-    def createRoomUnavailableTimeSlot(self, user_id, room_id, json):
-        unavailable_time_room_start = json['unavailable_time_room_start']
-        unavailable_time_room_finish = json['unavailable_time_room_finish']
+    def createRoomUnavailableTimeFrame(self, user_id, room_id, json):
+        unavailable_time_room_start = json['start_date'] + " " + json['start_time']
+        unavailable_time_room_finish = json['finish_date'] + " " + json['finish_time']
         dao_room = RoomDAO()
         dao_user = UserDAO()
-        existing_room = dao_room.getRoomById(room_id)
-        existing_user = dao_user.getUserById(user_id)
-        existing_user_role = dao_user.getUserRoleById(user_id)
 
+        existing_user = dao_user.getUserById(user_id)
         if not existing_user:
             return jsonify("User Not Found"), 404
 
-        elif not existing_room:
+        existing_room = dao_room.getRoomById(room_id)
+        if not existing_room:
             return jsonify("Room Not Found"), 404
 
-        elif existing_user_role[0] == 3:
+        existing_user_role = dao_user.getUserRoleById(user_id)[0]
+        if existing_user_role == 3:
+
             verify_slot = self.verifyAvailableRoomAtTimeFrame(room_id, unavailable_time_room_start,
                                                               unavailable_time_room_finish)
-            if verify_slot:
-                dao_room.createRoomUnavailableTimeSlot(room_id, unavailable_time_room_start,
-                                                                unavailable_time_room_finish)
-                return jsonify("Successfully inserted unavailable slot"), 200
+            if not verify_slot:
+                return jsonify("Time Frame Already Marked as Unavailable"), 409
             else:
-                return jsonify("Time slot overlaps"), 409
-
+                dao_room.createRoomUnavailableTimeSlot(room_id, unavailable_time_room_start,
+                                                       unavailable_time_room_finish)
+                return jsonify("Successfully Marked Time as Unavailable"), 201
         else:
-            return jsonify(f"User with role {existing_user_role[0]} does not have permission to create"), 403
+            return jsonify(f"User with role {existing_user_role} does not have permission to create"), 403
 
     # Read
     def getAllRooms(self):
@@ -96,8 +96,28 @@ class BaseRoom:
         else:
             result = self.build_type_map_dict(room_type[0])
             return jsonify(result), 200
-            
-    def getAllUnavailableTimeOfRooms(self):
+
+    def getAllAvailableRooms(self, json):
+        search_start = json['start_date'] + " " + json['start_time']
+        search_finish = json['finish_date'] + " " + json['finish_time']
+
+        dao = RoomDAO()
+        rooms_list = dao.getAllRooms()
+        if not rooms_list:  # There are no rooms
+            return jsonify("No Rooms Found"), 404
+        else:
+            result_list = []
+            for room in rooms_list:
+                if self.verifyAvailableRoomAtTimeFrame(room[0], search_start, search_finish):
+                    obj = self.build_room_map_dict(room)
+                    result_list.append(obj)
+
+            if len(result_list) == 0:
+                return jsonify("No Rooms Available at Specified Time Frame"), 200
+            else:
+                return jsonify(result_list), 200
+
+    def getAllUnavailableTimeOfRooms(self):  # MIGHT NOT BE NEEDED
         dao = RoomDAO()
         unavailable_rooms_list = dao.getAllUnavailableTimeOfRooms()
         result_list = []
@@ -132,16 +152,12 @@ class BaseRoom:
         else:
             for row in room_unavailable_time_slots:
                 old_start = row[1]
-                old_end = row[2] 
-                print(new_start)
-                print(new_end)
-                print(old_start)
-                print(old_end)
+                old_end = row[2]
                 if (old_start < new_start < new_end < old_end) \
                         or (new_start < old_start < old_end < new_end) \
                         or (new_start < old_start < new_end < old_end) \
-                        or (old_start < new_start < old_end < new_end)\
-                        or (new_start==old_start or new_end==old_end):
+                        or (old_start < new_start < old_end < new_end) \
+                        or (new_start == old_start or new_end == old_end):
                     return False
             return True
 
