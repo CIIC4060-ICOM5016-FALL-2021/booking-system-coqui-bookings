@@ -46,6 +46,14 @@ class RoomDAO:
         result = cursor.fetchone()
         return result
 
+    def getRoomTypeById(self, room_id):
+        cursor = self.conn.cursor()
+        query = 'select room_type_id ' \
+                'from "Room" where room_id = %s;'
+        cursor.execute(query, (room_id,))
+        result = cursor.fetchone()
+        return result
+
     def getAllUnavailableTimeOfRooms(self):
         cursor = self.conn.cursor()
         query = 'select unavailable_time_room_id, unavailable_time_room_start, unavailable_time_room_finish, room_id ' \

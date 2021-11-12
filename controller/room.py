@@ -20,6 +20,10 @@ class BaseRoom:
                   'unavailable_time_room_finish': row[2], 'room_id': row[3]}
         return result
 
+    def build_type_map_dict(self, row):
+        result = {'room_type_id': row}
+        return result
+
     # Create
     def createNewRoom(self, json):
         room_name = json['room_name']
@@ -52,14 +56,14 @@ class BaseRoom:
             verify_slot = self.verifyAvailableRoomAtTimeFrame(room_id, unavailable_time_room_start,
                                                               unavailable_time_room_finish)
             if verify_slot:
-                result = dao_room.createRoomUnavailableTimeSlot(room_id, unavailable_time_room_start,
+                dao_room.createRoomUnavailableTimeSlot(room_id, unavailable_time_room_start,
                                                                 unavailable_time_room_finish)
                 return jsonify("Successfully inserted unavailable slot"), 200
             else:
                 return jsonify("Time slot overlaps"), 409
 
         else:
-            return jsonify("User does not have permission to create"), 403
+            return jsonify(f"User with role {existing_user_role[0]} does not have permission to create"), 403
 
     # Read
     def getAllRooms(self):
@@ -83,6 +87,16 @@ class BaseRoom:
             result = self.build_room_map_dict(room_tuple)
             return jsonify(result), 200
 
+    def getRoomTypeById(self, room_id):
+        dao = RoomDAO()
+        room_type = dao.getRoomTypeById(room_id)
+
+        if not room_type:  # Room Not Found
+            return jsonify("Room Not Found"), 404
+        else:
+            result = self.build_type_map_dict(room_type[0])
+            return jsonify(result), 200
+            
     def getAllUnavailableTimeOfRooms(self):
         dao = RoomDAO()
         unavailable_rooms_list = dao.getAllUnavailableTimeOfRooms()

@@ -3,6 +3,8 @@ from flask import jsonify
 from controller.room import BaseRoom
 from controller.user import BaseUser
 from model.booking import BookingDAO
+from model.room import RoomDAO
+from model.user import UserDAO
 
 
 class BaseBooking:
@@ -17,28 +19,37 @@ class BaseBooking:
         return result
 
     # Create
-    def createNewBooking(self, json):  # TODO Limit By Role
+    def createNewBooking(self, user_id, json):  
         booking_name = json['booking_name']
         booking_start = json['booking_start_date'] + " " + json['booking_start_time']
         booking_finish = json['booking_finish_date'] + " " + json['booking_finish_time']
-        user_id = json['creator_user_id']
+        #user_id = json['creator_user_id']
         room_id = json['room_id']
+
         booking_dao = BookingDAO()
+        user_dao = UserDAO()
+        room_dao = RoomDAO()
 
-        # Verification if another room is available during booking time
-        available_room = BaseRoom().verifyAvailableRoomAtTimeFrame(room_id, booking_start, booking_finish)
-        # Verification if user is available during
-        available_user = BaseUser().verifyAvailableUserAtTimeFrame(user_id, booking_start, booking_finish)
+        role = user_dao.getUserRoleById(user_id)
+        room_type = room_dao.getRoomTypeById(room_id)
 
-        if not available_room:
-            return jsonify("Room is not available during specified time"), 409
-        elif not available_user:
-            return jsonify("User is not available during specified time"), 409
+        if (role == 3 and (room_type==1 or room_type==2)) or (role==2 and room_type==2) or (role==1 and room_type==3): 
+            # Verification if another room is available during booking time
+            available_room = BaseRoom().verifyAvailableRoomAtTimeFrame(room_id, booking_start, booking_finish)
+            # Verification if user is available during
+            available_user = BaseUser().verifyAvailableUserAtTimeFrame(user_id, booking_start, booking_finish)
+
+            if not available_room:
+                return jsonify("Room is not available during specified time"), 409
+            elif not available_user:
+                return jsonify("User is not available during specified time"), 409
+            else:
+                booking_id = booking_dao.createNewBooking(booking_name, booking_start, booking_finish, user_id, room_id)
+                result = self.build_booking_attr_dict(booking_id, booking_name, booking_start, booking_finish, user_id,
+                                                    room_id)
+                return jsonify(result), 201
         else:
-            booking_id = booking_dao.createNewBooking(booking_name, booking_start, booking_finish, user_id, room_id)
-            result = self.build_booking_attr_dict(booking_id, booking_name, booking_start, booking_finish, user_id,
-                                                  room_id)
-            return jsonify(result), 201
+            return jsonify(f"User with role {role} does not have permission to book room type {room_type[0]}"),403
 
     # Read
     def getAllBookings(self):

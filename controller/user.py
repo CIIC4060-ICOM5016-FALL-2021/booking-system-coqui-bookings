@@ -42,7 +42,6 @@ class BaseUser:
         else:
             return jsonify("An user with that email address already exists"), 409
 
-    # TODO IT ADDS DUPLICATES (SEND HELP)
     def createUserUnavailableTimeSlot(self, user_id, json):
         unavailable_time_user_start = json['unavailable_time_user_start']
         unavailable_time_user_finish = json['unavailable_time_user_finish']

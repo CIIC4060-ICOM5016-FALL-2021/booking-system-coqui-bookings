@@ -115,6 +115,12 @@ def handleUnavailableTimeOfRoomById(room_id):
     else:
         return jsonify("Method Not Allowed"), 405
 
+@app.route('/coqui-bookings/Room/type/<int:room_id>', methods=['GET'])
+def handleRoomType(room_id):
+    if request.method == 'GET':
+        return BaseRoom().getRoomTypeById(room_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
 
 @app.route('/coqui-bookings/Room/<int:user_id>/unavailable-time-slot/<int:room_id>', methods=['POST'])
 def handleRoomAvailability(user_id, room_id):
@@ -127,10 +133,10 @@ def handleRoomAvailability(user_id, room_id):
 # --------------------------------------------------------------------------------------
 # Booking
 # --------------------------------------------------------------------------------------
-@app.route('/coqui-bookings/Booking/bookings', methods=['GET', 'POST'])
-def handleBookings():
+@app.route('/coqui-bookings/Booking/bookings/<int:user_id>', methods=['GET', 'POST'])
+def handleBookings(user_id):
     if request.method == 'POST':
-        return BaseBooking().createNewBooking(request.json)
+        return BaseBooking().createNewBooking(user_id,request.json)
     elif request.method == 'GET':
         return BaseBooking().getAllBookings()
     else:
