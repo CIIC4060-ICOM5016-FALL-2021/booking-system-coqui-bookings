@@ -116,7 +116,7 @@ def handleUnavailableTimeOfRoomById(room_id):
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/coqui-bookings/Room/<int:user_id>/unavailable-slot/<int:room_id>', methods=['POST'])
+@app.route('/coqui-bookings/Room/<int:user_id>/unavailable-time-slot/<int:room_id>', methods=['POST'])
 def handleRoomAvailability(user_id, room_id):
     if request.method == 'POST':
         return BaseRoom().createRoomUnavailableTimeSlot(user_id, room_id, request.json)

@@ -109,20 +109,25 @@ class BaseRoom:
 
     def verifyAvailableRoomAtTimeFrame(self, room_id, start_time_to_verify, finish_time_to_verify):
         dao = RoomDAO()
-        start_format = dt.datetime.strptime(start_time_to_verify, '%Y-%m-%d %H:%M')
-        finish_format = dt.datetime.strptime(finish_time_to_verify, '%Y-%m-%d %H:%M')
+        new_start = dt.datetime.strptime(start_time_to_verify, '%Y-%m-%d %H:%M')
+        new_end = dt.datetime.strptime(finish_time_to_verify, '%Y-%m-%d %H:%M')
 
         room_unavailable_time_slots = dao.getUnavailableTimeOfRoomById(room_id)
         if not room_unavailable_time_slots:
             return True
         else:
             for row in room_unavailable_time_slots:
-                existing_start = row[2]
-                existing_end = row[3]
-                if (existing_start < start_format < finish_format < existing_end) \
-                        or (start_format < existing_start < existing_end < finish_format) \
-                        or (start_format < existing_start < finish_format < existing_end) \
-                        or (existing_start < start_format < existing_end < finish_format):
+                old_start = row[1]
+                old_end = row[2] 
+                print(new_start)
+                print(new_end)
+                print(old_start)
+                print(old_end)
+                if (old_start < new_start < new_end < old_end) \
+                        or (new_start < old_start < old_end < new_end) \
+                        or (new_start < old_start < new_end < old_end) \
+                        or (old_start < new_start < old_end < new_end)\
+                        or (new_start==old_start or new_end==old_end):
                     return False
             return True
 

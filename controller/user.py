@@ -38,7 +38,7 @@ class BaseUser:
             user_id = dao.createNewUser(user_email, user_password, user_first_name, user_last_name, role_id)
             result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name,
                                                role_id)
-            return jsonify(result), 201
+            return jsonify("result"), 201
         else:
             return jsonify("An user with that email address already exists"), 409
 
@@ -55,9 +55,9 @@ class BaseUser:
         if not available_user:
             return jsonify("Time slot overlaps"), 409
         else:
-            result = dao.createUserUnavailableTimeSlot(user_id, unavailable_time_user_start,
+            dao.createUserUnavailableTimeSlot(user_id, unavailable_time_user_start,
                                                        unavailable_time_user_finish)
-            return jsonify(result), 201
+            return jsonify('Successfully inserted unavailable slot'), 201
 
     # Read
     def getAllUsers(self):
@@ -116,20 +116,21 @@ class BaseUser:
 
     def verifyAvailableUserAtTimeFrame(self, user_id, start_time_to_verify, finish_time_to_verify):
         dao = UserDAO()
-        start_format = dt.datetime.strptime(start_time_to_verify, '%Y-%m-%d %H:%M')
-        finish_format = dt.datetime.strptime(finish_time_to_verify, '%Y-%m-%d %H:%M')
+        new_start = dt.datetime.strptime(start_time_to_verify, '%Y-%m-%d %H:%M')
+        new_end = dt.datetime.strptime(finish_time_to_verify, '%Y-%m-%d %H:%M')
 
         user_unavailable_time_slots = dao.getUnavailableTimeOfUserById(user_id)
         if not user_unavailable_time_slots:
             return True
         else:
             for row in user_unavailable_time_slots:
-                existing_start = row[1]
-                existing_end = row[2]
-                if (existing_start < start_format < finish_format < existing_end) \
-                        or (start_format < existing_start < existing_end < finish_format) \
-                        or (start_format < existing_start < finish_format < existing_end) \
-                        or (existing_start < finish_format < existing_end < finish_format):
+                old_start = row[1]
+                old_end = row[2]      
+                if (old_start < new_start < new_end < old_end) \
+                        or (new_start < old_start < old_end < new_end) \
+                        or (new_start < old_start < new_end < old_end) \
+                        or (old_start < new_start < old_end < new_end)\
+                        or (new_start==old_start or new_end==old_end):
                     return False
             return True
 
