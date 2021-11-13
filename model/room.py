@@ -23,9 +23,9 @@ class RoomDAO:
 
     def createRoomUnavailableTimeSlot(self, room_id, unavailable_time_room_start, unavailable_time_room_finish):
         cursor = self.conn.cursor()
-        query = 'insert into "UnavailableTimeRoom" (unavailable_time_room_start, unavailable_time_room_finish, room_id) values (%s, %s, %s); '
+        query = 'insert into "UnavailableTimeRoom" ' \
+                '(unavailable_time_room_start, unavailable_time_room_finish, room_id) values (%s, %s, %s); '
         cursor.execute(query, (unavailable_time_room_start, unavailable_time_room_finish, room_id,))
-        #user_id = cursor.fetchone()[0]
         self.conn.commit()
         return True
 
@@ -101,4 +101,15 @@ class RoomDAO:
         # otherwise, it was deleted, so check if affected_rows != 0
         return affected_rows != 0
 
-    # TODO: deleteRoomFromBooking (Unavailable Room)
+    # Used in Update Booking Only
+    def deleteUnavailableRoomTime(self, room_id, start_time, finish_time):
+        cursor = self.conn.cursor()
+        query = 'delete from "UnavailableTimeRoom" where room_id = %s and unavailable_time_room_start = %s ' \
+                'and unavailable_time_room_finish = %s;'
+        cursor.execute(query, (room_id, start_time, finish_time,))
+        # determine affected rows
+        affected_rows = cursor.rowcount
+        self.conn.commit()
+        # if affected rows == 0, the part was not found and hence not deleted
+        # otherwise, it was deleted, so check if affected_rows != 0
+        return affected_rows != 0

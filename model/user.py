@@ -22,7 +22,7 @@ class UserDAO:
         self.conn.commit()
         return user_id
 
-    def createUserUnavailableTimeSlot(self, user_id, unavailable_time_user_start, unavailable_time_user_finish):
+    def createUnavailableUserTimeFrame(self, user_id, unavailable_time_user_start, unavailable_time_user_finish):
         cursor = self.conn.cursor()
         query = 'insert into "UnavailableTimeUser" ' \
                 '(unavailable_time_user_start, unavailable_time_user_finish, user_id) values (%s, %s, %s);'
@@ -99,6 +99,19 @@ class UserDAO:
         cursor = self.conn.cursor()
         query = 'delete from "User" where user_id = %s;'
         cursor.execute(query, (user_id,))
+        # determine affected rows
+        affected_rows = cursor.rowcount
+        self.conn.commit()
+        # if affected rows == 0, the part was not found and hence not deleted
+        # otherwise, it was deleted, so check if affected_rows != 0
+        return affected_rows != 0
+
+    # Used in Update Booking Only
+    def deleteUnavailableUserTimeFrame(self, user_id, start_time, finish_time):
+        cursor = self.conn.cursor()
+        query = 'delete from "UnavailableTimeUser" where user_id = %s and unavailable_time_user_start = %s ' \
+                'and unavailable_time_user_finish = %s;'
+        cursor.execute(query, (user_id, start_time, finish_time,))
         # determine affected rows
         affected_rows = cursor.rowcount
         self.conn.commit()

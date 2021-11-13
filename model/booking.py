@@ -40,6 +40,22 @@ class BookingDAO:
         result = cursor.fetchone()
         return result
 
+    # Used in Booking Update Only
+    def getBookingStartFinishTime(self, booking_id):
+        cursor = self.conn.cursor()
+        query = 'select booking_start, booking_finish from "Booking" where booking_id = %s'
+        cursor.execute(query, (booking_id,))
+        result = cursor.fetchone()
+        return result
+
+    # Used in Booking Update Only
+    def getBookingRoomFromId(self, booking_id):
+        cursor = self.conn.cursor()
+        query = 'select room_id from "Booking" where booking_id = %s'
+        cursor.execute(query, (booking_id,))
+        result = cursor.fetchone()
+        return result
+
     # Update
     def updateBooking(self, booking_id, booking_name, booking_time_start, booking_time_end, user_id, room_id):
         cursor = self.conn.cursor()

@@ -87,12 +87,14 @@ def handleRooms():
     else:
         return jsonify("Method Not Allowed"), 405
 
+
 @app.route('/coqui-bookings/Room/rooms/verify', methods=['GET'])
 def handleRoomVerifications():
     if request.method == 'GET':
         return BaseRoom().getAllAvailableRooms(request.json)
     else:
         return jsonify("Method Not Allowed"), 405
+
 
 @app.route('/coqui-bookings/Room/rooms/<int:room_id>', methods=['GET', 'PUT', 'DELETE'])
 def handleRoomById(room_id):
@@ -149,25 +151,30 @@ def handleBookings():
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/coqui-bookings/Booking/bookings/booking/<int:booking_id>', methods=['GET', 'PUT', 'DELETE', 'POST'])
+@app.route('/coqui-bookings/Booking/bookings/<int:booking_id>', methods=['GET', 'DELETE', 'POST'])
 def handleBookingById(booking_id):
     if request.method == 'GET':
         return BaseBooking().getBookingById(booking_id)
-    elif request.method == 'PUT':
-        return BaseBooking().updateBooking(booking_id, request.json)
     elif request.method == 'DELETE':
         return BaseBooking().deleteBooking(booking_id)
     else:
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/coqui-bookings/Booking/bookings/user/<int:user_id>/create', methods=['GET', 'PUT', 'DELETE', 'POST'])
+@app.route('/coqui-bookings/Booking/bookings/user/<int:user_id>/create', methods=['POST'])
 def handleBookingByUserId(user_id):
     if request.method == 'POST':
         return BaseBooking().createNewBooking(user_id, request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
+
+@app.route('/coqui-bookings/Booking/bookings/<int:booking_id>/user/<int:user_id>/update', methods=['PUT'])
+def handleBookingUpdate(booking_id, user_id):
+    if request.method == 'PUT':
+        return BaseBooking().updateBooking(booking_id, user_id, request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
 
 # --------------------------------------------------------------------------------------
 # Booking Invitee
