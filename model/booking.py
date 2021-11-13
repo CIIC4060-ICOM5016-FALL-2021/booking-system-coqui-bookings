@@ -43,6 +43,39 @@ class BookingDAO:
     def getUserBookedRoomAtTimeFrame(self, room_id):
         
 
+    # def getMostBookedUsers(self):
+    #     cursor = self.conn.cursor()
+    #     query = 'select user_id, "BookingInvitee".user_id from "Booking" inner join "BookingInvitee" on "Booking".booking_id = "BookingInvitee".booking_id;'
+    #     cursor.execute(query)
+    #     result = []
+    #     for row in cursor:
+    #         result.append(row)
+    #     return result
+
+    def getTop10MostBookedRooms(self):
+        cursor = self.conn.cursor()
+        query = 'select room_id, room_name, count(room_id) as times_used from "Booking" natural inner join "Room" group by room_id, room_name order by times_used desc limit 10;'
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    # Used in Booking Update Only
+    def getBookingStartFinishTime(self, booking_id):
+        cursor = self.conn.cursor()
+        query = 'select booking_start, booking_finish from "Booking" where booking_id = %s'
+        cursor.execute(query, (booking_id,))
+        result = cursor.fetchone()
+        return result
+
+    # Used in Booking Update Only
+    def getBookingRoomFromId(self, booking_id):
+        cursor = self.conn.cursor()
+        query = 'select room_id from "Booking" where booking_id = %s'
+        cursor.execute(query, (booking_id,))
+        result = cursor.fetchone()
+        return result
 
     # Update
     def updateBooking(self, booking_id, booking_name, booking_time_start, booking_time_end, user_id, room_id):

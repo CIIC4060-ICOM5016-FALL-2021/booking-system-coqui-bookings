@@ -1,5 +1,7 @@
 import datetime as dt
 from flask import jsonify
+
+from controller.room import BaseRoom
 from model.user import UserDAO
 
 
@@ -52,8 +54,8 @@ class BaseUser:
         if not available_user:
             return jsonify("Time Frame Already Marked as Unavailable"), 409
         else:
-            dao.createUserUnavailableTimeSlot(user_id, unavailable_time_user_start,
-                                              unavailable_time_user_finish)
+            dao.createUnavailableUserTimeFrame(user_id, unavailable_time_user_start,
+                                               unavailable_time_user_finish)
             return jsonify('Successfully Marked Time Frame as Unavailable'), 201
 
     # Read
@@ -133,7 +135,37 @@ class BaseUser:
                     return False
             return True
 
-    # Update
+    # TODO: BEAUTIFY RESULT Intervals
+    def getUserDaySchedule(self, user_id, json):
+        dao = UserDAO()
+        date = json['date']
+        user = dao.getUserById(user_id)
+        user_unavailable_time_slots = dao.getUnavailableTimeOfUserById(user_id)
+        if not user:  # User Not Found
+            return jsonify("User Not Found"), 404
+        result_list = []
+        for row in user_unavailable_time_slots:
+            start = row[1]
+            end = row[2]
+            date_start = dt.datetime.strftime(start, '%Y-%m-%d')
+            date_end = dt.datetime.strftime(end, '%Y-%m-%d')
+            if(date in date_start) or (date in date_end):
+                obj = self.build_unavailable_time_user_map_dict(row)
+                result_list.append(obj)
+        if len(result_list) != 0:
+            return jsonify(result_list), 200
+        else:
+            return jsonify("User is available all day"), 200
+
+    def getMostUsedRoomByUserId(self, user_id):
+        dao = UserDAO()
+        times_used_for_each_room = dao.getUsedRoomsByUserId(user_id)
+        if len(times_used_for_each_room) == 0:
+            return jsonify("No Used Room available on record"), 404
+        else:
+            return jsonify(BaseRoom().build_room_map_dict(times_used_for_each_room[0])), 200
+
+# Update
     def updateUser(self, user_id, json):
         user_email = json['user_email']
         user_password = json['user_password']
@@ -163,3 +195,13 @@ class BaseUser:
             return jsonify("User Deleted Successfully"), 200
         else:
             return jsonify("User Not Found"), 404
+
+    '''
+    def deleteUnavailableUserTime(self, user_id, start_time, finish_time):
+        dao = UserDAO()
+        result = dao.deleteUnavailableUserTime(user_id, start_time, finish_time)
+        if result:
+            return jsonify("User Time Freed Successfully"), 200
+        else:
+            return jsonify("User Is Already Free at Specified Time"), 200
+'''
