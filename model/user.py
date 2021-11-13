@@ -84,6 +84,15 @@ class UserDAO:
         result = cursor.fetchone()
         return result
 
+    def getUsedRoomsByUserId(self, user_id):
+        cursor = self.conn.cursor()
+        query = 'select room_id, room_name, count(room_id) as times_used from "Booking" natural inner join "Room" where user_id = %s group by room_id, room_name order by times_used desc;'
+        cursor.execute(query, (user_id,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     # Update
     def updateUser(self, user_id, user_email, user_password, user_first_name, user_last_name, role_id):
         cursor = self.conn.cursor()

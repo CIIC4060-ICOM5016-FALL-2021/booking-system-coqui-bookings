@@ -78,6 +78,14 @@ class BaseRoom:
                 result_list.append(obj)
             return jsonify(result_list)
 
+    def getMostUsedRoom(self):
+        dao = RoomDAO()
+        times_used_for_each_room = dao.getTimesUsedForEachRoom()
+        if len(times_used_for_each_room) == 0:
+            return jsonify("No Used Room available on record"), 404
+        else:
+            return jsonify(self.build_room_map_dict(times_used_for_each_room[0])), 200
+
     def getRoomById(self, room_id):
         dao = RoomDAO()
         room_tuple = dao.getRoomById(room_id, )

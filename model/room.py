@@ -81,6 +81,15 @@ class RoomDAO:
         result = cursor.fetchone()
         return result
 
+    def getTimesUsedForEachRoom(self):
+        cursor = self.conn.cursor()
+        query = 'select room_id, room_name, count(room_id) as times_used from "UnavailableTimeRoom" natural inner join "Room" group by room_id, room_name order by times_used desc;'
+        cursor.execute(query,)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     # Update
     def updateRoom(self, current_room_id, room_name, room_type_id):
         cursor = self.conn.cursor()
