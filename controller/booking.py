@@ -102,12 +102,20 @@ class BaseBooking:
 
     def getBookingById(self, booking_id):
         dao = BookingDAO()
-        booking_tuple = dao.getBookingById(booking_id)
+        booking_tuple = dao.getBookingById(booking_id, request.json)
         if not booking_tuple:
             return jsonify("Booking Not Found"), 404
         else:
             result = self.build_booking_map_dict(booking_tuple)
             return jsonify(result), 200
+
+    def getUserBookedRoomAtTimeFrame(self, room_id):
+        dao = BookingDAO()
+        user_id = dao.getUserBookedRoomAtTimeFrame(room_id)
+        if not user_id:
+            
+
+
 
     # Update
     def updateBooking(self, booking_id, json):  # TODO Limit By ID

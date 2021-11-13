@@ -40,6 +40,10 @@ class BookingDAO:
         result = cursor.fetchone()
         return result
 
+    def getUserBookedRoomAtTimeFrame(self, room_id):
+        
+
+
     # Update
     def updateBooking(self, booking_id, booking_name, booking_time_start, booking_time_end, user_id, room_id):
         cursor = self.conn.cursor()
