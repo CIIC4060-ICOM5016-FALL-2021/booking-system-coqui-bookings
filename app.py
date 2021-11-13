@@ -176,13 +176,16 @@ def handleBookingUpdate(booking_id, user_id):
     else:
         return jsonify("Method Not Allowed"), 405
 
+
 # --------------------------------------------------------------------------------------
 # Booking Invitee
 # --------------------------------------------------------------------------------------
-@app.route('/coqui-bookings/BookingInvitee/bookingInvitees', methods=['POST'])
-def handleBookingInvitees():
+@app.route('/coqui-bookings/Booking/<int:booking_id>/BookingInvitee/bookingInvitees', methods=['POST', 'PUT'])
+def handleBookingInviteesByBookingId(booking_id):
     if request.method == 'POST':
-        return BaseBookingInvitee().createNewInvitee(request.json)
+        return BaseBookingInvitee().createNewInvitee(booking_id, request.json)
+    elif request.method == 'PUT':
+        return BaseBookingInvitee().updateInvitees(booking_id, request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 

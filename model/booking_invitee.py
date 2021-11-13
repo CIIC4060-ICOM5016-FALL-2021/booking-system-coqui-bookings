@@ -47,14 +47,6 @@ class BookingInviteeDAO:
         result = cursor.fetchone()
         return result
 
-    # Update
-    def updateInvitee(self, booking_id, user_id):
-        cursor = self.conn.cursor()
-        query = 'update "BookingInvitee" set user_id = %s where booking_id = %s'
-        cursor.execute(query, (user_id, booking_id,))
-        self.conn.commit()
-        return True
-
     # Delete
     def deleteInvitee(self, booking_id, user_id):
         cursor = self.conn.cursor()
