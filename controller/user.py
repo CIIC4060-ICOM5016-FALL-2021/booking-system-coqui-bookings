@@ -54,8 +54,8 @@ class BaseUser:
         if not available_user:
             return jsonify("Time Frame Already Marked as Unavailable"), 409
         else:
-            dao.createUserUnavailableTimeSlot(user_id, unavailable_time_user_start,
-                                              unavailable_time_user_finish)
+            dao.createUnavailableUserTimeFrame(user_id, unavailable_time_user_start,
+                                               unavailable_time_user_finish)
             return jsonify('Successfully Marked Time Frame as Unavailable'), 201
 
     # Read
@@ -195,3 +195,13 @@ class BaseUser:
             return jsonify("User Deleted Successfully"), 200
         else:
             return jsonify("User Not Found"), 404
+
+    '''
+    def deleteUnavailableUserTime(self, user_id, start_time, finish_time):
+        dao = UserDAO()
+        result = dao.deleteUnavailableUserTime(user_id, start_time, finish_time)
+        if result:
+            return jsonify("User Time Freed Successfully"), 200
+        else:
+            return jsonify("User Is Already Free at Specified Time"), 200
+'''

@@ -33,11 +33,11 @@ class BookingInviteeDAO:
 
     def getInviteesByBookingId(self, booking_id):
         cursor = self.conn.cursor()
-        query = 'select booking_id, user_id ' \
-                'from "User" natural inner join "Booking" natural inner join "BookingInvitee"' \
-                'where booking_id = %s;'
+        query = 'select user_id from "BookingInvitee" where booking_id = %s;'
         cursor.execute(query, (booking_id,))
-        result = cursor.fetchone()
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def verifyInviteeInBooking(self, booking_id, user_id):
@@ -47,24 +47,14 @@ class BookingInviteeDAO:
         result = cursor.fetchone()
         return result
 
-    # Update
-    def updateInvitee(self, booking_id, user_id):
-        cursor = self.conn.cursor()
-        query = 'update "BookingInvitee" set user_id = %s where booking_id = %s'
-        cursor.execute(query, (user_id, booking_id,))
-        self.conn.commit()
-        return True
-
     # Delete
-    def deleteInvitee(self, booking_id):
+    def deleteInvitee(self, booking_id, user_id):
         cursor = self.conn.cursor()
-        query = 'delete from "BookingInvitee" where booking_id = %s;'
-        cursor.execute(query, (booking_id,))
+        query = 'delete from "BookingInvitee" where booking_id = %s and user_id = %s;'
+        cursor.execute(query, (booking_id, user_id))
         # determine affected rows
         affected_rows = cursor.rowcount
         self.conn.commit()
         # if affected rows == 0, the part was not found and hence not deleted
         # otherwise, it was deleted, so check if affected_rows != 0
         return affected_rows != 0
-
-    # TODO: deleteUserFromBooking (Unavailable User)

@@ -193,3 +193,12 @@ class BaseRoom:
             return jsonify("Room Deleted Successfully"), 200
         else:
             return jsonify("Room Not Found"), 404
+'''
+    def deleteUnavailableRoomTime(self, room_id, start_time, finish_time):
+        dao = RoomDAO()
+        result = dao.deleteUnavailableRoomTime(room_id, start_time, finish_time)
+        if result:
+            return jsonify("Room Time Freed Successfully"), 200
+        else:
+            return jsonify("Room Is Already Free at Specified Time"), 200
+'''
