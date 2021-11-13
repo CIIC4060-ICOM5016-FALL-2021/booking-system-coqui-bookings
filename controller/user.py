@@ -2,6 +2,8 @@ import datetime as dt
 from flask import jsonify
 
 from controller.room import BaseRoom
+from model.booking import BookingDAO
+from model.room import RoomDAO
 from model.user import UserDAO
 
 
@@ -159,11 +161,22 @@ class BaseUser:
 
     def getMostUsedRoomByUserId(self, user_id):
         dao = UserDAO()
+        room_dao = RoomDAO()
         times_used_for_each_room = dao.getUsedRoomsByUserId(user_id)
         if len(times_used_for_each_room) == 0:
             return jsonify("No Used Room available on record"), 404
         else:
-            return jsonify(BaseRoom().build_room_map_dict(times_used_for_each_room[0])), 200
+            most_used_room = room_dao.getRoomById(times_used_for_each_room[0][0])
+            return jsonify(BaseRoom().build_room_map_dict(most_used_room)), 200
+
+    def getInviteUserHasBeenMostBookedWith(self, user_id):
+        dao = UserDAO()
+        booked_invitees = dao.getInviteeUserHasBeenMostBookedWith(user_id)
+        if len(booked_invitees) == 0:
+            return jsonify("User has not been booked with any invitee "), 404
+        else:
+            most_booked_invitee = dao.getUserById(booked_invitees[0][1])
+            return jsonify(BaseUser().build_user_map_dict(most_booked_invitee)), 200
 
 # Update
     def updateUser(self, user_id, json):

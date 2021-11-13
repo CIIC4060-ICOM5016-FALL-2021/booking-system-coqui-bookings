@@ -61,6 +61,13 @@ def handleUserMostUsedRoom(user_id):
     else:
         return jsonify("Method Not Allowed"), 405
 
+@app.route('/coqui-bookings/User/users/<int:user_id>/invitee-most-booked-with', methods=['GET'])
+def handleInviteeUserHasBeenMostBookedWith(user_id):
+    if request.method == 'GET':
+        return BaseUser().getInviteUserHasBeenMostBookedWith(user_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
 
 # --------------------------------------------------------------------------------------
 # Unavailable User
