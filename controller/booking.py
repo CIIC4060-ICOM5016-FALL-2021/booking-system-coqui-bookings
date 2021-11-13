@@ -131,7 +131,6 @@ class BaseBooking:
     #     else:
     #         return jsonify(self.build_room_map_dict(busiest_time[0])), 200
 
-    # TODO: GET MOST BOOKED ROOMS
     def getTop10MostBookedRooms(self):
         dao = BookingDAO()
         top_booked_rooms = dao.getTop10MostBookedRooms()
