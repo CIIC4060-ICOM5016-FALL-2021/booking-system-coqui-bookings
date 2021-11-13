@@ -18,7 +18,7 @@ class BaseBookingInvitee:
             result['user_id'].append(uid)
         return result
 
-    def createNewInvitee(self, booking_id, json):  # TODO Verify Conflicting Time and add unavailable time
+    def createNewInvitee(self, booking_id, json):
         user_id = json['invitee_id']
         booking_dao = BookingDAO()
         existentBooking = booking_dao.getBookingById(booking_id)
@@ -73,3 +73,18 @@ class BaseBookingInvitee:
 
         result = self.build_booking_invitee_list_attr_dict(booking_id, user_id_list)
         return jsonify(result), 200
+
+    def deleteInvitee(self, booking_id, invitee_id):
+        invitee_dao = BookingInviteeDAO()
+        booking_dao = BookingDAO()
+        user_dao = UserDAO()
+        if not booking_dao.getBookingById(booking_id):
+            return jsonify("Booking Not Found"), 404
+        if not user_dao.getUserById(invitee_id):
+            return jsonify("Invitee Not Found"), 404
+        if not invitee_dao.verifyInviteeInBooking(booking_id, invitee_id):
+            return jsonify("Invitee is not in the Booking"), 409
+        invitee_dao.deleteInvitee(booking_id, invitee_id)
+        bookingTime = booking_dao.getBookingStartFinishTime(booking_id)
+        user_dao.deleteUnavailableUserTimeFrame(invitee_id, bookingTime[0], bookingTime[1])
+        return jsonify("Invitee Deleted Successfully"), 200
