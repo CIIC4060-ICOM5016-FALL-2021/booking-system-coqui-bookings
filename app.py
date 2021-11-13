@@ -161,6 +161,13 @@ def handleMostUsedRoom():
     else:
         return jsonify("Method Not Allowed"), 405
 
+@app.route('/coqui-bookings/Room/rooms/<int:room_id>/schedule', methods=['GET'])
+def handleRoomSchedule(room_id):
+    if request.method == 'GET':
+        return BaseUser().getRoomDaySchedule(room_id,request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
 # --------------------------------------------------------------------------------------
 # Booking
 # --------------------------------------------------------------------------------------
