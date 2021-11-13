@@ -109,6 +109,40 @@ class BaseBooking:
             result = self.build_booking_map_dict(booking_tuple)
             return jsonify(result), 200
 
+    # TODO: GET TOP 5 MOST BOOKED USERS
+    # def getMostBookedUsers(self):
+    #     dao = BookingDAO()
+    #     getMostBookedUsers = dao.getMostBookedUsers
+    #     if user_list:
+    #         return jsonify("Not enough users found"), 404
+    #     else:
+    #         result = self.build_booking_map_dict(booking_tuple)
+    #         return jsonify(result), 200
+    # TODO: GET BUSIEST TIMES
+    # def getBusiestTimes(self):
+    #     dao = BookingDAO()
+    #     all_bookings = dao.getAllBookings()
+    #     result_list = []
+    #     for row in all_bookings:
+    #         start = row[2]
+    #         end = row[3]
+    #     if len(all_bookings) == 0:
+    #         return jsonify("No bookings available"), 404
+    #     else:
+    #         return jsonify(self.build_room_map_dict(busiest_time[0])), 200
+
+    def getTop10MostBookedRooms(self):
+        dao = BookingDAO()
+        top_booked_rooms = dao.getTop10MostBookedRooms()
+        if len(top_booked_rooms) == 0:
+            return jsonify("No Booked Rooms Available"), 404
+        else:
+            result_list = []
+            for row in top_booked_rooms:
+                obj = BaseRoom().build_room_map_dict(row)
+                result_list.append(obj)
+            return jsonify(result_list), 200
+
     # Update
     def updateBooking(self, booking_id, user_id, json):
         booking_name = json['booking_name']
