@@ -13,6 +13,10 @@ class BaseUser:
                   'user_last_name': row[4], 'role_id': row[5]}
         return result
 
+    def build_user_student_map_dict(self, row):
+        result = {'user_email': row[0], 'user_first_name': row[1], 'user_last_name': row[2]}
+        return result
+
     def build_user_attr_dict(self, user_id, user_email, user_password, user_first_name, user_last_name, role_id):
         result = {'user_id': user_id, 'user_email': user_email, 'user_password': user_password,
                   'user_first_name': user_first_name, 'user_last_name': user_last_name, 'role_id': role_id}

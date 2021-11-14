@@ -31,9 +31,20 @@ class BookingInviteeDAO:
             result.append(row)
         return result
 
-    def getInviteesByBookingId(self, booking_id):
+    def getInviteesByBookingIdAdminLevel(self, booking_id):
         cursor = self.conn.cursor()
-        query = 'select user_id from "BookingInvitee" where booking_id = %s;'
+        query = 'select user_id, user_email, user_password, user_first_name, user_last_name, role_id ' \
+                'from "BookingInvitee" natural inner join "User" where booking_id = %s;'
+        cursor.execute(query, (booking_id,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getInviteesByBookingIdStudentLevel(self, booking_id):
+        cursor = self.conn.cursor()
+        query = 'select user_email, user_first_name, user_last_name ' \
+                'from "BookingInvitee" natural inner join "User" where booking_id = %s;'
         cursor.execute(query, (booking_id,))
         result = []
         for row in cursor:

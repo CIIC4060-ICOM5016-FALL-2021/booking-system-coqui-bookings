@@ -6,6 +6,15 @@ from model.booking import BookingDAO
 from model.booking_invitee import BookingInviteeDAO
 from model.user import UserDAO
 
+# CONSTANT VALUES IN DATABASE
+PROFESSOR_ROLE = 1
+STUDENT_ROLE = 2
+STAFF_ROLE = 3
+
+LAB_TYPE = 1
+CLASSROOM_TYPE = 2
+STUDY_SPACE_TYPE = 3
+
 
 class BaseBookingInvitee:
     def build_booking_invitee_attr_dict(self, booking_id, user_id):
@@ -30,7 +39,8 @@ class BaseBookingInvitee:
         if not existentUser:
             return jsonify("User Not Found"), 404
 
-        if not BaseUser().verifyAvailableUserAtTimeFrame(user_id, dt.datetime.strftime(bookingTimes[0], '%Y-%m-%d %H:%M'),
+        if not BaseUser().verifyAvailableUserAtTimeFrame(user_id,
+                                                         dt.datetime.strftime(bookingTimes[0], '%Y-%m-%d %H:%M'),
                                                          dt.datetime.strftime(bookingTimes[1], '%Y-%m-%d %H:%M')):
             return jsonify("Invitee is not available during Booking Time"), 409
 
@@ -42,6 +52,38 @@ class BaseBookingInvitee:
             return jsonify(result), 201
         else:
             return jsonify("Invitee is already in the Booking"), 409
+
+    def getInviteesByBookingId(self, booking_id, user_id):
+        booking_dao = BookingDAO()
+        invitee_dao = BookingInviteeDAO()
+        user_dao = UserDAO()
+
+        if not booking_dao.getBookingById(booking_id):
+            return jsonify("Booking Not Found"), 404
+        if not user_dao.getUserById(user_id):
+            return jsonify("User Not Found"), 404
+
+        role = user_dao.getUserRoleById(user_id)[0]
+        room_type = booking_dao.getBookingRoomTypeFromId(booking_id)[0]
+
+        if role == STAFF_ROLE or (role == PROFESSOR_ROLE and room_type == CLASSROOM_TYPE):
+            invitee_list = invitee_dao.getInviteesByBookingIdAdminLevel(booking_id)
+            result_list = []
+            for invitee in invitee_list:
+                obj = BaseUser().build_user_map_dict(invitee)
+                result_list.append(obj)
+            return jsonify(result_list), 200
+        elif role == STUDENT_ROLE and room_type == STUDY_SPACE_TYPE:
+            invitee_list = invitee_dao.getInviteesByBookingIdStudentLevel(booking_id)
+            result_list = []
+            for invitee in invitee_list:
+                obj = BaseUser().build_user_student_map_dict(invitee)
+                result_list.append(obj)
+            return jsonify("Some information can't be shown because you do not have access permission",
+                           result_list), 200
+        else:
+            return jsonify(
+                f"User with role {role} does not have permission to view information about room type {room_type}"), 403
 
     def updateInvitees(self, booking_id, json):
         user_id_list = json['invitee_id_list']
@@ -60,8 +102,9 @@ class BaseBookingInvitee:
             user_dao.deleteUnavailableUserTimeFrame(current_id, bookingTime[0], bookingTime[1])
 
         for user_id in user_id_list:  # Verify all users exist
-            if not BaseUser().verifyAvailableUserAtTimeFrame(user_id, dt.datetime.strftime(bookingTime[0], '%Y-%m-%d %H:%M'),
-                                                         dt.datetime.strftime(bookingTime[1], '%Y-%m-%d %H:%M')):
+            if not BaseUser().verifyAvailableUserAtTimeFrame(user_id,
+                                                             dt.datetime.strftime(bookingTime[0], '%Y-%m-%d %H:%M'),
+                                                             dt.datetime.strftime(bookingTime[1], '%Y-%m-%d %H:%M')):
                 for current_id in current_invitees:  # Rollback
                     invitee_dao.createNewInvitee(booking_id, current_id)
                     user_dao.createUnavailableUserTimeFrame(current_id, bookingTime[0], bookingTime[1])
