@@ -6,7 +6,7 @@ from model.booking import BookingDAO
 from model.booking_invitee import BookingInviteeDAO
 from model.room import RoomDAO
 from model.user import UserDAO
-import datetime as dt
+from datetime import datetime as dt
 
 # CONSTANT VALUES IN DATABASE
 PROFESSOR_ROLE = 1
