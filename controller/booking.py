@@ -176,8 +176,8 @@ class BaseBooking:
         for row in all_times:
             start = row[0]
             end = row[1]
-            time_start = dt.datetime.strftime(start, '%H:%M')
-            time_end = dt.datetime.strftime(end, '%H:%M')
+            time_start = dt.strftime(start, '%H:%M')
+            time_end = dt.strftime(end, '%H:%M')
             dao.insertBusyTimes(time_start, time_end)  # Does not commit, so it acts as a temporary table
         busy_times = dao.getTop5BusiestTimes()
         if not busy_times:
@@ -213,15 +213,17 @@ class BaseBooking:
         user_dao = UserDAO()
         room_dao = RoomDAO()
         invitee_dao = BookingInviteeDAO()
+
+        if not user_dao.getUserById(user_id):
+            return jsonify("User Not Found"), 404
         role = user_dao.getUserRoleById(user_id)[0]
-        current_room_id = booking_dao.getBookingRoomFromId(booking_id)[0]
-        
+
         if not booking_dao.getBookingById(booking_id):
             return jsonify("Booking Not Found"), 404
+        current_room_id = booking_dao.getBookingRoomFromId(booking_id)[0]
 
         if not room_dao.getRoomById(new_room_id):
             return jsonify("Room Not Found"), 404
-
         room_type = room_dao.getRoomTypeById(new_room_id)[0]
 
         for invitee_id in new_invitees:

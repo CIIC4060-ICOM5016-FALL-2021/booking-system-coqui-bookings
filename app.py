@@ -183,14 +183,13 @@ def handleGetAllBookings(user_id):
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/coqui-bookings/Booking/bookings/<int:booking_id>', methods=['GET','DELETE'])
+@app.route('/coqui-bookings/Booking/bookings/<int:booking_id>', methods=['DELETE'])
 def handleBookingById(booking_id):
-    if request.method == 'GET':
-        return BaseBooking().getBookingById(booking_id)        
-    elif request.method == 'DELETE':
+    if request.method == 'DELETE':
         return BaseBooking().deleteBooking(booking_id)
     else:
         return jsonify("Method Not Allowed"), 405
+
 
 @app.route('/coqui-bookings/Booking/bookings/<int:booking_id>/User/<int:user_id>/update', methods=['PUT'])
 def handleBookingByIdWithRole(booking_id, user_id):
@@ -198,7 +197,16 @@ def handleBookingByIdWithRole(booking_id, user_id):
         return BaseBooking().updateBooking(booking_id, user_id, request.json)
     else:
         return jsonify("Method Not Allowed"), 405
-    
+
+@app.route('/coqui-bookings/Booking/bookings/<int:booking_id>/User/<int:user_id>/get', methods=['GET'])
+def handleGetBookingById(booking_id, user_id):
+    if request.method == 'GET':
+        return BaseBooking().getBookingById(booking_id, user_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+
 @app.route('/coqui-bookings/Booking/bookings/user/<int:user_id>/create', methods=['POST'])
 def handleBookingByUserId(user_id):
     if request.method == 'POST':
@@ -221,6 +229,7 @@ def handleBusiestTimes():
         return BaseBooking().getTop5BusiestTimes()
     else:
         return jsonify("Method Not Allowed"), 405
+
 
 # @app.route('/coqui-bookings/Booking/bookings/most-booked-users', methods=['GET'])
 # def handleMostBookedUsers():
@@ -276,12 +285,14 @@ def handleAllBookingInviteesByUserId(user_id):
     else:
         return jsonify("Method Not Allowed"), 405
 
+
 @app.route('/coqui-bookings/User/users/<int:user_id>/invitee-most-booked-with', methods=['GET'])
 def handleInviteeUserHasBeenMostBookedWith(user_id):
     if request.method == 'GET':
         return BaseUser().getInviteUserHasBeenMostBookedWith(user_id)
     else:
         return jsonify("Method Not Allowed"), 405
+
 
 # --------------------------------------------------------------------------------------
 # Main
