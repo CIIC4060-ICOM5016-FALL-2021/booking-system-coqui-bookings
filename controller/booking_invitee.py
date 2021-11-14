@@ -27,6 +27,17 @@ class BaseBookingInvitee:
             result['user_id'].append(uid)
         return result
 
+    def build_invitee_full_attr_dict(self, booking_id, user_id, user_email, user_password, user_first_name,
+                                     user_last_name, role_id):
+        result = {'booking_id': booking_id, 'user_id': user_id, 'user_email': user_email, 'user_password': user_password,
+                  'user_first_name': user_first_name, 'user_last_name': user_last_name, 'role_id': role_id}
+        return result
+
+    def build_invitee_full_stud_attr_dict(self, booking_id, user_email, user_first_name, user_last_name):
+        result = {'booking_id': booking_id, 'user_email': user_email, 'user_first_name': user_first_name,
+                  'user_last_name': user_last_name}
+        return result
+
     def createNewInvitee(self, booking_id, json):
         user_id = json['invitee_id']
         booking_dao = BookingDAO()
@@ -52,6 +63,37 @@ class BaseBookingInvitee:
             return jsonify(result), 201
         else:
             return jsonify("Invitee is already in the Booking"), 409
+
+    def getAllInviteesOfAllBooking(self, user_id):
+        user_dao = UserDAO()
+        if not user_dao.getUserById(user_id):
+            return jsonify("User Not Found"), 404
+        role = user_dao.getUserRoleById(user_id)[0]
+        invitee_dao = BookingInviteeDAO()
+        booking_dao = BookingDAO()
+        all_bookings = booking_dao.getAllBookings()
+        result_list = []
+        for booking in all_bookings:
+            booking_id = booking[0]
+            room_type = booking_dao.getBookingRoomTypeFromId(booking_id)[0]
+            if role == STAFF_ROLE or (role == PROFESSOR_ROLE and room_type == CLASSROOM_TYPE):
+                invitee_list = invitee_dao.getInviteesByBookingIdAdminLevel(booking_id)
+                for invitee in invitee_list:
+                    obj = self.build_invitee_full_attr_dict(booking_id, invitee[0], invitee[1], invitee[2], invitee[3],
+                                                            invitee[4], invitee[5])
+                    result_list.append(obj)
+            elif role == STUDENT_ROLE and room_type == STUDY_SPACE_TYPE:
+                invitee_list = invitee_dao.getInviteesByBookingIdStudentLevel(booking_id)
+                for invitee in invitee_list:
+                    obj = self.build_invitee_full_stud_attr_dict(booking_id, invitee[0], invitee[1], invitee[2])
+                    result_list.append(obj)
+            else:
+                continue
+        if role == PROFESSOR_ROLE or role == STUDENT_ROLE:
+            return jsonify("Some information can't be shown because you do not have permission to access",
+                           result_list), 200
+        else:
+            return jsonify(result_list), 200
 
     def getInviteesByBookingId(self, booking_id, user_id):
         booking_dao = BookingDAO()
@@ -79,7 +121,7 @@ class BaseBookingInvitee:
             for invitee in invitee_list:
                 obj = BaseUser().build_user_student_map_dict(invitee)
                 result_list.append(obj)
-            return jsonify("Some information can't be shown because you do not have access permission",
+            return jsonify("Some information can't be shown because you do not have permission to access",
                            result_list), 200
         else:
             return jsonify(
@@ -91,7 +133,7 @@ class BaseBookingInvitee:
         booking_dao = BookingDAO()
         invitee_dao = BookingInviteeDAO()
         bookingTime = booking_dao.getBookingStartFinishTime(booking_id)  # Returns a tuple with start and finish
-        current_invitees = invitee_dao.getInviteesByBookingId(booking_id)  # Returns a list of current invitees
+        current_invitees = invitee_dao.getInviteesByBookingIdAdminLevel(booking_id)  # Returns a list of current invitees
 
         for user_id in user_id_list:
             if not user_dao.getUserById(user_id):
