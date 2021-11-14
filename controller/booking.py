@@ -30,6 +30,7 @@ class BaseBooking:
                   'booking_invitees': booking_invitees}
         return result
 
+
     # Create
     def createNewBooking(self, user_id, json):
         booking_name = json['booking_name']
@@ -88,7 +89,7 @@ class BaseBooking:
 
     # TODO LIMIT BY ROLE
     # Read
-    def getAllBookings(self):
+    def getAllBookings(self, user_id):
         dao = BookingDAO()
         bookings_list = dao.getAllBookings()
         if not bookings_list:  # No existing Bookings
