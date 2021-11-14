@@ -57,6 +57,30 @@ class BookingDAO:
             result.append(row)
         return result
 
+    def getAllBookedUsers(self):
+        cursor = self.conn.cursor()
+        query = 'select "Booking".user_id, BI.user_id from "Booking" inner join "BookingInvitee" BI on "Booking".booking_id = BI.booking_id'
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def insertBookedUsers(self, user_ids):
+        cursor = self.conn.cursor()
+        query = 'insert into "BookedUsersTemp" (user_id)' \
+                'values (%s)'
+        cursor.execute(query, (user_ids,))
+
+    def getTop10MostBookedUsers(self):
+        cursor = self.conn.cursor()
+        query = 'select user_id, count(user_id) as times_repeated from "BookedUsersTemp" group by user_id order by times_repeated desc limit 10'
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def insertBusyTimes(self, start, end):
         cursor = self.conn.cursor()
         query = 'insert into "BusyTimes" (start_time, finish_time)' \

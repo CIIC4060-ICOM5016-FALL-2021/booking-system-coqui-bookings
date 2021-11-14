@@ -230,7 +230,7 @@ def handleBusiestTimes():
 @app.route('/coqui-bookings/Booking/bookings/most-booked-users', methods=['GET'])
 def handleMostBookedUsers():
     if request.method == 'GET':
-        return BaseBooking().getMostBookedUsers()
+        return BaseBooking().getTop10MostBookedUsers()
     else:
         return jsonify("Method Not Allowed"), 405
 

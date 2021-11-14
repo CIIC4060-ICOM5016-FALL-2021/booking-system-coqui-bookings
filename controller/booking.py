@@ -28,6 +28,10 @@ class BaseBooking:
         result = {'start_time': row[0], 'finish_time': row[1], 'times_booked': row[2]}
         return result
 
+    def build_most_booked_users_map_dict(self, row):
+        result = {'user_id': row[0], 'times_booked': row[1]}
+        return result
+
     def build_booking_attr_dict(self, booking_id, booking_name, booking_start, booking_finish, user_id, room_id,
                                 booking_invitees):
         result = {'booking_id': booking_id, 'booking_name': booking_name, 'booking_start': booking_start,
@@ -160,15 +164,24 @@ class BaseBooking:
         else:
             return jsonify(f"User {user_id[0]} booked room {room_id} from {booking_start} to {booking_finish}"), 200
 
-    # TODO: GET TOP 5 MOST BOOKED USERS
-    # def getMostBookedUsers(self):
-    #     dao = BookingDAO()
-    #     getMostBookedUsers = dao.getMostBookedUsers
-    #     if user_list:
-    #         return jsonify("Not enough users found"), 404
-    #     else:
-    #         result = self.build_booking_map_dict(booking_tuple)
-    #         return jsonify(result), 200
+    def getTop10MostBookedUsers(self):
+        dao = BookingDAO()
+        all_User_Ids = dao.getAllBookedUsers()
+        for row in all_User_Ids:
+            user_ids = row[0]
+            dao.insertBookedUsers(user_ids)
+        for row in all_User_Ids:
+            user_ids = row[1]
+            dao.insertBookedUsers(user_ids)
+        most_booked_users = dao.getTop10MostBookedUsers()
+        if not most_booked_users:
+            return jsonify("No Booked Users Available"), 404
+        else:
+            result_list = []
+            for row in most_booked_users:
+                obj = self.build_most_booked_users_map_dict(row)
+                result_list.append(obj)
+            return jsonify(result_list), 200
 
     def getTop5BusiestTimes(self):
         dao = BookingDAO()
