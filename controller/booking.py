@@ -6,7 +6,7 @@ from model.booking import BookingDAO
 from model.booking_invitee import BookingInviteeDAO
 from model.room import RoomDAO
 from model.user import UserDAO
-import datetime as dt
+from datetime import datetime as dt
 
 # CONSTANT VALUES IN DATABASE
 PROFESSOR_ROLE = 1
@@ -144,7 +144,7 @@ class BaseBooking:
         else:
             if role == STAFF_ROLE or (role == PROFESSOR_ROLE and room_type == CLASSROOM_TYPE):
                 result = self.build_booking_map_dict(booking_tuple)
-            elif role == STUDENT_ROLE:
+            else:
                 result = self.build_booking_attr_student_dict(booking_tuple[1], booking_tuple[2], booking_tuple[3],
                                                               booking_tuple[5])
         if role == PROFESSOR_ROLE or role == STUDENT_ROLE:
@@ -191,7 +191,7 @@ class BaseBooking:
             end = row[1]
             time_start = dt.strftime(start, '%H:%M')
             time_end = dt.strftime(end, '%H:%M')
-            dao.insertBusyTimes(time_start, time_end)
+            dao.insertBusyTimes(time_start, time_end)  # Does not commit, so it acts as a temporary table
         busy_times = dao.getTop5BusiestTimes()
         if not busy_times:
             return jsonify("No Busy Times Available"), 404
@@ -226,19 +226,24 @@ class BaseBooking:
         user_dao = UserDAO()
         room_dao = RoomDAO()
         invitee_dao = BookingInviteeDAO()
+
+        if not user_dao.getUserById(user_id):
+            return jsonify("User Not Found"), 404
         role = user_dao.getUserRoleById(user_id)[0]
+
+        if not booking_dao.getBookingById(booking_id):
+            return jsonify("Booking Not Found"), 404
         current_room_id = booking_dao.getBookingRoomFromId(booking_id)[0]
 
         if not room_dao.getRoomById(new_room_id):
             return jsonify("Room Not Found"), 404
-
         room_type = room_dao.getRoomTypeById(new_room_id)[0]
 
         for invitee_id in new_invitees:
             if not user_dao.getUserById(invitee_id):
                 return jsonify("One or More Invitees Not Found"), 404
 
-        current_invitees = invitee_dao.getInviteesByBookingId(booking_id)
+        current_invitees = invitee_dao.getInviteesByBookingIdAdminLevel(booking_id)
         old_times = booking_dao.getBookingStartFinishTime(booking_id)  # Get old times to compare changes
 
         if role == STAFF_ROLE or (role == PROFESSOR_ROLE and room_type == CLASSROOM_TYPE) \
@@ -280,8 +285,8 @@ class BaseBooking:
         user_dao = UserDAO()
         invitee_dao = BookingInviteeDAO()
         for current_invitee_id in old_invitees:  # Remove the current invitees of the old time
-            invitee_dao.deleteInvitee(booking_id, current_invitee_id)
-            user_dao.deleteUnavailableUserTimeFrame(current_invitee_id, old_time_start, old_time_finish)
+            invitee_dao.deleteInvitee(booking_id, current_invitee_id[0])
+            user_dao.deleteUnavailableUserTimeFrame(current_invitee_id[0], old_time_start, old_time_finish)
 
         for new_invitee_id in new_invitees:  # Verify all New Invitees
             if not BaseUser().verifyAvailableUserAtTimeFrame(new_invitee_id, new_time_start, new_time_finish):

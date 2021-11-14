@@ -104,10 +104,10 @@ def handleRooms():
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/coqui-bookings/Room/rooms/verify', methods=['GET'])
+@app.route('/coqui-bookings/Room/rooms/verifytimeframe', methods=['GET'])
 def handleRoomVerifications():
     if request.method == 'GET':
-        return BaseRoom().getAllAvailableRooms(request.json)
+        return BaseRoom().getAllAvailableRoomsAtTimeFrame(request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
@@ -183,24 +183,28 @@ def handleGetAllBookings(user_id):
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/coqui-bookings/Booking/bookings/<int:booking_id>/user/<int:user_id>', methods=['GET', 'PUT'])
-def handleBookingByIdAndUserId(booking_id, user_id):
-    if request.method == 'GET':
-        return BaseBooking().getBookingById(booking_id, user_id)
-    elif request.method == 'PUT':
+@app.route('/coqui-bookings/Booking/bookings/<int:booking_id>', methods=['DELETE'])
+def handleBookingById(booking_id):
+    if request.method == 'DELETE':
+        return BaseBooking().deleteBooking(booking_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+@app.route('/coqui-bookings/Booking/bookings/<int:booking_id>/User/<int:user_id>/update', methods=['PUT'])
+def handleBookingByIdWithRole(booking_id, user_id):
+    if request.method == 'PUT':
         return BaseBooking().updateBooking(booking_id, user_id, request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
-
-@app.route('/coqui-bookings/Booking/bookings/<int:booking_id>', methods=['PUT', 'DELETE'])
-def handleBookingById(booking_id):
-    if request.method == 'PUT':
-        return BaseBooking().updateBooking(booking_id, request.json)
-    elif request.method == 'DELETE':
-        return BaseBooking().deleteBooking(booking_id)
+@app.route('/coqui-bookings/Booking/bookings/<int:booking_id>/User/<int:user_id>/get', methods=['GET'])
+def handleGetBookingById(booking_id, user_id):
+    if request.method == 'GET':
+        return BaseBooking().getBookingById(booking_id, user_id)
     else:
         return jsonify("Method Not Allowed"), 405
+
 
 
 @app.route('/coqui-bookings/Booking/bookings/user/<int:user_id>/create', methods=['POST'])
@@ -278,6 +282,14 @@ def handleBookingInviteesByUserID(booking_id, user_id):
 def handleAllBookingInviteesByUserId(user_id):
     if request.method == 'GET':
         return BaseBookingInvitee().getAllInviteesOfAllBooking(user_id)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
+@app.route('/coqui-bookings/User/users/<int:user_id>/invitee-most-booked-with', methods=['GET'])
+def handleInviteeUserHasBeenMostBookedWith(user_id):
+    if request.method == 'GET':
+        return BaseUser().getInviteUserHasBeenMostBookedWith(user_id)
     else:
         return jsonify("Method Not Allowed"), 405
 

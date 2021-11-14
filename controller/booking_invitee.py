@@ -114,19 +114,34 @@ class BaseBookingInvitee:
             for invitee in invitee_list:
                 obj = BaseUser().build_user_map_dict(invitee)
                 result_list.append(obj)
-            return jsonify(result_list), 200
+            if len(result_list)==0:
+                return jsonify("Invitees Not Found"), 404 
+            else:
+                return jsonify(result_list), 200
         elif role == STUDENT_ROLE and room_type == STUDY_SPACE_TYPE:
             invitee_list = invitee_dao.getInviteesByBookingIdStudentLevel(booking_id)
             result_list = []
             for invitee in invitee_list:
                 obj = BaseUser().build_user_student_map_dict(invitee)
                 result_list.append(obj)
-            return jsonify("Some information can't be shown because you do not have permission to access",
+            if len(result_list)==0:
+                return jsonify("Invitees Not Found"), 404 
+            else:
+                return jsonify("Some information can't be shown because you do not have permission to access",
                            result_list), 200
         else:
             return jsonify(
                 f"User with role {role} does not have permission to view information about room type {room_type}"), 403
 
+    def getInviteUserHasBeenMostBookedWith(self, user_id):
+        dao = UserDAO()
+        booked_invitees = dao.getInviteeUserHasBeenMostBookedWith(user_id)
+        if len(booked_invitees) == 0:
+            return jsonify("User has not been booked with any invitee "), 404
+        else:
+            most_booked_invitee = dao.getUserById(booked_invitees[0][1])
+            return jsonify(BaseUser().build_user_map_dict(most_booked_invitee)), 200
+    
     def updateInvitees(self, booking_id, json):
         user_id_list = json['invitee_id_list']
         user_dao = UserDAO()
@@ -140,16 +155,16 @@ class BaseBookingInvitee:
                 return jsonify("User Not Found"), 404
 
         for current_id in current_invitees:
-            invitee_dao.deleteInvitee(booking_id, current_id)
-            user_dao.deleteUnavailableUserTimeFrame(current_id, bookingTime[0], bookingTime[1])
+            invitee_dao.deleteInvitee(booking_id, current_id[0])
+            user_dao.deleteUnavailableUserTimeFrame(current_id[0], bookingTime[0], bookingTime[1])
 
         for user_id in user_id_list:  # Verify all users exist
             if not BaseUser().verifyAvailableUserAtTimeFrame(user_id,
                                                              dt.datetime.strftime(bookingTime[0], '%Y-%m-%d %H:%M'),
                                                              dt.datetime.strftime(bookingTime[1], '%Y-%m-%d %H:%M')):
                 for current_id in current_invitees:  # Rollback
-                    invitee_dao.createNewInvitee(booking_id, current_id)
-                    user_dao.createUnavailableUserTimeFrame(current_id, bookingTime[0], bookingTime[1])
+                    invitee_dao.createNewInvitee(booking_id, current_id[0])
+                    user_dao.createUnavailableUserTimeFrame(current_id[0], bookingTime[0], bookingTime[1])
                 return jsonify("One or more Invitees are not available during Booking Time"), 409
 
         for user_id in user_id_list:

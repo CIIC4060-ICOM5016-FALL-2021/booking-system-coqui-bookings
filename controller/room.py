@@ -24,6 +24,10 @@ class BaseRoom:
         result = {'room_type_id': row}
         return result
 
+    def build_time_slot_attr_dict(self, start_time, finish_time):
+        result = {'start_time': start_time, 'finish_time': finish_time}
+        return result
+
     # Create
     def createNewRoom(self, json):
         room_name = json['room_name']
@@ -105,7 +109,7 @@ class BaseRoom:
             result = self.build_type_map_dict(room_type[0])
             return jsonify(result), 200
 
-    def getAllAvailableRooms(self, json):
+    def getAllAvailableRoomsAtTimeFrame(self, json):
         search_start = json['start_date'] + " " + json['start_time']
         search_finish = json['finish_date'] + " " + json['finish_time']
 
@@ -173,22 +177,24 @@ class BaseRoom:
         dao = RoomDAO()
         date = json['date']
         room = dao.getRoomById(room_id)
-        unavailable_time_slots = dao.getUnavailableTimeOfRoomById(room_id)
-        if not room: 
+        room_unavailable_time_slots = dao.getUnavailableTimeOfRoomById(room_id)
+        if not room:
             return jsonify("Room Not Found"), 404
-
-        result = []
-        for row in unavailable_time_slots:
-            start = row[1]
-            end = row[2]
-            date_start = dt.datetime.strftime(start, '%Y-%m-%d')
-            date_end = dt.datetime.strftime(end, '%Y-%m-%d')
-            if(date in date_start) or (date in date_end):
-                obj = self.build_unavailable_time_room_map_dict(row)
-                result.append(obj)
-
-        if len(result) > 0:
-            return jsonify(result), 200
+        result_list = []
+        start_date = date + " 0:00"
+        start_time = dt.datetime.strptime(start_date, '%Y-%m-%d %H:%M')
+        finish_date = date + " 23:59"
+        finish_date = dt.datetime.strptime(finish_date, '%Y-%m-%d %H:%M')
+        for row in room_unavailable_time_slots:
+            if row[1] > start_time and row[2] < finish_date:
+                finish_time = row[1]
+                obj = self.build_time_slot_attr_dict(start_time, finish_time)
+                result_list.append(obj)
+                start_time = row[2]
+        finish_time = finish_date
+        result_list.append(self.build_time_slot_attr_dict(start_time, finish_time))
+        if len(result_list) != 1:
+            return jsonify("Room is available at the following time frames", result_list), 200
         else:
             return jsonify("Room is available all day"), 200
 
