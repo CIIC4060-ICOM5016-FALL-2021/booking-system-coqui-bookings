@@ -133,6 +133,15 @@ class BaseBookingInvitee:
             return jsonify(
                 f"User with role {role} does not have permission to view information about room type {room_type}"), 403
 
+    def getInviteUserHasBeenMostBookedWith(self, user_id):
+        dao = UserDAO()
+        booked_invitees = dao.getInviteeUserHasBeenMostBookedWith(user_id)
+        if len(booked_invitees) == 0:
+            return jsonify("User has not been booked with any invitee "), 404
+        else:
+            most_booked_invitee = dao.getUserById(booked_invitees[0][1])
+            return jsonify(BaseUser().build_user_map_dict(most_booked_invitee)), 200
+    
     def updateInvitees(self, booking_id, json):
         user_id_list = json['invitee_id_list']
         user_dao = UserDAO()

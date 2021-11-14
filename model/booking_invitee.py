@@ -51,6 +51,16 @@ class BookingInviteeDAO:
             result.append(row)
         return result
 
+    def getInviteeUserHasBeenMostBookedWith(self, user_id):
+        cursor = self.conn.cursor()
+        query = 'select "Booking".user_id, BI.user_id, count(BI.user_id) as times_booked_invitee from "Booking"inner join "BookingInvitee" BI on "Booking".booking_id = BI.booking_id ' \
+                'where "Booking".user_id = %s group by "Booking".user_id, BI. user_id order by count(BI.user_id) desc'
+        cursor.execute(query, (user_id,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+        
     def verifyInviteeInBooking(self, booking_id, user_id):
         cursor = self.conn.cursor()
         query = 'select booking_id, user_id from "BookingInvitee" where booking_id = %s and user_id = %s;'
