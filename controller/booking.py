@@ -6,7 +6,7 @@ from model.booking import BookingDAO
 from model.booking_invitee import BookingInviteeDAO
 from model.room import RoomDAO
 from model.user import UserDAO
-from datetime import dt
+import datetime as dt
 
 # CONSTANT VALUES IN DATABASE
 PROFESSOR_ROLE = 1
@@ -31,6 +31,10 @@ class BaseBooking:
                   'booking_invitees': booking_invitees}
         return result
 
+    def build_booking_attr_student_dict(self, booking_name, booking_start, booking_finish, room_id):
+        result = {'booking_name': booking_name, 'booking_start': booking_start, 'booking_finish': booking_finish,
+                  'room_id': room_id}
+        return result
 
     # Create
     def createNewBooking(self, user_id, json):
@@ -88,27 +92,57 @@ class BaseBooking:
         else:
             return jsonify(f"User with role {role} does not have permission to book room type {room_type}"), 403
 
-    # TODO LIMIT BY ROLE
     # Read
     def getAllBookings(self, user_id):
+        user_dao = UserDAO()
+        if not user_dao.getUserById(user_id):
+            return jsonify("User Not Found"), 404
+        role = user_dao.getUserRoleById(user_id)[0]
         dao = BookingDAO()
         bookings_list = dao.getAllBookings()
         if not bookings_list:  # No existing Bookings
             return jsonify("No Bookings Found"), 404
         else:
+            room_dao = RoomDAO()
             result_list = []
-            for row in bookings_list:
-                obj = self.build_booking_map_dict(row)
-                result_list.append(obj)
-            return jsonify(result_list), 200
+            for booking in bookings_list:
+                room_type = room_dao.getRoomTypeById(booking[5])[0]
+                if role == STAFF_ROLE or (role == PROFESSOR_ROLE and room_type == CLASSROOM_TYPE):
+                    obj = self.build_booking_map_dict(booking)
+                    result_list.append(obj)
+                elif role == STUDENT_ROLE:
+                    obj = self.build_booking_attr_student_dict(booking[1], booking[2], booking[3], booking[5])
+                    result_list.append(obj)
+                else:
+                    continue
 
-    def getBookingById(self, booking_id):
+            if role == PROFESSOR_ROLE or role == STUDENT_ROLE:
+                return jsonify("Some information can't be shown because you do not have permission to access",
+                               result_list), 200
+            else:
+                return jsonify(result_list), 200
+
+    def getBookingById(self, booking_id, user_id):
+        user_dao = UserDAO()
+        if not user_dao.getUserById(user_id):
+            return jsonify("User Not Found"), 404
+        role = user_dao.getUserRoleById(user_id)[0]
         dao = BookingDAO()
         booking_tuple = dao.getBookingById(booking_id)
+        room_dao = RoomDAO()
+        room_type = room_dao.getRoomTypeById(booking_tuple[5])[0]
         if not booking_tuple:
             return jsonify("Booking Not Found"), 404
         else:
-            result = self.build_booking_map_dict(booking_tuple)
+            if role == STAFF_ROLE or (role == PROFESSOR_ROLE and room_type == CLASSROOM_TYPE):
+                result = self.build_booking_map_dict(booking_tuple)
+            elif role == STUDENT_ROLE:
+                result = self.build_booking_attr_student_dict(booking_tuple[1], booking_tuple[2], booking_tuple[3],
+                                                              booking_tuple[5])
+        if role == PROFESSOR_ROLE or role == STUDENT_ROLE:
+            return jsonify("Some information can't be shown because you do not have permission to access",
+                           result), 200
+        else:
             return jsonify(result), 200
 
     def getUserBookedRoomAtTimeFrame(self, room_id, json):
