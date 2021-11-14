@@ -57,6 +57,21 @@ class BookingDAO:
             result.append(row)
         return result
 
+    def insertBusyTimes(self, start, end):
+        cursor = self.conn.cursor()
+        query = 'insert into "BusyTimes" (start_time, finish_time)' \
+                'values (%s,%s)'
+        cursor.execute(query, (start, end))
+
+    def getTop5BusiestTimes(self):
+        cursor = self.conn.cursor()
+        query = 'SELECT start_time, finish_time ,COUNT(CONCAT(start_time,finish_time)) as times_repeated from "BusyTimes" group by start_time, finish_time order by times_repeated desc limit 5'
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     # def getMostBookedUsers(self):
     #     cursor = self.conn.cursor()
     #     query = 'select user_id, "BookingInvitee".user_id from "Booking" inner join "BookingInvitee" on "Booking".booking_id = "BookingInvitee".booking_id;'

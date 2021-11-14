@@ -6,7 +6,7 @@ from model.booking import BookingDAO
 from model.booking_invitee import BookingInviteeDAO
 from model.room import RoomDAO
 from model.user import UserDAO
-from datetime import dt
+from datetime import datetime as dt
 
 # CONSTANT VALUES IN DATABASE
 PROFESSOR_ROLE = 1
@@ -22,6 +22,10 @@ class BaseBooking:
     def build_booking_map_dict(self, row):
         result = {'booking_id': row[0], 'booking_name': row[1], 'booking_start': row[2], 'booking_finish': row[3],
                   'user_id': row[4], 'room_id': row[5]}
+        return result
+
+    def build_busy_times_map_dict(self, row):
+        result = {'start_time': row[0], 'finish_time': row[1], 'times_booked': row[2]}
         return result
 
     def build_booking_attr_dict(self, booking_id, booking_name, booking_start, booking_finish, user_id, room_id,
@@ -130,30 +134,25 @@ class BaseBooking:
     #     else:
     #         result = self.build_booking_map_dict(booking_tuple)
     #         return jsonify(result), 200
-    # TODO: GET BUSIEST TIMES
-    # def getBusiestTimes(self):
-    #     dao = BookingDAO()
-    #     all_times = dao.getAllTimes()
-    #     # result_list = []
-    #     busiest_times = {}
-    #     for row in all_times:
-    #         start = row[0]
-    #         end = row[1]
 
-    #         # check > 1 hour: parse 
-    #         time_start = dt.datetime.strftime(start, '%H-%M')
-    #         time_end = dt.datetime.strftime(end, '%H-%M')
-    #         print(time_start,time_end)
-
-    #         if 
-    #         # add new time or increase current time 
-
-
-
-    #     if len(all_times) == 0:
-    #         return jsonify("No times available"), 404
-    #     #else:
-    #         #return jsonify(self.build_room_map_dict(busiest_time[0])), 200
+    def getTop5BusiestTimes(self):
+        dao = BookingDAO()
+        all_times = dao.getAllTimes()
+        for row in all_times:
+            start = row[0]
+            end = row[1]
+            time_start = dt.strftime(start, '%H:%M')
+            time_end = dt.strftime(end, '%H:%M')
+            dao.insertBusyTimes(time_start, time_end)
+        busy_times = dao.getTop5BusiestTimes()
+        if not busy_times:
+            return jsonify("No Busy Times Available"), 404
+        else:
+            result_list = []
+            for row in busy_times:
+                obj = self.build_busy_times_map_dict(row)
+                result_list.append(obj)
+            return jsonify(result_list), 200
 
     def getTop10MostBookedRooms(self):
         dao = BookingDAO()

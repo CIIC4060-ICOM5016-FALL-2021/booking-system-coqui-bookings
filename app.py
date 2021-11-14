@@ -216,7 +216,7 @@ def handleBookingUpdate(booking_id, user_id):
 @app.route('/coqui-bookings/Booking/bookings/busiest-times', methods=['GET'])
 def handleBusiestTimes():
     if request.method == 'GET':
-        return BaseBooking().getBusiestTimes()
+        return BaseBooking().getTop5BusiestTimes()
     else:
         return jsonify("Method Not Allowed"), 405
 
