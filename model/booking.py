@@ -74,6 +74,14 @@ class BookingDAO:
         result = cursor.fetchone()
         return result
 
+    # Used in Getting Booking Invitees Only
+    def getBookingRoomTypeFromId(self, booking_id):
+        cursor = self.conn.cursor()
+        query = 'select room_type_id from "Booking" natural inner join "Room" where booking_id = %s'
+        cursor.execute(query, (booking_id,))
+        result = cursor.fetchone()
+        return result
+
     # Update
     def updateBooking(self, booking_id, booking_name, booking_time_start, booking_time_end, user_id, room_id):
         cursor = self.conn.cursor()
