@@ -6,7 +6,7 @@ from model.booking import BookingDAO
 from model.booking_invitee import BookingInviteeDAO
 from model.room import RoomDAO
 from model.user import UserDAO
-from datetime import dt
+# from datetime import dt
 
 # CONSTANT VALUES IN DATABASE
 PROFESSOR_ROLE = 1
@@ -182,6 +182,9 @@ class BaseBooking:
         invitee_dao = BookingInviteeDAO()
         role = user_dao.getUserRoleById(user_id)[0]
         current_room_id = booking_dao.getBookingRoomFromId(booking_id)[0]
+        
+        if not booking_dao.getBookingById(booking_id):
+            return jsonify("Booking Not Found"), 404
 
         if not room_dao.getRoomById(new_room_id):
             return jsonify("Room Not Found"), 404
@@ -192,7 +195,7 @@ class BaseBooking:
             if not user_dao.getUserById(invitee_id):
                 return jsonify("One or More Invitees Not Found"), 404
 
-        current_invitees = invitee_dao.getInviteesByBookingId(booking_id)
+        current_invitees = invitee_dao.getInviteesByBookingIdAdminLevel(booking_id)
         old_times = booking_dao.getBookingStartFinishTime(booking_id)  # Get old times to compare changes
 
         if role == STAFF_ROLE or (role == PROFESSOR_ROLE and room_type == CLASSROOM_TYPE) \
@@ -234,8 +237,8 @@ class BaseBooking:
         user_dao = UserDAO()
         invitee_dao = BookingInviteeDAO()
         for current_invitee_id in old_invitees:  # Remove the current invitees of the old time
-            invitee_dao.deleteInvitee(booking_id, current_invitee_id)
-            user_dao.deleteUnavailableUserTimeFrame(current_invitee_id, old_time_start, old_time_finish)
+            invitee_dao.deleteInvitee(booking_id, current_invitee_id[0])
+            user_dao.deleteUnavailableUserTimeFrame(current_invitee_id[0], old_time_start, old_time_finish)
 
         for new_invitee_id in new_invitees:  # Verify all New Invitees
             if not BaseUser().verifyAvailableUserAtTimeFrame(new_invitee_id, new_time_start, new_time_finish):

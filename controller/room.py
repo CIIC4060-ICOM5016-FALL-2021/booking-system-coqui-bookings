@@ -105,7 +105,7 @@ class BaseRoom:
             result = self.build_type_map_dict(room_type[0])
             return jsonify(result), 200
 
-    def getAllAvailableRooms(self, json):
+    def getAllAvailableRoomsAtTimeFrame(self, json):
         search_start = json['start_date'] + " " + json['start_time']
         search_finish = json['finish_date'] + " " + json['finish_time']
 
