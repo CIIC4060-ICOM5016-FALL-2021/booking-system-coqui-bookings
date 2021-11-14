@@ -173,20 +173,22 @@ class BaseRoom:
         dao = RoomDAO()
         date = json['date']
         room = dao.getRoomById(room_id)
-        room_unavailable_time_slots = dao.getUnavailableTimeOfRoomById(room_id)
+        unavailable_time_slots = dao.getUnavailableTimeOfRoomById(room_id)
         if not room: 
             return jsonify("Room Not Found"), 404
-        result_list = []
-        for row in room_unavailable_time_slots:
+
+        result = []
+        for row in unavailable_time_slots:
             start = row[1]
             end = row[2]
             date_start = dt.datetime.strftime(start, '%Y-%m-%d')
             date_end = dt.datetime.strftime(end, '%Y-%m-%d')
             if(date in date_start) or (date in date_end):
                 obj = self.build_unavailable_time_room_map_dict(row)
-                result_list.append(obj)
-        if len(result_list) > 0:
-            return jsonify(result_list), 200
+                result.append(obj)
+
+        if len(result) > 0:
+            return jsonify(result), 200
         else:
             return jsonify("Room is available all day"), 200
 

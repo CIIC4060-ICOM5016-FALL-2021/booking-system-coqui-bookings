@@ -110,14 +110,15 @@ class BaseBooking:
             return jsonify(result), 200
 
     def getUserBookedRoomAtTimeFrame(self, room_id, json):
-        start_time = json['booking_start']
-        end_time = json['booking_finish']
+        booking_start = json['booking_start_date'] + " " + json['booking_start_time']
+        booking_finish = json['booking_finish_date'] + " " + json['booking_finish_time']
         dao = BookingDAO()
-        user_id = dao.getUserBookedRoomAtTimeFrame(room_id, start_time, end_time)
+        user_id = dao.getUserBookedRoomAtTimeFrame(room_id, booking_start, booking_finish)
+
         if not user_id:
             return jsonify("User Not Found"), 404
         else:
-            return jsonify(f"User {user_id} booked room {room_id} from {start_time} to {end_time}"), 200
+            return jsonify(f"User {user_id[0]} booked room {room_id} from {booking_start} to {booking_finish}"), 200
 
     # TODO: GET TOP 5 MOST BOOKED USERS
     # def getMostBookedUsers(self):
