@@ -16,8 +16,9 @@ class BaseRoom:
         return result
 
     def build_unavailable_time_room_map_dict(self, row):
-        result = {'unavailable_time_room_id': row[0], 'unavailable_time_room_start': row[1],
-                  'unavailable_time_room_finish': row[2], 'room_id': row[3]}
+        result = {'unavailable_time_room_id': row[0],
+                  'unavailable_time_room_start': dt.datetime.strftime(row[1], '%Y-%m-%d %H:%M') + " AST",
+                  'unavailable_time_room_finish': dt.datetime.strftime(row[2], '%Y-%m-%d %H:%M') + " AST", 'room_id': row[3]}
         return result
 
     def build_type_map_dict(self, row):
@@ -25,7 +26,8 @@ class BaseRoom:
         return result
 
     def build_time_slot_attr_dict(self, start_time, finish_time):
-        result = {'start_time': start_time, 'finish_time': finish_time}
+        result = {'start_time': dt.datetime.strftime(start_time, '%Y-%m-%d %H:%M') + " AST",
+                  'finish_time': dt.datetime.strftime(finish_time, '%Y-%m-%d %H:%M') + " AST"}
         return result
 
     # Create
