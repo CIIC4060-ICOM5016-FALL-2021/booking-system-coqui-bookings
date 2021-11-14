@@ -109,6 +109,16 @@ class BaseBooking:
             result = self.build_booking_map_dict(booking_tuple)
             return jsonify(result), 200
 
+    def getUserBookedRoomAtTimeFrame(self, room_id, json):
+        start_time = json['booking_start']
+        end_time = json['booking_finish']
+        dao = BookingDAO()
+        user_id = dao.getUserBookedRoomAtTimeFrame(room_id, start_time, end_time)
+        if not user_id:
+            return jsonify("User Not Found"), 404
+        else:
+            return jsonify(f"User {user_id} booked room {room_id} from {start_time} to {end_time}"), 200
+
     # TODO: GET TOP 5 MOST BOOKED USERS
     # def getMostBookedUsers(self):
     #     dao = BookingDAO()

@@ -40,6 +40,15 @@ class BookingDAO:
         result = cursor.fetchone()
         return result
 
+    def getUserBookedRoomAtTimeFrame(self, room_id, booking_start, booking_finish):
+        cursor = self.conn.cursor()
+        query = 'select user_id from "Booking"' \
+                'where room_id = %s and booking_start = %s and booking_finish = %s'
+        cursor.execute(query, (room_id,booking_start,booking_finish))
+        result = cursor.fetchone()
+        return result
+        
+
     # def getMostBookedUsers(self):
     #     cursor = self.conn.cursor()
     #     query = 'select user_id, "BookingInvitee".user_id from "Booking" inner join "BookingInvitee" on "Booking".booking_id = "BookingInvitee".booking_id;'
