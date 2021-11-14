@@ -6,7 +6,7 @@ from model.booking import BookingDAO
 from model.booking_invitee import BookingInviteeDAO
 from model.room import RoomDAO
 from model.user import UserDAO
-from datetime import datetime as dt
+import datetime as dt
 
 # CONSTANT VALUES IN DATABASE
 PROFESSOR_ROLE = 1
@@ -213,6 +213,70 @@ class BaseBooking:
             result_list = []
             for row in top_booked_rooms:
                 obj = BaseRoom().build_room_map_dict(row)
+                result_list.append(obj)
+            return jsonify(result_list), 200
+
+    def getUserDaySchedule(self, user_id, json):
+        dao = UserDAO()
+        date = json['date']
+        user = dao.getUserById(user_id)
+        user_unavailable_time_slots = dao.getUnavailableTimeOfUserById(user_id)
+        if not user:  # User Not Found
+            return jsonify("User Not Found"), 404
+
+        result_list = []
+        start_date = date + " 0:00"
+        start_time = dt.datetime.strptime(start_date, '%Y-%m-%d %H:%M')
+        finish_date = date + " 23:59"
+        finish_date = dt.datetime.strptime(finish_date, '%Y-%m-%d %H:%M')
+        for row in user_unavailable_time_slots:
+            if row[1] > start_time and row[2] < finish_date:
+                finish_time = row[1]
+                obj = BaseUser().build_time_slot_attr_dict(start_time, finish_time)
+                result_list.append(obj)
+                start_time = row[2]
+        finish_time = finish_date
+        result_list.append(BaseUser().build_time_slot_attr_dict(start_time, finish_time))
+        if len(result_list) != 1:
+            return jsonify("User is available at the following time frames", result_list), 200
+        else:
+            return jsonify("User is available all day"), 200
+
+    def getFreeTimeForUsers(self, json):
+        user_array = json['user_ids']
+        user_dao = UserDAO()
+        booking_dao = BookingDAO()
+        date = json['date']
+        for row in user_array:
+            user = user_dao.getUserById(row)
+            if not user:  # User Not Found
+                return jsonify("User Not Found"), 404
+            user_unavailable_time_slots = user_dao.getUnavailableTimeOfUserById(row)
+            result_list = []
+            start_date = date + " 0:00"
+            start_time = dt.datetime.strptime(start_date, '%Y-%m-%d %H:%M')
+            finish_date = date + " 23:59"
+            finish_date = dt.datetime.strptime(finish_date, '%Y-%m-%d %H:%M')
+            for slot in user_unavailable_time_slots:
+                if slot[1] > start_time and slot[2] < finish_date:
+                    finish_time = slot[1]
+                    obj = BaseUser().build_time_slot_attr_dict(start_time, finish_time)
+                    result_list.append(obj)
+                    start_time = slot[2]
+            finish_time = finish_date
+            result_list.append(BaseUser().build_time_slot_attr_dict(start_time, finish_time))
+            # for available_slot in result_list:
+            #     #day_start =
+            #     if
+            #     # booking_dao.insertUserSchedulesForBooking(row, dt.datetime.strftime(available_slot['start_time'], '%Y-%m-%d %H:%M'),
+            #     #                                           dt.datetime.strftime(available_slot['finish_time'], '%Y-%m-%d %H:%M'))
+            busy_times = booking_dao.getFreeTimesForUsers()
+        if not busy_times:
+            return jsonify("No Busy Times Available"), 404
+        else:
+            result_list = []
+            for row in busy_times:
+                obj = self.build_busy_times_map_dict(row)
                 result_list.append(obj)
             return jsonify(result_list), 200
 

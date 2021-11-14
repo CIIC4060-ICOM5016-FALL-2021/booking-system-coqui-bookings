@@ -21,6 +21,7 @@ class BookingInviteeDAO:
         return True
 
     # Read
+    # Used Only in get Top10MostBookedInvitee
     def getAllInvitees(self):
         cursor = self.conn.cursor()
         query = 'select booking_id, user_id  from "BookingInvitee";'

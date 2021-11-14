@@ -165,7 +165,6 @@ class BaseUser:
                 start_time = row[2]
         finish_time = finish_date
         result_list.append(self.build_time_slot_attr_dict(start_time, finish_time))
-        print(result_list)
         if len(result_list) != 1:
             return jsonify("User is available at the following time frames", result_list), 200
         else:

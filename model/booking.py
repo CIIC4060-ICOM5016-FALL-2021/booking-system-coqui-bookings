@@ -53,7 +53,6 @@ class BookingDAO:
         query = 'insert into "TempBookedUsers" (user_id)' \
                 'values (%s)'
         cursor.execute(query, (user_ids,))
-        self.conn.commit()
 
     def getTop10MostBookedUsers(self):
         cursor = self.conn.cursor()
@@ -120,6 +119,22 @@ class BookingDAO:
         cursor.execute(query, (booking_id,))
         result = cursor.fetchone()
         return result
+
+    def insertUserSchedulesForBooking(self, user_id, start_time, end_time):
+        cursor = self.conn.cursor()
+        query = 'insert into "TempUserSchedulesForBooking" (user_id, start_time, end_time)' \
+                'values (%s,%s, %s)'
+        cursor.execute(query, (user_id, start_time, end_time,))
+        self.conn.commit()
+
+    # def getFreeTimesForUsers(self):
+    #     cursor = self.conn.cursor()
+    #     query = 'SELECT user_id, start_time, as from "TempUserSchedulesForBooking" group by user_id'
+    #     cursor.execute(query)
+    #     result = []
+    #     for row in cursor:
+    #         result.append(row)
+    #     return result
 
     # Update
     def updateBooking(self, booking_id, booking_name, booking_time_start, booking_time_end, user_id, room_id):
