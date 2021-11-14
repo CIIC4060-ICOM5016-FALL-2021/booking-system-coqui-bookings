@@ -26,12 +26,14 @@ class BaseUser:
         return result
 
     def build_unavailable_time_user_map_dict(self, row):
-        result = {'unavailable_time_user_id': row[0], 'unavailable_time_user_start': row[1],
-                  'unavailable_time_user_finish': row[2], 'user_id': row[3]}
+        result = {'unavailable_time_user_id': row[0],
+                  'unavailable_time_user_start': dt.datetime.strftime(row[1], '%Y-%m-%d %H:%M') + " AST",
+                  'unavailable_time_user_finish': dt.datetime.strftime(row[2], '%Y-%m-%d %H:%M') + " AST", 'user_id': row[3]}
         return result
 
     def build_time_slot_attr_dict(self, start_time, finish_time):
-        result = {'start_time': start_time, 'finish_time': finish_time}
+        result = {'start_time': dt.datetime.strftime(start_time, '%Y-%m-%d %H:%M') + " AST",
+                  'finish_time': dt.datetime.strftime(finish_time, '%Y-%m-%d %H:%M') + " AST"}
         return result
 
     # Create

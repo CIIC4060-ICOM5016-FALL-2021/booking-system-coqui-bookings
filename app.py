@@ -148,6 +148,8 @@ def handleRoomType(room_id):
         return jsonify("Method Not Allowed"), 405
 
 
+
+
 @app.route('/coqui-bookings/Room/<int:room_id>/unavailable-time-slot/User/<int:user_id>', methods=['POST'])
 def handleRoomAvailability(room_id, user_id):
     if request.method == 'POST':
