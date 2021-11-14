@@ -23,8 +23,7 @@ class BookingInviteeDAO:
     # Read
     def getAllInvitees(self):
         cursor = self.conn.cursor()
-        query = 'select booking_id, user_id ' \
-                'from "User" natural inner join "Booking" natural inner join "BookingInvitee";'
+        query = 'select booking_id, user_id  from "BookingInvitee";'
         cursor.execute(query)
         result = []
         for row in cursor:

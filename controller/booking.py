@@ -166,11 +166,13 @@ class BaseBooking:
 
     def getTop10MostBookedUsers(self):
         dao = BookingDAO()
-        all_User_Ids = dao.getAllBookedUsers()
-        for row in all_User_Ids:
-            user_ids = row[0]
+        booking_invitee_dao = BookingInviteeDAO()
+        all_Bookings = dao.getAllBookings()
+        for row in all_Bookings:
+            user_ids = row[4]
             dao.insertBookedUsers(user_ids)
-        for row in all_User_Ids:
+        all_Invitees = booking_invitee_dao.getAllInvitees()
+        for row in all_Invitees:
             user_ids = row[1]
             dao.insertBookedUsers(user_ids)
         most_booked_users = dao.getTop10MostBookedUsers()
