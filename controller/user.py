@@ -31,7 +31,7 @@ class BaseUser:
                   'unavailable_time_user_finish': row[2], 'user_id': row[3]}
         return result
 
-    def build_ime_slot_attr_dict(self, start_time, finish_time):
+    def build_time_slot_attr_dict(self, start_time, finish_time):
         result = {'start_time': start_time, 'finish_time': finish_time}
         return result
 
@@ -159,14 +159,15 @@ class BaseUser:
         finish_date = date + " 23:59"
         finish_date = dt.datetime.strptime(finish_date, '%Y-%m-%d %H:%M')
         for row in user_unavailable_time_slots:
-            if row[1] < finish_date:
+            if row[1] > start_time and row[2] < finish_date:
                 finish_time = row[1]
-                obj = self.build_ime_slot_attr_dict(start_time, finish_time)
+                obj = self.build_time_slot_attr_dict(start_time, finish_time)
                 result_list.append(obj)
                 start_time = row[2]
         finish_time = finish_date
-        result_list.append(self.build_ime_slot_attr_dict(start_time, finish_time))
-        if len(result_list) != 0:
+        result_list.append(self.build_time_slot_attr_dict(start_time, finish_time))
+        print(result_list)
+        if len(result_list) != 1:
             return jsonify("User is available at the following time frames", result_list), 200
         else:
             return jsonify("User is available all day"), 200
