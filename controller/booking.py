@@ -305,9 +305,21 @@ class BaseBooking:
 
     # Delete
     def deleteBooking(self, booking_id):
-        dao = BookingDAO()
-        result = dao.deleteBooking(booking_id)
-        if result:
-            return jsonify("Booking Deleted Successfully"), 200
-        else:
-            return jsonify("Booking Not Found"), 404
+        booking_dao = BookingDAO()
+        existent_booking =  booking_dao.getBookingById(booking_id)
+        if not existent_booking:
+            return jsonify("Booking not Found"), 404
+        room_dao = RoomDAO()
+        invitee_dao = BookingInviteeDAO()
+        user_dao = UserDAO()
+        current_invitees = invitee_dao.getInviteesByBookingIdAdminLevel(booking_id)
+        room_id = booking_dao.getBookingRoomFromId(booking_id)
+        user_id = existent_booking[4]
+        booking_time = booking_dao.getBookingStartFinishTime(booking_id)
+        for invitee in current_invitees:
+            invitee_id = invitee[0]
+            user_dao.deleteUnavailableUserTimeFrame(invitee_id, booking_time[0], booking_time[1])
+        user_dao.deleteUnavailableUserTimeFrame(user_id, booking_time[0], booking_time[1])
+        room_dao.deleteUnavailableRoomTime(room_id, booking_time[0], booking_time[1])
+        booking_dao.deleteBooking(booking_id)
+        return jsonify("Booking Deleted Successfully"), 200
