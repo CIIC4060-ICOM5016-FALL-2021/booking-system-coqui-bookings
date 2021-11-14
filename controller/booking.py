@@ -140,7 +140,7 @@ class BaseBooking:
         else:
             if role == STAFF_ROLE or (role == PROFESSOR_ROLE and room_type == CLASSROOM_TYPE):
                 result = self.build_booking_map_dict(booking_tuple)
-            elif role == STUDENT_ROLE:
+            else:
                 result = self.build_booking_attr_student_dict(booking_tuple[1], booking_tuple[2], booking_tuple[3],
                                                               booking_tuple[5])
         if role == PROFESSOR_ROLE or role == STUDENT_ROLE:
@@ -176,9 +176,9 @@ class BaseBooking:
         for row in all_times:
             start = row[0]
             end = row[1]
-            time_start = dt.strftime(start, '%H:%M')
-            time_end = dt.strftime(end, '%H:%M')
-            dao.insertBusyTimes(time_start, time_end)
+            time_start = dt.datetime.strftime(start, '%H:%M')
+            time_end = dt.datetime.strftime(end, '%H:%M')
+            dao.insertBusyTimes(time_start, time_end)  # Does not commit, so it acts as a temporary table
         busy_times = dao.getTop5BusiestTimes()
         if not busy_times:
             return jsonify("No Busy Times Available"), 404
