@@ -137,11 +137,11 @@ class BaseBooking:
         role = user_dao.getUserRoleById(user_id)[0]
         dao = BookingDAO()
         booking_tuple = dao.getBookingById(booking_id)
-        room_dao = RoomDAO()
-        room_type = room_dao.getRoomTypeById(booking_tuple[5])[0]
         if not booking_tuple:
             return jsonify("Booking Not Found"), 404
         else:
+            room_dao = RoomDAO()
+            room_type = room_dao.getRoomTypeById(booking_tuple[5])[0]
             if role == STAFF_ROLE or (role == PROFESSOR_ROLE and room_type == CLASSROOM_TYPE):
                 result = self.build_booking_map_dict(booking_tuple)
             else:
