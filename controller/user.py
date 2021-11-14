@@ -31,6 +31,10 @@ class BaseUser:
                   'unavailable_time_user_finish': row[2], 'user_id': row[3]}
         return result
 
+    def build_ime_slot_attr_dict(self, start_time, finish_time):
+        result = {'start_time': start_time, 'finish_time': finish_time}
+        return result
+
     # Create
     def createNewUser(self, json):
         user_email = json['user_email']
@@ -141,7 +145,6 @@ class BaseUser:
                     return False
             return True
 
-    # TODO: BEAUTIFY RESULT Intervals
     def getUserDaySchedule(self, user_id, json):
         dao = UserDAO()
         date = json['date']
@@ -149,17 +152,22 @@ class BaseUser:
         user_unavailable_time_slots = dao.getUnavailableTimeOfUserById(user_id)
         if not user:  # User Not Found
             return jsonify("User Not Found"), 404
+
         result_list = []
+        start_date = date + " 0:00"
+        start_time = dt.datetime.strptime(start_date, '%Y-%m-%d %H:%M')
+        finish_date = date + " 23:59"
+        finish_date = dt.datetime.strptime(finish_date, '%Y-%m-%d %H:%M')
         for row in user_unavailable_time_slots:
-            start = row[1]
-            end = row[2]
-            date_start = dt.datetime.strftime(start, '%Y-%m-%d')
-            date_end = dt.datetime.strftime(end, '%Y-%m-%d')
-            if(date in date_start) or (date in date_end):
-                obj = self.build_unavailable_time_user_map_dict(row)
+            if row[1] < finish_date:
+                finish_time = row[1]
+                obj = self.build_ime_slot_attr_dict(start_time, finish_time)
                 result_list.append(obj)
+                start_time = row[2]
+        finish_time = finish_date
+        result_list.append(self.build_ime_slot_attr_dict(start_time, finish_time))
         if len(result_list) != 0:
-            return jsonify(result_list), 200
+            return jsonify("User is available at the following time frames", result_list), 200
         else:
             return jsonify("User is available all day"), 200
 
