@@ -48,6 +48,14 @@ class BookingDAO:
         result = cursor.fetchone()
         return result
         
+    def getAllTimes(self):
+        cursor = self.conn.cursor()
+        query = 'select booking_start, booking_finish from "Booking"' 
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     # def getMostBookedUsers(self):
     #     cursor = self.conn.cursor()
