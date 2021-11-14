@@ -50,14 +50,14 @@ class BookingDAO:
 
     def insertBookedUsers(self, user_ids):
         cursor = self.conn.cursor()
-        query = 'insert into "BookedUsersTemp" (user_id)' \
+        query = 'insert into "TempBookedUsers" (user_id)' \
                 'values (%s)'
         cursor.execute(query, (user_ids,))
         self.conn.commit()
 
     def getTop10MostBookedUsers(self):
         cursor = self.conn.cursor()
-        query = 'select user_id, count(user_id) as times_repeated from "BookedUsersTemp" group by user_id order by times_repeated desc limit 10'
+        query = 'select user_id, count(user_id) as times_repeated from "TempBookedUsers" group by user_id order by times_repeated desc limit 10'
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -75,13 +75,13 @@ class BookingDAO:
 
     def insertBusyTimes(self, start, end):
         cursor = self.conn.cursor()
-        query = 'insert into "BusyTimes" (start_time, finish_time)' \
+        query = 'insert into "TempBusyTimes" (start_time, finish_time)' \
                 'values (%s,%s)'
         cursor.execute(query, (start, end))
 
     def getTop5BusiestTimes(self):
         cursor = self.conn.cursor()
-        query = 'SELECT start_time, finish_time ,COUNT(CONCAT(start_time,finish_time)) as times_repeated from "BusyTimes" group by start_time, finish_time order by times_repeated desc limit 5'
+        query = 'SELECT start_time, finish_time ,COUNT(CONCAT(start_time,finish_time)) as times_repeated from "TempBusyTimes" group by start_time, finish_time order by times_repeated desc limit 5'
         cursor.execute(query)
         result = []
         for row in cursor:
