@@ -47,15 +47,6 @@ class BookingDAO:
         cursor.execute(query, (room_id,booking_start,booking_finish))
         result = cursor.fetchone()
         return result
-        
-    def getAllTimes(self):
-        cursor = self.conn.cursor()
-        query = 'select booking_start, booking_finish from "Booking"' 
-        cursor.execute(query)
-        result = []
-        for row in cursor:
-            result.append(row)
-        return result
 
     def getAllBookedUsers(self):
         cursor = self.conn.cursor()
@@ -81,6 +72,15 @@ class BookingDAO:
             result.append(row)
         return result
 
+    def getAllTimes(self):
+        cursor = self.conn.cursor()
+        query = 'select booking_start, booking_finish from "Booking"'
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def insertBusyTimes(self, start, end):
         cursor = self.conn.cursor()
         query = 'insert into "BusyTimes" (start_time, finish_time)' \
@@ -95,15 +95,6 @@ class BookingDAO:
         for row in cursor:
             result.append(row)
         return result
-
-    # def getMostBookedUsers(self):
-    #     cursor = self.conn.cursor()
-    #     query = 'select user_id, "BookingInvitee".user_id from "Booking" inner join "BookingInvitee" on "Booking".booking_id = "BookingInvitee".booking_id;'
-    #     cursor.execute(query)
-    #     result = []
-    #     for row in cursor:
-    #         result.append(row)
-    #     return result
 
     def getTop10MostBookedRooms(self):
         cursor = self.conn.cursor()
