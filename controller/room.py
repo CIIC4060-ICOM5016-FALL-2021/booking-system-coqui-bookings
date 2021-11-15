@@ -1,4 +1,6 @@
 from flask import jsonify
+
+from model.booking import BookingDAO
 from model.room import RoomDAO
 import datetime as dt
 
@@ -218,12 +220,21 @@ class BaseRoom:
 
     # Delete
     def deleteRoom(self, room_id):
-        dao = RoomDAO()
-        result = dao.deleteRoom(room_id)
-        if result:
-            return jsonify("Room Deleted Successfully"), 200
-        else:
+        room_dao = RoomDAO()
+        booking_dao = BookingDAO()
+        if not room_dao.getRoomById(room_id):
             return jsonify("Room Not Found"), 404
+        all_bookings = booking_dao.getAllBookings()
+        for booking in all_bookings:
+            if booking[5] == room_id:
+                booking_dao.deleteBooking(booking[0])
+        unavailable_room_slots = room_dao.getUnavailableTimeOfRoomById(room_id)  # Search any remaining slots
+        for slot in unavailable_room_slots:
+            room_dao.deleteUnavailableRoomTime(room_id, slot[1], slot[2])
+        room_dao.deleteRoom(room_id)
+        return jsonify("Room Deleted Successfully"), 200
+
+
 
     def deleteUnavailableRoomTime(self, room_id, start_time, finish_time):
         dao = RoomDAO()

@@ -2,6 +2,8 @@ import datetime as dt
 from flask import jsonify
 
 from controller.room import BaseRoom
+from model.booking import BookingDAO
+from model.booking_invitee import BookingInviteeDAO
 from model.room import RoomDAO
 from model.user import UserDAO
 
@@ -215,19 +217,25 @@ class BaseUser:
 
     # Delete
     def deleteUser(self, user_id):
-        dao = UserDAO()
-        result = dao.deleteUser(user_id)
-        if result:
-            return jsonify("User Deleted Successfully"), 200
-        else:
+        user_dao = UserDAO()
+        booking_dao = BookingDAO()
+        invitee_dao = BookingInviteeDAO()
+        room_dao = RoomDAO()
+        if not user_dao.getUserById(user_id):
             return jsonify("User Not Found"), 404
+        unavailable_user_slots = user_dao.getUnavailableTimeOfUserById(user_id)
+        for slot in unavailable_user_slots:
+            user_dao.deleteUnavailableUserTimeFrame(user_id, slot[1], slot[2])  # Remove Unavailable Time From User
+        all_bookings = booking_dao.getAllBookings()
+        for booking in all_bookings:
+            if booking[0] == user_id:
+                booking_dao.deleteBooking(booking[0])  # Booking Without Creator Cannot Exist
+                room_dao.deleteUnavailableRoomTime(booking[5], booking[2], booking[3])  # Delete Unavailable Room Time
+            invitees = invitee_dao.getInviteeIdListFromBooking(booking[0])
+            if user_id in invitees:
+                invitee_dao.deleteInvitee(booking[0], user_id)  # Remove Invitee From Booking
+        user_dao.deleteUser(user_id)
+        return jsonify("User Deleted Successfully"), 200
 
-    '''
-    def deleteUnavailableUserTime(self, user_id, start_time, finish_time):
-        dao = UserDAO()
-        result = dao.deleteUnavailableUserTime(user_id, start_time, finish_time)
-        if result:
-            return jsonify("User Time Freed Successfully"), 200
-        else:
-            return jsonify("User Is Already Free at Specified Time"), 200
-'''
+
+
