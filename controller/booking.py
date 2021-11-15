@@ -44,6 +44,31 @@ class BaseBooking:
                   'room_id': room_id}
         return result
 
+    def dateIntersectionCount(self, date1, dateList):
+        count_intersections = 0
+        # Remove AST from date1 and convert it to datetime for comparison
+        date1_s = date1['start_time'].split()
+        date1_s = date1_s[0] + " " + date1_s[1]
+        date1_f = date1['finish_time'].split()
+        date1_f = date1_f[0] + " " + date1_f[1]
+        dt_date1_start = dt.datetime.strptime(date1_s, '%Y-%m-%d %H:%M')
+        dt_date1_finish = dt.datetime.strptime(date1_f, '%Y-%m-%d %H:%M')
+        for date2 in dateList:
+            # Remove AST from date2 and convert it to datetime for comparison
+            date2_s = date2['start_time'].split()
+            date2_s = date2_s[0] + " " + date2_s[1]
+            date2_f = date2['finish_time'].split()
+            date2_f = date2_f[0] + " " + date2_f[1]
+            dt_date2_start = dt.datetime.strptime(date2_s, '%Y-%m-%d %H:%M')
+            dt_date2_finish = dt.datetime.strptime(date2_f, '%Y-%m-%d %H:%M')
+            if (dt_date1_start < dt_date2_start < dt_date1_finish < dt_date2_finish) \
+                    or (dt_date1_start < dt_date2_start < dt_date2_finish < dt_date1_finish) \
+                    or (dt_date2_start < dt_date1_start < dt_date2_finish < dt_date1_finish) \
+                    or (dt_date2_start < dt_date1_start < dt_date1_finish < dt_date2_finish) \
+                    or (dt_date1_start == dt_date2_start or dt_date1_finish == dt_date2_finish):
+                count_intersections += 1
+        return count_intersections
+
     # Create
     def createNewBooking(self, user_id, json):
         booking_name = json['booking_name']
@@ -191,8 +216,8 @@ class BaseBooking:
         for row in all_times:
             start = row[0]
             end = row[1]
-            time_start = dt.strftime(start, '%H:%M')
-            time_end = dt.strftime(end, '%H:%M')
+            time_start = dt.datetime.strftime(start, '%H:%M')
+            time_end = dt.datetime.strftime(end, '%H:%M')
             dao.insertBusyTimes(time_start, time_end)  # Does not commit, so it acts as a temporary table
         busy_times = dao.getTop5BusiestTimes()
         if not busy_times:
@@ -242,43 +267,41 @@ class BaseBooking:
         else:
             return jsonify("User is available all day"), 200
 
-    def getFreeTimeForUsers(self, json):
-        user_array = json['user_ids']
-        user_dao = UserDAO()
+    def getFreeTimeForUsers(self, booking_id, json):
         booking_dao = BookingDAO()
-        date = json['date']
-        for row in user_array:
-            user = user_dao.getUserById(row)
+        existent_booking = booking_dao.getBookingById(booking_id)
+        if not existent_booking:
+            return jsonify("Booking Not Found"), 404
+        invitee_dao = BookingInviteeDAO()
+        user_array = invitee_dao.getInviteeIdListFromBooking(booking_id)  # List of ids
+        user_array.append(existent_booking[4])  # Add Creator User Id
+        user_dao = UserDAO()
+        date = json['date']  # Get Date to verify
+        result_list = []
+        for u_id in user_array:
+            user = user_dao.getUserById(u_id)
             if not user:  # User Not Found
                 return jsonify("User Not Found"), 404
-            user_unavailable_time_slots = user_dao.getUnavailableTimeOfUserById(row)
-            result_list = []
+            user_unavailable_time_slots = user_dao.getUnavailableTimeOfUserById(u_id)
             start_date = date + " 0:00"
             start_time = dt.datetime.strptime(start_date, '%Y-%m-%d %H:%M')
             finish_date = date + " 23:59"
             finish_date = dt.datetime.strptime(finish_date, '%Y-%m-%d %H:%M')
             for slot in user_unavailable_time_slots:
-                if slot[1] > start_time and slot[2] < finish_date:
+                if slot[1] > start_time and slot[2] < finish_date:  # Compare as time (not string)
                     finish_time = slot[1]
                     obj = BaseUser().build_time_slot_attr_dict(start_time, finish_time)
                     result_list.append(obj)
                     start_time = slot[2]
             finish_time = finish_date
-            result_list.append(BaseUser().build_time_slot_attr_dict(start_time, finish_time))
-            # for available_slot in result_list:
-            #     #day_start =
-            #     if
-            #     # booking_dao.insertUserSchedulesForBooking(row, dt.datetime.strftime(available_slot['start_time'], '%Y-%m-%d %H:%M'),
-            #     #                                           dt.datetime.strftime(available_slot['finish_time'], '%Y-%m-%d %H:%M'))
-            busy_times = booking_dao.getFreeTimesForUsers()
-        if not busy_times:
-            return jsonify("No Busy Times Available"), 404
-        else:
-            result_list = []
-            for row in busy_times:
-                obj = self.build_busy_times_map_dict(row)
-                result_list.append(obj)
-            return jsonify(result_list), 200
+            result_list.append(BaseUser().build_time_slot_attr_dict(start_time, finish_time))  # Stores Free Time String
+
+        users_in_meeting = len(user_array)
+        for string_date in result_list:
+            # Intersection will all users
+            if self.dateIntersectionCount(string_date, result_list) == users_in_meeting:
+                return jsonify("All Users in Booking are free at the following hour", string_date), 200
+        return jsonify("No overlapping times available between users at the specified date"), 200
 
     # Update
     def updateBooking(self, booking_id, user_id, json):

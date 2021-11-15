@@ -31,6 +31,16 @@ class BookingInviteeDAO:
             result.append(row)
         return result
 
+    # Only used in getFreeTimeForUsers
+    def getInviteeIdListFromBooking(self, booking_id):
+        cursor = self.conn.cursor()
+        query = 'select user_id  from "BookingInvitee" where booking_id = %s;'
+        cursor.execute(query, (booking_id,))
+        result = []
+        for row in cursor:
+            result.append(row[0])
+        return result
+
     def getInviteesByBookingIdAdminLevel(self, booking_id):
         cursor = self.conn.cursor()
         query = 'select user_id, user_email, user_password, user_first_name, user_last_name, role_id ' \

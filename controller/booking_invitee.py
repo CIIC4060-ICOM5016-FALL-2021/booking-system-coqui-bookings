@@ -29,7 +29,8 @@ class BaseBookingInvitee:
 
     def build_invitee_full_attr_dict(self, booking_id, user_id, user_email, user_password, user_first_name,
                                      user_last_name, role_id):
-        result = {'booking_id': booking_id, 'user_id': user_id, 'user_email': user_email, 'user_password': user_password,
+        result = {'booking_id': booking_id, 'user_id': user_id, 'user_email': user_email,
+                  'user_password': user_password,
                   'user_first_name': user_first_name, 'user_last_name': user_last_name, 'role_id': role_id}
         return result
 
@@ -114,8 +115,8 @@ class BaseBookingInvitee:
             for invitee in invitee_list:
                 obj = BaseUser().build_user_map_dict(invitee)
                 result_list.append(obj)
-            if len(result_list)==0:
-                return jsonify("Invitees Not Found"), 404 
+            if len(result_list) == 0:
+                return jsonify("Invitees Not Found"), 404
             else:
                 return jsonify(result_list), 200
         elif role == STUDENT_ROLE and room_type == STUDY_SPACE_TYPE:
@@ -124,11 +125,11 @@ class BaseBookingInvitee:
             for invitee in invitee_list:
                 obj = BaseUser().build_user_student_map_dict(invitee)
                 result_list.append(obj)
-            if len(result_list)==0:
-                return jsonify("Invitees Not Found"), 404 
+            if len(result_list) == 0:
+                return jsonify("Invitees Not Found"), 404
             else:
                 return jsonify("Some information can't be shown because you do not have permission to access",
-                           result_list), 200
+                               result_list), 200
         else:
             return jsonify(
                 f"User with role {role} does not have permission to view information about room type {room_type}"), 403
@@ -141,14 +142,15 @@ class BaseBookingInvitee:
         else:
             most_booked_invitee = dao.getUserById(booked_invitees[0][1])
             return jsonify(BaseUser().build_user_map_dict(most_booked_invitee)), 200
-    
+
     def updateInvitees(self, booking_id, json):
         user_id_list = json['invitee_id_list']
         user_dao = UserDAO()
         booking_dao = BookingDAO()
         invitee_dao = BookingInviteeDAO()
         bookingTime = booking_dao.getBookingStartFinishTime(booking_id)  # Returns a tuple with start and finish
-        current_invitees = invitee_dao.getInviteesByBookingIdAdminLevel(booking_id)  # Returns a list of current invitees
+        current_invitees = invitee_dao.getInviteesByBookingIdAdminLevel(
+            booking_id)  # Returns a list of current invitees
 
         for user_id in user_id_list:
             if not user_dao.getUserById(user_id):

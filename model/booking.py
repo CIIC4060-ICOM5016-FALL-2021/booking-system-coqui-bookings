@@ -78,9 +78,20 @@ class BookingDAO:
                 'values (%s,%s)'
         cursor.execute(query, (start, end))
 
+    # def getFreeTimeInMeeting(self):
+    #     cursor = self.conn.cursor()
+    #     query = 'select start_time, finish_time, concat(start_time,finish_time) as time_slot ' \
+    #             'from "TempBusyTimes" where time_slot overlaps limit 1'
+    #     cursor.execute(query)
+    #     result = []
+    #     for row in cursor:
+    #         result.append(row)
+    #     return result
+
     def getTop5BusiestTimes(self):
         cursor = self.conn.cursor()
-        query = 'SELECT start_time, finish_time ,COUNT(CONCAT(start_time,finish_time)) as times_repeated from "TempBusyTimes" group by start_time, finish_time order by times_repeated desc limit 5'
+        query = 'select start_time, finish_time, count(concat(start_time,finish_time)) as times_repeated ' \
+                'from "TempBusyTimes" group by start_time, finish_time order by times_repeated desc limit 5'
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -89,7 +100,8 @@ class BookingDAO:
 
     def getTop10MostBookedRooms(self):
         cursor = self.conn.cursor()
-        query = 'select room_id, room_name, count(room_id) as times_used from "Booking" natural inner join "Room" group by room_id, room_name order by times_used desc limit 10;'
+        query = 'select room_id, room_name, count(room_id) as times_used from "Booking" natural inner join "Room" ' \
+                'group by room_id, room_name order by times_used desc limit 10;'
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -120,12 +132,12 @@ class BookingDAO:
         result = cursor.fetchone()
         return result
 
-    def insertUserSchedulesForBooking(self, user_id, start_time, end_time):
-        cursor = self.conn.cursor()
-        query = 'insert into "TempUserSchedulesForBooking" (user_id, start_time, end_time)' \
-                'values (%s,%s, %s)'
-        cursor.execute(query, (user_id, start_time, end_time,))
-        self.conn.commit()
+    # def insertUserSchedulesForBooking(self, user_id, start_time, end_time):
+    #     cursor = self.conn.cursor()
+    #     query = 'insert into "TempUserSchedulesForBooking" (user_id, start_time, end_time)' \
+    #             'values (%s,%s, %s)'
+    #     cursor.execute(query, (user_id, start_time, end_time,))
+    #     self.conn.commit()
 
     # def getFreeTimesForUsers(self):
     #     cursor = self.conn.cursor()
