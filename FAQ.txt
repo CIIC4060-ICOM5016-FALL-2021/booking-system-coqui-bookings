@@ -1,0 +1,32 @@
+Welcome to the Coqui Bookings Frequently Asked Questions File
+
+Here, you will find answers to some of the most common questions you, as a code inspector / user could have.
+
+Q: Why are the Routes/URLs inconsistent?
+A: The Routes/URLs are limited by the operation types that can be used on it. Due to the sheer amount of GET endpoints, it was required to create new URLs for each one and it was impossible to keep track of all of them. An attempt was made, however, more time was required.
+
+Q: Why do the methods execute so many queries? / Why are some methods full of loops?
+A: Although it is bad practice doing such things, for this project we focused on reliability and ensuring everything worked by creating explicit methods/functions instead of extracting every posibble value of a single query. Additionally, adding "on cascade delete" to the already existing tables, required dropping them first and rebuilding them entirely.
+
+Q: Why is the time shown as a 24-hour clock?
+A: The time is managed by the python library 'datetime' which allows for both clock options, yet the validation of the AM or PM part didn't worked as expected
+
+Q: Why is there so much back-and-forth changing dates between String and datetime format?
+A: The datetime format allows for direct comparison using the '<', '>' and '=' operators, yet it only accepts the 'UTC' and 'GMT' time zones.The only option it gives it to use the "UTC-XX" format. As a String, the date allows the concatenation of the 'AST' part which is the timezone relevant to us.
+
+Q: Why does certain function values must be passed as a JSON and others are inside the URL?
+A: Some functions contain values required for the operation to work, yet those values can't be edited by the current user. Additionally, you won't be able to modify information not related to you or that you don't have access to. Values sent on the JSON's body are those you are allowed to modify, should you have the access for it.
+
+Q: Why do the JSONs sent by the user, contain the date and hour separately if they are stored together?
+A: As a user, you're more likely to have a separate space for the date and another one for the hour. This allows the data to be transferred easier to the backend.
+
+Q: How are the role limitations implemented?
+A: The system contains 3 roles (Professor, Student and Department Staff) and 3 Room Types (Lab, Classroom and Study Space). A Professor can see all the information of the Classroom Bookings, A Student can see partial information of the Study Space Bookings and Department Staff has full access to any Booking. The same rules apply for Booking Creation.
+
+Q: Are the values sent as email address and password limited to special constraints?
+A: No, the email address and password fields are String values, meaning they can receive any kind of information. This feature is not correct in practice and the databases provide verification methods that will be explored at a later date.
+
+Useful Links:
+- Python datetime Library: https://docs.python.org/3/library/datetime.html
+- PostgreSQL Documentation: https://www.postgresql.org/docs/14/index.html
+- HTTP Response Status Documentation: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
