@@ -35,8 +35,9 @@ class BaseBooking:
     def build_booking_attr_dict(self, booking_id, booking_name, booking_start, booking_finish, user_id, room_id,
                                 booking_invitees):
         result = {'booking_id': booking_id, 'booking_name': booking_name, 'booking_start': booking_start,
-                  'booking_finish': booking_finish, 'user_id': user_id, 'room_id': room_id,
-                  'booking_invitees': booking_invitees}
+                  'booking_finish': booking_finish, 'user_id': user_id, 'room_id': room_id}
+        if len(booking_invitees) > 0:
+            result['booking_invitees'] = booking_invitees
         return result
 
     def build_booking_attr_student_dict(self, booking_name, booking_start, booking_finish, room_id):
@@ -141,10 +142,16 @@ class BaseBooking:
             for booking in bookings_list:
                 room_type = room_dao.getRoomTypeById(booking[5])[0]
                 if role == STAFF_ROLE or (role == PROFESSOR_ROLE and room_type == CLASSROOM_TYPE):
-                    obj = self.build_booking_map_dict(booking)
+                    obj = self.build_booking_attr_dict(booking[0], booking[1],
+                                                       dt.datetime.strftime(booking[2], '%Y-%m-%d %H:%M') + " AST",
+                                                       dt.datetime.strftime(booking[3], '%Y-%m-%d %H:%M') + " AST",
+                                                       booking[4], booking[5], [])
                     result_list.append(obj)
                 elif role == STUDENT_ROLE:
-                    obj = self.build_booking_attr_student_dict(booking[1], booking[2], booking[3], booking[5])
+                    obj = self.build_booking_attr_student_dict(booking[1],
+                                                               dt.datetime.strftime(booking[2], '%Y-%m-%d %H:%M') + " AST",
+                                                               dt.datetime.strftime(booking[3], '%Y-%m-%d %H:%M') + " AST",
+                                                               booking[5])
                     result_list.append(obj)
                 else:
                     continue
@@ -168,9 +175,14 @@ class BaseBooking:
             room_dao = RoomDAO()
             room_type = room_dao.getRoomTypeById(booking_tuple[5])[0]
             if role == STAFF_ROLE or (role == PROFESSOR_ROLE and room_type == CLASSROOM_TYPE):
-                result = self.build_booking_map_dict(booking_tuple)
+                result = self.build_booking_attr_dict(booking_tuple[0], booking_tuple[1],
+                                                      dt.datetime.strftime(booking_tuple[2], '%Y-%m-%d %H:%M'),
+                                                      dt.datetime.strftime(booking_tuple[3], '%Y-%m-%d %H:%M'),
+                                                      booking_tuple[4], booking_tuple[5], [])
             else:
-                result = self.build_booking_attr_student_dict(booking_tuple[1], booking_tuple[2], booking_tuple[3],
+                result = self.build_booking_attr_student_dict(booking_tuple[1],
+                                                              dt.datetime.strftime(booking_tuple[2], '%Y-%m-%d %H:%M'),
+                                                              dt.datetime.strftime(booking_tuple[3], '%Y-%m-%d %H:%M'),
                                                               booking_tuple[5])
         if role == PROFESSOR_ROLE or role == STUDENT_ROLE:
             return jsonify("Some information can't be shown because you do not have permission to access",
@@ -393,7 +405,7 @@ class BaseBooking:
     # Delete
     def deleteBooking(self, booking_id):
         booking_dao = BookingDAO()
-        existent_booking =  booking_dao.getBookingById(booking_id)
+        existent_booking = booking_dao.getBookingById(booking_id)
         if not existent_booking:
             return jsonify("Booking not Found"), 404
         room_dao = RoomDAO()
