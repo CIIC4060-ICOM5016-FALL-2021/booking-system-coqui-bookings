@@ -150,29 +150,23 @@ class BaseUser:
 
     def getUserDaySchedule(self, user_id, json):
         dao = UserDAO()
+        booking_dao = BookingDAO()
         date = json['date']
         user = dao.getUserById(user_id)
         user_unavailable_time_slots = dao.getUnavailableTimeOfUserById(user_id)
+        # TODO Show Booking for both users and invitees
         if not user:  # User Not Found
             return jsonify("User Not Found"), 404
 
         result_list = []
-        start_date = date + " 0:00"
-        start_time = dt.datetime.strptime(start_date, '%Y-%m-%d %H:%M')
-        finish_date = date + " 23:59"
-        finish_date = dt.datetime.strptime(finish_date, '%Y-%m-%d %H:%M')
         for row in user_unavailable_time_slots:
-            if row[1] > start_time and row[2] < finish_date:
-                finish_time = row[1]
-                obj = self.build_time_slot_attr_dict(start_time, finish_time)
+                obj = self.build_time_slot_attr_dict(row[1], row[2])
+
                 result_list.append(obj)
-                start_time = row[2]
-        finish_time = finish_date
-        result_list.append(self.build_time_slot_attr_dict(start_time, finish_time))
         if len(result_list) != 1:
-            return jsonify("User is available at the following time frames", result_list), 200
+            return jsonify("User is busy at the following time frames", result_list), 200
         else:
-            return jsonify("User is available all day"), 200
+            return jsonify("User is busy all day"), 200
 
     def getMostUsedRoomByUserId(self, user_id):
         dao = UserDAO()

@@ -394,6 +394,7 @@ class BaseBooking:
                 for removed_id in old_invitees:  # Rollback the removed users
                     invitee_dao.createNewInvitee(booking_id, removed_id)
                     user_dao.createUnavailableUserTimeFrame(removed_id, old_time_start, old_time_finish)
+                # TODO ROLLBACK USER
                 return False
 
         # Add new invitees
