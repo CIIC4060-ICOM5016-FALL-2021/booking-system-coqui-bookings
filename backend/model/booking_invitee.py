@@ -1,6 +1,6 @@
 import psycopg2
 
-from config.dbconfig import db_root_config
+from backend.config.dbconfig import db_root_config
 
 
 class BookingInviteeDAO:

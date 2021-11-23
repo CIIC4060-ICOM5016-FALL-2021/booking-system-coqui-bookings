@@ -1,10 +1,10 @@
 from flask import jsonify
 
-from model.booking import BookingDAO
-from model.room import RoomDAO
+from backend.model.booking import BookingDAO
+from backend.model.room import RoomDAO
 import datetime as dt
 
-from model.user import UserDAO
+from backend.model.user import UserDAO
 
 
 class BaseRoom:
