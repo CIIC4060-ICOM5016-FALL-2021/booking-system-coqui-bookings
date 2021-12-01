@@ -48,7 +48,7 @@ function HomePage() {
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={() => {navigate.push("/SelectScreen");}}>Login</Button>
+                    <Button onClick={() => {navigate("/SelectScreen");}}>Login</Button>
                 </Modal.Actions>
             </Modal>
             <Segment placeholder>
@@ -68,7 +68,7 @@ function HomePage() {
                                 label='Password'
                                 type='password'
                             />
-                            <Button content='Login' primary onClick={() => setOpen(false)}/>
+                            <Button content='Login' primary onClick={() => {navigate("/SelectScreen");}}/>
                         </Form>
                     </Grid.Column>
                     <Grid.Column verticalAlign='middle' >

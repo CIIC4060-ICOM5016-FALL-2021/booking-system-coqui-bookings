@@ -12,13 +12,13 @@ function SelectScreen() {
     }
 
     return (<Segment><Header  textAlign="center" size="huge">Choose the option to proceed with
-    <Button floated="right" content='Logout' icon='signup' size='big' onClick={() => {navigate.push("/Home");}}/></Header>
+    <Button floated="right" content='Logout' icon='signup' size='big' onClick={() => {navigate("/Home");}}/></Header>
                 <Grid columns={2} relaxed='very' stackable>
 
                     <Grid.Column verticalAlign='middle'>
-                        <Button  content='DashBoard'  size='big' onClick={() => {navigate.push("/Dashboard");}}/>
-                        <Button  content='UserView'  size='big' onClick={() => {navigate.push("/UserView");}}/>
-                        <Button  content='Schedule'  size='big' onClick={() => {navigate.push("/SelectScreen");}}/>
+                        <Button  content='DashBoard'  size='big' onClick={() => {navigate("/Dashboard");}}/>
+                        <Button  content='UserView'  size='big' onClick={() => {navigate("/UserView");}}/>
+                        <Button  content='Schedule'  size='big' onClick={() => {navigate("/SelectScreen");}}/>
                     </Grid.Column>
                 </Grid>
             </Segment>
