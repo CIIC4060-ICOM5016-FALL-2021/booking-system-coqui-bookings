@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal">
-    <data-source name="da0klfg4v9tiol@ec2-52-200-68-5.compute-1.amazonaws.com" uuid="c65f577a-a19e-4ed6-8367-5c3d9d943a65">
-      <database-info product="PostgreSQL" version="13.5 (Ubuntu 13.5-1.pgdg20.04+1)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.5" dbms="POSTGRES" exact-version="13.5" exact-driver-version="42.2">
+  <component name="dataSourceStorageLocal" created-in="PY-212.5284.44">
+    <data-source name="Coqui Bookings Database" uuid="e408353f-fb99-4457-b91b-29bdf63822d0">
+      <database-info product="PostgreSQL" version="13.5 (Ubuntu 13.5-1.pgdg20.04+1)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.22" dbms="POSTGRES" exact-version="13.5" exact-driver-version="42.2">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />

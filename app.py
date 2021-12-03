@@ -64,6 +64,14 @@ def handleUserMostUsedRoom(user_id):
         return jsonify("Method Not Allowed"), 405
 
 
+@app.route('/coqui-bookings/User/users/login', methods=['GET'])
+def verifyUserLogin():
+    if request.method == 'GET':
+        return BaseUser().verifyLogin(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
 # --------------------------------------------------------------------------------------
 # Unavailable User
 # --------------------------------------------------------------------------------------
@@ -148,8 +156,6 @@ def handleRoomType(room_id):
         return jsonify("Method Not Allowed"), 405
 
 
-
-
 @app.route('/coqui-bookings/Room/<int:room_id>/unavailable-time-slot/User/<int:user_id>', methods=['POST'])
 def handleRoomAvailability(room_id, user_id):
     if request.method == 'POST':
@@ -200,13 +206,13 @@ def handleBookingByIdWithRole(booking_id, user_id):
     else:
         return jsonify("Method Not Allowed"), 405
 
+
 @app.route('/coqui-bookings/Booking/bookings/<int:booking_id>/User/<int:user_id>/get', methods=['GET'])
 def handleGetBookingById(booking_id, user_id):
     if request.method == 'GET':
         return BaseBooking().getBookingById(booking_id, user_id)
     else:
         return jsonify("Method Not Allowed"), 405
-
 
 
 @app.route('/coqui-bookings/Booking/bookings/user/<int:user_id>/create', methods=['POST'])
@@ -248,12 +254,14 @@ def handleMostBookedRooms():
     else:
         return jsonify("Method Not Allowed"), 405
 
+
 @app.route('/coqui-bookings/Booking/<int:booking_id>/free-time-for-users', methods=['GET'])
 def handleFreeTimeForUsers(booking_id):
     if request.method == 'GET':
         return BaseBooking().getFreeTimeForUsers(booking_id, request.json)
     else:
         return jsonify("Method Not Allowed"), 405
+
 
 # --------------------------------------------------------------------------------------
 # Booking Invitee

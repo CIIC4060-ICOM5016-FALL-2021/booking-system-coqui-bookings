@@ -20,7 +20,8 @@ class BaseRoom:
     def build_unavailable_time_room_map_dict(self, row):
         result = {'unavailable_time_room_id': row[0],
                   'unavailable_time_room_start': dt.datetime.strftime(row[1], '%Y-%m-%d %H:%M') + " AST",
-                  'unavailable_time_room_finish': dt.datetime.strftime(row[2], '%Y-%m-%d %H:%M') + " AST", 'room_id': row[3]}
+                  'unavailable_time_room_finish': dt.datetime.strftime(row[2], '%Y-%m-%d %H:%M') + " AST",
+                  'room_id': row[3]}
         return result
 
     def build_type_map_dict(self, row):
@@ -30,6 +31,19 @@ class BaseRoom:
     def build_time_slot_attr_dict(self, start_time, finish_time):
         result = {'start_time': dt.datetime.strftime(start_time, '%Y-%m-%d %H:%M') + " AST",
                   'finish_time': dt.datetime.strftime(finish_time, '%Y-%m-%d %H:%M') + " AST"}
+        return result
+
+    def build_time_slot_marked_as_busy(self, start_time, finish_time):
+        result = {'start_time': dt.datetime.strftime(start_time, '%Y-%m-%d %H:%M') + " AST",
+                  'finish_time': dt.datetime.strftime(finish_time, '%Y-%m-%d %H:%M') + " AST",
+                  'reason': "Room marked as busy by Admin"}
+        return result
+
+    def build_booking_map_dict_with_room(self, row):
+        result = {'booking_id': row[0], 'booking_name': row[1],
+                  'booking_start': dt.datetime.strftime(row[2], '%Y-%m-%d %H:%M') + " AST",
+                  'booking_finish': dt.datetime.strftime(row[3], '%Y-%m-%d %H:%M') + " AST",
+                  'organizer_id': row[4], 'room_id': row[5], 'room_name': row[6]}
         return result
 
     # Create
@@ -178,27 +192,30 @@ class BaseRoom:
             return True
 
     def getRoomDaySchedule(self, room_id, json):
-        dao = RoomDAO()
-        date = json['date']
-        room = dao.getRoomById(room_id)
-        room_unavailable_time_slots = dao.getUnavailableTimeOfRoomById(room_id)
+        room_dao = RoomDAO()
+        room = room_dao.getRoomById(room_id)
         if not room:
             return jsonify("Room Not Found"), 404
+
+        booking_dao = BookingDAO()
+        date = json['date']
+        start_date = dt.datetime.strptime(date + " 0:00", '%Y-%m-%d %H:%M')
+        finish_date = dt.datetime.strptime(date + " 23:59", '%Y-%m-%d %H:%M')
+
+        room_unavailable_time_slots = room_dao.getUnavailableTimeOfRoomByIdAndDate(room_id, start_date, finish_date)
         result_list = []
-        start_date = date + " 0:00"
-        start_time = dt.datetime.strptime(start_date, '%Y-%m-%d %H:%M')
-        finish_date = date + " 23:59"
-        finish_date = dt.datetime.strptime(finish_date, '%Y-%m-%d %H:%M')
         for row in room_unavailable_time_slots:
-            if row[1] > start_time and row[2] < finish_date:
-                finish_time = row[1]
-                obj = self.build_time_slot_attr_dict(start_time, finish_time)
+            booking_data = booking_dao.getBookingDataAtTimeFrame(row[1], row[2])
+            if not booking_data:  # No bookings found at this time frame
+                obj = self.build_time_slot_marked_as_busy(row[1], row[2])
                 result_list.append(obj)
-                start_time = row[2]
-        finish_time = finish_date
-        result_list.append(self.build_time_slot_attr_dict(start_time, finish_time))
-        if len(result_list) != 1:
-            return jsonify("Room is available at the following time frames", result_list), 200
+                continue  # Nothing more to check
+            for column in booking_data:
+                if column[5] == row[3]:
+                    obj = self.build_booking_map_dict_with_room(column)
+                    result_list.append(obj)
+        if len(result_list) >= 1:
+            return jsonify("Room is busy at the following time frames", result_list), 200
         else:
             return jsonify("Room is available all day"), 200
 
@@ -233,8 +250,6 @@ class BaseRoom:
             room_dao.deleteUnavailableRoomTime(room_id, slot[1], slot[2])
         room_dao.deleteRoom(room_id)
         return jsonify("Room Deleted Successfully"), 200
-
-
 
     def deleteUnavailableRoomTime(self, room_id, start_time, finish_time):
         dao = RoomDAO()

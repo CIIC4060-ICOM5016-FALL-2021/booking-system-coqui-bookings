@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="da0klfg4v9tiol@ec2-52-200-68-5.compute-1.amazonaws.com" uuid="c65f577a-a19e-4ed6-8367-5c3d9d943a65">
+    <data-source source="LOCAL" name="Coqui Bookings Database" uuid="e408353f-fb99-4457-b91b-29bdf63822d0">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>

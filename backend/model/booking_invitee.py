@@ -41,6 +41,16 @@ class BookingInviteeDAO:
             result.append(row[0])
         return result
 
+    # Used in Schedules
+    def getBookingDataFromInviteeAtTimeFrame(self, user_id, booking_start, booking_finish):
+        cursor = self.conn.cursor()
+        query = 'select "Booking".booking_id, booking_name, booking_start, booking_finish, "Booking".user_id, room_id,' \
+                'room_name from "BookingInvitee" as BI inner join "Booking" on BI.booking_id = "Booking".booking_id ' \
+                'natural inner join "Room" where BI.user_id = %s and booking_start >= %s and booking_finish <= %s;'
+        cursor.execute(query, (user_id, booking_start, booking_finish,))
+        result = cursor.fetchone()
+        return result
+
     def getInviteesByBookingIdAdminLevel(self, booking_id):
         cursor = self.conn.cursor()
         query = 'select user_id, user_email, user_password, user_first_name, user_last_name, role_id ' \
@@ -63,7 +73,8 @@ class BookingInviteeDAO:
 
     def getInviteeUserHasBeenMostBookedWith(self, user_id):
         cursor = self.conn.cursor()
-        query = 'select "Booking".user_id, BI.user_id, count(BI.user_id) as times_booked_invitee from "Booking"inner join "BookingInvitee" BI on "Booking".booking_id = BI.booking_id ' \
+        query = 'select "Booking".user_id, BI.user_id, count(BI.user_id) as times_booked_invitee from "Booking" ' \
+                'inner join "BookingInvitee" BI on "Booking".booking_id = BI.booking_id ' \
                 'where "Booking".user_id = %s group by "Booking".user_id, BI. user_id order by count(BI.user_id) desc'
         cursor.execute(query, (user_id,))
         result = []
@@ -74,7 +85,7 @@ class BookingInviteeDAO:
     def verifyInviteeInBooking(self, booking_id, user_id):
         cursor = self.conn.cursor()
         query = 'select booking_id, user_id from "BookingInvitee" where booking_id = %s and user_id = %s;'
-        cursor.execute(query, (booking_id,user_id,))
+        cursor.execute(query, (booking_id, user_id,))
         result = cursor.fetchone()
         return result
 

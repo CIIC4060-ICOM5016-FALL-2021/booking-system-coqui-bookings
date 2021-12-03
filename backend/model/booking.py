@@ -40,11 +40,22 @@ class BookingDAO:
         result = cursor.fetchone()
         return result
 
+    # Used in Schedules
+    def getBookingDataAtTimeFrame(self, booking_start, booking_finish):
+        cursor = self.conn.cursor()
+        query = 'select booking_id, booking_name, booking_start, booking_finish , user_id, room_id, room_name ' \
+                'from "Booking" natural inner join "Room" where booking_start >= %s and booking_finish <= %s;'
+        cursor.execute(query, (booking_start, booking_finish,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getUserBookedRoomAtTimeFrame(self, room_id, booking_start, booking_finish):
         cursor = self.conn.cursor()
         query = 'select user_id from "Booking"' \
                 'where room_id = %s and booking_start = %s and booking_finish = %s'
-        cursor.execute(query, (room_id,booking_start,booking_finish))
+        cursor.execute(query, (room_id, booking_start, booking_finish))
         result = cursor.fetchone()
         return result
 
@@ -56,7 +67,8 @@ class BookingDAO:
 
     def getTop10MostBookedUsers(self):
         cursor = self.conn.cursor()
-        query = 'select user_id, count(user_id) as times_repeated from "TempBookedUsers" group by user_id order by times_repeated desc limit 10'
+        query = 'select user_id, count(user_id) as times_repeated from "TempBookedUsers" ' \
+                'group by user_id order by times_repeated desc limit 10'
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -77,16 +89,6 @@ class BookingDAO:
         query = 'insert into "TempBusyTimes" (start_time, finish_time)' \
                 'values (%s,%s)'
         cursor.execute(query, (start, end))
-
-    # def getFreeTimeInMeeting(self):
-    #     cursor = self.conn.cursor()
-    #     query = 'select start_time, finish_time, concat(start_time,finish_time) as time_slot ' \
-    #             'from "TempBusyTimes" where time_slot overlaps limit 1'
-    #     cursor.execute(query)
-    #     result = []
-    #     for row in cursor:
-    #         result.append(row)
-    #     return result
 
     def getTop5BusiestTimes(self):
         cursor = self.conn.cursor()
@@ -131,22 +133,6 @@ class BookingDAO:
         cursor.execute(query, (booking_id,))
         result = cursor.fetchone()
         return result
-
-    # def insertUserSchedulesForBooking(self, user_id, start_time, end_time):
-    #     cursor = self.conn.cursor()
-    #     query = 'insert into "TempUserSchedulesForBooking" (user_id, start_time, end_time)' \
-    #             'values (%s,%s, %s)'
-    #     cursor.execute(query, (user_id, start_time, end_time,))
-    #     self.conn.commit()
-
-    # def getFreeTimesForUsers(self):
-    #     cursor = self.conn.cursor()
-    #     query = 'SELECT user_id, start_time, as from "TempUserSchedulesForBooking" group by user_id'
-    #     cursor.execute(query)
-    #     result = []
-    #     for row in cursor:
-    #         result.append(row)
-    #     return result
 
     # Update
     def updateBooking(self, booking_id, booking_name, booking_time_start, booking_time_end, user_id, room_id):
