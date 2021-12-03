@@ -1,8 +1,8 @@
-import React, {Component, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
-import {useNavigate} from 'react-router-dom';
 import Axios from "axios";
 import $ from 'jquery';
+import {useNavigate} from "react-router-dom";
 
 
 // $(document).ready(function(){
@@ -70,7 +70,11 @@ function HomePage() {
         Axios.post("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/login", data).then(
             res => {
                 window.alert("User has been logged in.")
-                Response.redirect("/UserView")
+                //TODO: LOGOUT
+                // window.setInterval('window.location.replace("/UserView")', 1000);
+                //window.setInterval('window.location.href = "/UserView"', 1000);
+                //localStorage.setItem("user_email",  res.data.user_email);
+                //localStorage.setItem("user_password", res.data.user_password);
                 console.log(res)
             }).catch(
             err => {
