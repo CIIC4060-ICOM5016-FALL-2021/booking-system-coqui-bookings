@@ -64,6 +64,14 @@ def handleUserMostUsedRoom(user_id):
         return jsonify("Method Not Allowed"), 405
 
 
+@app.route('/coqui-bookings/User/users/login', methods=['GET'])
+def verifyUserLogin():
+    if request.method == 'GET':
+        return BaseUser().verifyLogin(request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
 # --------------------------------------------------------------------------------------
 # Unavailable User
 # --------------------------------------------------------------------------------------

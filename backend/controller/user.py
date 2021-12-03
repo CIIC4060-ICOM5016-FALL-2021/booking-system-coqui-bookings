@@ -162,6 +162,16 @@ class BaseUser:
                     return False
             return True
 
+    def verifyLogin(self, json):
+        user_email = json['user_email']
+        user_password = json['user_password']
+        user_dao = UserDAO()
+        valid_user = user_dao.verifyLogin(user_email, user_password)
+        if not valid_user:
+            return jsonify("Username or Password entered incorrectly"), 401
+        else:
+            return jsonify("User logged in successfully"), 200
+
     def getUserDaySchedule(self, user_id, json):
         user_dao = UserDAO()
         user = user_dao.getUserById(user_id)
