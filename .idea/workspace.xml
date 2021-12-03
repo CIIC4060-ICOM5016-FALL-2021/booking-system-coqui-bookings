@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="73000436-d6eb-4696-8dff-26979ce15ad4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/frontend/src/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/HomePage.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="20ceA22v9kjj24we4KKUrg48Pyc" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="postgresql" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/config" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Documents" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Compound.DbApp">
+    <configuration name="DbApp" type="CompoundRunConfigurationType">
+      <toRun name="Flask" type="Python.FlaskServer" />
+      <toRun name="start" type="js.build_tools.npm" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="CompoundRunConfigurationType">
+      <toRun name="Flask" type="Python.FlaskServer" />
+      <toRun name="start" type="js.build_tools.npm" />
+      <method v="2" />
+    </configuration>
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="booking-system-coqui-bookings" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/backend" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/backend/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Flask" type="Python.FlaskServer" nameIsGenerated="true">
+      <module name="booking-system-coqui-bookings" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="/Library/Frameworks/Python.framework/Versions/3.10/bin/python3" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/backend" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/frontend/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Compound.DbApp" />
+      <item itemvalue="Flask server.Flask" />
+      <item itemvalue="npm.start" />
+      <item itemvalue="Python.app" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="73000436-d6eb-4696-8dff-26979ce15ad4" name="Default Changelist" comment="" />
+      <created>1636348155742</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1636348155742</updated>
+      <workItem from="1636348157499" duration="22000" />
+      <workItem from="1636348184639" duration="67959000" />
+      <workItem from="1636752933823" duration="58611000" />
+      <workItem from="1637160039731" duration="13000" />
+      <workItem from="1638228300284" duration="386000" />
+      <workItem from="1638496066017" duration="8578000" />
+    </task>
+    <task id="LOCAL-00001" summary="Added some crud endpoints.">
+      <created>1636489976202</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1636489976202</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Updated User endpoints according to new tables.">
+      <created>1636507563410</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1636507563410</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Updated Room endpoints according to new tables.">
+      <created>1636516027446</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1636516027446</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Updated User endpoints for unavailable users.">
+      <created>1636580459274</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1636580459274</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Updated date format for date comparison.">
+      <created>1636596209366</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1636596209366</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added Get all day schedule for user. &#10;Added Get most used room. &#10;Added Get most used room by a particular user.&#10;Added Get Top 10 most booked rooms.">
+      <created>1636841734783</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1636841734783</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Removed todo tag.">
+      <created>1636841785176</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1636841785176</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fixed bug on MostUsedRoomByUserId&#10;Added getInviteeUserHasBeenMostBookedWith">
+      <created>1636847646883</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1636847646883</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Added get Top 5 Busiest Times (prototype)">
+      <created>1636857793803</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1636857793803</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Added get top 10 most booked users">
+      <created>1636865894118</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1636865894118</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Minor changes">
+      <created>1636866290077</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1636866290077</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Fixed bug in getAllInvitees&#10;Fixed bug in getTop10MostBookedUsers&#10;Simplified getTop10MostBookedUsers">
+      <created>1636869064739</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1636869064739</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Renamed TempTables">
+      <created>1636906568316</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1636906568316</updated>
+    </task>
+    <task id="LOCAL-00014" summary="attempt at free times">
+      <created>1636923677757</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1636923677757</updated>
+    </task>
+    <task id="LOCAL-00015" summary="added postman collection">
+      <created>1636943103536</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1636943103536</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Added Local Endpoints&#10;Added Hosted Endpoints">
+      <created>1636945210627</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1636945210627</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Added Create User Function to frontend.">
+      <created>1638504572253</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1638504572253</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added some crud endpoints." />
+    <MESSAGE value="Updated User endpoints according to new tables." />
+    <MESSAGE value="Updated Room endpoints according to new tables." />
+    <MESSAGE value="Updated User endpoints for unavailable users." />
+    <MESSAGE value="Updated date format for date comparison." />
+    <MESSAGE value="Added Get all day schedule for user. &#10;Added Get most used room. &#10;Added Get most used room by a particular user.&#10;Added Get Top 10 most booked rooms." />
+    <MESSAGE value="Removed todo tag." />
+    <MESSAGE value="Fixed bug on MostUsedRoomByUserId&#10;Added getInviteeUserHasBeenMostBookedWith" />
+    <MESSAGE value="Added get Top 5 Busiest Times (prototype)" />
+    <MESSAGE value="Added get top 10 most booked users" />
+    <MESSAGE value="Minor changes" />
+    <MESSAGE value="Fixed bug in getAllInvitees&#10;Fixed bug in getTop10MostBookedUsers&#10;Simplified getTop10MostBookedUsers" />
+    <MESSAGE value="Renamed TempTables" />
+    <MESSAGE value="attempt at free times" />
+    <MESSAGE value="added postman collection" />
+    <MESSAGE value="Added Local Endpoints&#10;Added Hosted Endpoints" />
+    <MESSAGE value="Added Create User Function to frontend." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Create User Function to frontend." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/backend/app.py</url>
+          <line>23</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/booking_system_coqui_bookings$app.coverage" NAME="app Coverage Results" MODIFIED="1638496738289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
+    <SUITE FILE_PATH="coverage/booking_system_coqui_bookings$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1638504670112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
+  </component>
+</project>
