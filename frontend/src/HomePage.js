@@ -71,11 +71,9 @@ function HomePage() {
             res => {
                 window.alert("User has been logged in.")
                 // TODO: LOGOUT
-                // window.setInterval('window.location.replace("/UserView")', 1000);
                 window.setInterval('window.location.href = "/UserView"', 1000);
-                //localStorage.setItem("user_email",  res.data.user_email);
-                //localStorage.setItem("user_password", res.data.user_password);
-                console.log(res)
+                localStorage.setItem("user_email",  user_email);
+                localStorage.setItem("user_password", user_password);
             }).catch(
             err => {
                 console.log("Error:" + err)

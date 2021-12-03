@@ -3,6 +3,7 @@ import {Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import {Button, Card, Container, Modal} from "semantic-ui-react";
+import Axios from "axios";
 
 
 // Event {
@@ -15,6 +16,23 @@ import {Button, Card, Container, Modal} from "semantic-ui-react";
 
 
 function Schedule(){
+
+    const getSchedule = event => {
+        event.preventDefault();
+        const data = {
+            user_email: localStorage.getItem("user_email")
+        };
+
+        console.log(data)
+        Axios.post("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users", data).then(
+            res => {
+                window.alert("User has been created.")
+                console.log(res)
+            }).catch(
+            err => {
+                console.log("Error:" + err)
+            })
+    }
     const [dates, setDates] = useState([{
         'title': 'Selection',
         'allDay': false,
