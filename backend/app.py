@@ -3,8 +3,8 @@ from flask_cors import CORS
 
 from backend.controller.booking import BaseBooking
 from backend.controller.booking_invitee import BaseBookingInvitee
-from backend.controller import BaseUser
-from backend.controller import BaseRoom
+from backend.controller.user import BaseUser
+from backend.controller.room import BaseRoom
 
 app = Flask(__name__)
 CORS(app)

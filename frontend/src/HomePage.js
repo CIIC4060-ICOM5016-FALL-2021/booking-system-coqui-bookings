@@ -1,7 +1,31 @@
 import React, {Component, useState} from 'react';
 import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
 import {useNavigate} from 'react-router-dom';
+import Axios from "axios";
+import $ from 'jquery';
 
+
+// $(document).ready(function(){
+//     $('').prop('disabled', true)
+// });
+//
+// function validateSignUp(){
+//  if( $("#first_name").val() === null ||
+//      $("#first_name").val() === "" ||
+//      $("#last_name").val() === null ||
+//      $("#last_name").val() === "" ||
+//      $("#email").val() === null ||
+//      $("#email").val() === "" ||
+//      $("#password").val() === null ||
+//      $("#password").val() === ""
+//  ) {
+//      $("#sign-up").prop("disabled", true)
+//  }
+//  else{
+//      $("#sign-up").removeAttr("disabled")
+//  }
+//
+// }
 
 function HomePage() {
     let navigate = useNavigate();
@@ -10,6 +34,30 @@ function HomePage() {
     const handleChange = (event, newValue) => {
         setOpen(true);
     }
+        const [user_email, set_email] = useState("");
+        const [user_password, set_password] = useState("");
+        const [user_first_name, set_first_name] = useState("");
+        const [user_last_name, set_last_name] = useState("");
+        const [role_id, set_role_id] = useState("");
+
+        const signUp = event => {
+            event.preventDefault();
+            const data = {
+                user_email: user_email,
+                user_password: user_password,
+                user_first_name: user_first_name,
+                user_last_name: user_last_name,
+                role_id: role_id
+            };
+            console.log(data)
+            Axios.post("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users", data).then(
+                res => {
+                    console.log(res)
+                }).catch(
+                err => {
+                    console.log("Error:" + err)
+                })
+        }
 
     return (<Segment><Header dividing textAlign="center" size="huge">Welcome to Coqui Bookings</Header>
             <Modal
@@ -22,33 +70,53 @@ function HomePage() {
                 <Modal.Content>
                     <Modal.Description>
                          <Form>
+                             <Form.Input
+                                 id='user_email'
+                                 icon='user'
+                                 iconPosition='left'
+                                 label='Email'
+                                 onChange={(event) => {
+                                     set_email(event.target.value);}}
+                             />
+                             Reminder: Email will be your accounts username when you log in next time.
+                             <Form.Input
+                                 id='user_password'
+                                 icon='lock'
+                                 iconPosition='left'
+                                 label='Password'
+                                 type='password'
+                                 onChange={(event) => {
+                                     set_password(event.target.value);}}
+                             />
                               <Form.Input
+                                id='user_first-name'
                                 icon='user'
                                 iconPosition='left'
                                 label='First Name'
+                                onChange={(event) => {
+                                    set_first_name(event.target.value);}}
                             />
                               <Form.Input
+                                  id='user_last-name'
                                 icon='user'
                                 iconPosition='left'
                                 label='Last Name'
+                                  onChange={(event) => {
+                                      set_last_name(event.target.value);}}
                             />
-                            <Form.Input
-                                icon='user'
-                                iconPosition='left'
-                                label='Email'
-                            />
-                              Reminder: Email will be your accounts username when you log in next time.
-                            <Form.Input
-                                icon='lock'
-                                iconPosition='left'
-                                label='Password'
-                                type='password'
-                            />
+                             <Form.Input
+                                 id='role_id'
+                                 iconPosition='left'
+                                 label='Role'
+                                 type='number'
+                                 onChange={(event) => {
+                                     set_role_id(event.target.value);}}
+                             />
                         </Form>
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={() => {navigate("/SelectScreen");}}>Login</Button>
+                    <Button onClick={signUp}>Sign Up</Button>
                 </Modal.Actions>
             </Modal>
             <Segment placeholder>
@@ -72,7 +140,7 @@ function HomePage() {
                         </Form>
                     </Grid.Column>
                     <Grid.Column verticalAlign='middle' >
-                        <Button  content='Sign up' icon='signup' size='big' onClick={handleChange} />
+                        <Button content='Sign up' icon='signup' size='big' onClick={handleChange}/>
                     </Grid.Column>
                 </Grid>
 
@@ -81,6 +149,5 @@ function HomePage() {
         </Segment>
     )
 }
-
 
 export default HomePage;
