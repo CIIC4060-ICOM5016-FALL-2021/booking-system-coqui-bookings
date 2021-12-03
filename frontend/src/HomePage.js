@@ -144,18 +144,22 @@ function HomePage() {
                     <Grid.Column>
                         <Form>
                             <Form.Input
-                                id = user_email
+                                id = 'user_email_login'
                                 icon='user'
                                 iconPosition='left'
                                 label='Email'
                                 placeholder='Email'
+                                onChange={(event) => {
+                                    set_email(event.target.value);}}
                             />
                             <Form.Input
-                                id = user_password
+                                id = 'user_password_login'
                                 icon='lock'
                                 iconPosition='left'
                                 label='Password'
                                 type='password'
+                                onChange={(event) => {
+                                    set_password(event.target.value);}}
                             />
                             <Button content='Login' primary onClick={logIn}/>
                         </Form>
