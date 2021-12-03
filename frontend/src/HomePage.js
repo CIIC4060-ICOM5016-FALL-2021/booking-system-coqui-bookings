@@ -75,10 +75,11 @@ function HomePage() {
                 window.setInterval('window.location.href = "/UserView"', 1000);
                 //localStorage.setItem("user_email",  res.data.user_email);
                 //localStorage.setItem("user_password", res.data.user_password);
-                console.log(res)
+                console.log(res.data)
             }).catch(
             err => {
-                console.log("Error:" + err)
+                console.log(err.response.data)
+                window.alert("User failed logged in.")
             })
     }
 

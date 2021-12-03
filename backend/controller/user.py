@@ -170,7 +170,7 @@ class BaseUser:
         if not valid_user:
             return jsonify("Username or Password entered incorrectly"), 401
         else:
-            return jsonify("User logged in successfully"), 200
+            return jsonify("User logged in successfully", valid_user[0]), 200
 
     def getUserDaySchedule(self, user_id, json):
         user_dao = UserDAO()
