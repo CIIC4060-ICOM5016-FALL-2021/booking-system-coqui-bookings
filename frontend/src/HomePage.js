@@ -52,12 +52,31 @@ function HomePage() {
             console.log(data)
             Axios.post("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users", data).then(
                 res => {
+                    window.alert("User has been created.")
                     console.log(res)
                 }).catch(
                 err => {
                     console.log("Error:" + err)
                 })
         }
+
+    const logIn = event => {
+        event.preventDefault();
+        const data = {
+            user_email: user_email,
+            user_password: user_password,
+        };
+        console.log(data)
+        Axios.post("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/login", data).then(
+            res => {
+                window.alert("User has been logged in.")
+                Response.redirect("/UserView")
+                console.log(res)
+            }).catch(
+            err => {
+                console.log("Error:" + err)
+            })
+    }
 
     return (<Segment><Header dividing textAlign="center" size="huge">Welcome to Coqui Bookings</Header>
             <Modal
@@ -125,18 +144,20 @@ function HomePage() {
                     <Grid.Column>
                         <Form>
                             <Form.Input
+                                id = user_email
                                 icon='user'
                                 iconPosition='left'
-                                label='Username'
-                                placeholder='Username'
+                                label='Email'
+                                placeholder='Email'
                             />
                             <Form.Input
+                                id = user_password
                                 icon='lock'
                                 iconPosition='left'
                                 label='Password'
                                 type='password'
                             />
-                            <Button content='Login' primary onClick={() => {navigate("/SelectScreen");}}/>
+                            <Button content='Login' primary onClick={logIn}/>
                         </Form>
                     </Grid.Column>
                     <Grid.Column verticalAlign='middle' >
