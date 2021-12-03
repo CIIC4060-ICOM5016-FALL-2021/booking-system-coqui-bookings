@@ -66,7 +66,6 @@ def handleUserMostUsedRoom(user_id):
 
 @app.route('/coqui-bookings/User/users/login', methods=['POST'])
 def verifyUserLogin():
-    print(request.method)
     if request.method == 'POST':
         return BaseUser().verifyLogin(request.json)
     else:
