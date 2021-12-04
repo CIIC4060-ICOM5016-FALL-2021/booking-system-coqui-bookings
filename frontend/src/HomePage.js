@@ -73,6 +73,7 @@ function HomePage() {
                 window.setInterval('window.location.href = "/UserView"', 1000);
                 localStorage.setItem("user_email",  user_email);
                 localStorage.setItem("user_password", user_password);
+                localStorage.setItem("user_id", res.data[1]);
                 console.log(res.data)
             }).catch(
             err => {

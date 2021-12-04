@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4ece8e2-058f-47d1-98ab-675d06727ac8" name="Changes" comment="Added logout function to frontend.">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e408353f-fb99-4457-b91b-29bdf63822d0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/e408353f-fb99-4457-b91b-29bdf63822d0.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e408353f-fb99-4457-b91b-29bdf63822d0/storage_v2/_src_/database/da0klfg4v9tiol.9GOAwA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/e408353f-fb99-4457-b91b-29bdf63822d0/storage_v2/_src_/database/da0klfg4v9tiol.9GOAwA/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/controller/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/controller/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/HomePage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/Schedule.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Schedule.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/UserView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/UserView.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -202,6 +195,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/booking_system_coqui_bookings$app.coverage" NAME="app Coverage Results" MODIFIED="1638496738289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
-    <SUITE FILE_PATH="coverage/booking_system_coqui_bookings$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1638590683743" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/booking_system_coqui_bookings$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1638592664696" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
