@@ -9,10 +9,7 @@ import Axios from "axios";
 function Schedule(){
 
     const [date, set_date] = useState("");
-    // const year = dateUNF.substring(6, 9)
-    // const month = dateUNF.substring(0, 1)
-    // const day = dateUNF.substring(3, 4)
-    // const date = year +'-'+ month +'-'+ day
+    
     const data = {
         date : date,
         user_id: localStorage.getItem("user_id")
