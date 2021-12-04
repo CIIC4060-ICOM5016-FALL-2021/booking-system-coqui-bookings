@@ -5,11 +5,18 @@ import moment from 'moment';
 import {Button, Card, Container, Form, Grid, Modal, Segment} from "semantic-ui-react";
 import Axios from "axios";
 
+// Event {
+//     title: string,
+//         start: Date,
+//         end: Date,
+//         allDay?: boolean
+//     resource?: any,
+// }
 
 function Schedule(){
 
     const [date, set_date] = useState("");
-    
+
     const data = {
         date : date,
         user_id: localStorage.getItem("user_id")
@@ -23,28 +30,31 @@ function Schedule(){
             return "NOT FOUND ERROR";
         })
  }
-  return( <Segment>   <Grid columns={2} relaxed='very' stackable>
-      <Grid.Column>
-          <Form>
-              <Form.Input
-                  id = 'date'
-                  icon='date'
-                  iconPosition='left'
-                  label='Date'
-                  placeholder='Date'
-                  type='date'
-                  onChange={(event) => {
-                  set_date(event.target.value);}}
-              />
-          </Form>
-          </Grid.Column>
-      <Grid.Column>
-          <Form>
-              <Button content='Get Schedule' style={{marginTop:28}} primary onClick={getUserSchedule}/>
-          </Form>
-      </Grid.Column>
-      </Grid>
-        </Segment>
-  )
+    const [dates, setDates] = useState([{
+        'title': 'Selection',
+        'allDay': false,
+        'start': new Date(moment.now()),
+        'end': new Date(moment.now())
+    }]);
+    const [open, setOpen] = useState(false);
+    const localizer = momentLocalizer(moment)
+
+    return <Container style={{ height: 800 }}><Calendar
+        localizer={localizer}
+        startAccessor="start"
+        events={dates}
+        endAccessor="end"
+        views={["month", "day"]}
+        defaultDate={Date.now()}
+    >
+
+    </Calendar>
+        <Button
+            fluid
+            onClick={getUserSchedule}
+        >Load Schedule </Button>
+    </Container>
+
+
 }
 export default Schedule;
