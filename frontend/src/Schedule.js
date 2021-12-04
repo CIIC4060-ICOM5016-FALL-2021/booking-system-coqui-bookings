@@ -17,22 +17,28 @@ import Axios from "axios";
 
 function Schedule(){
 
-    const getSchedule = event => {
-        event.preventDefault();
+    const getUserId = event => {
         const data = {
             user_email: localStorage.getItem("user_email")
-        };
-
-        console.log(data)
-        Axios.post("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users", data).then(
+        }
+        Axios.post("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/login", data).then(
             res => {
-                window.alert("User has been created.")
-                console.log(res)
+                return res.data[1]
             }).catch(
             err => {
                 console.log("Error:" + err)
             })
     }
+    const getUserSchedule = event => {
+        const user_id = getUserId()
+        Axios.get('https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/' + user_id +'/schedule')
+            .then( res => {
+                console.log(res.data)
+            }
+    ).catch (err => {
+            return "NOT FOUND ERROR";
+        })
+ }
     const [dates, setDates] = useState([{
         'title': 'Selection',
         'allDay': false,
@@ -52,6 +58,10 @@ function Schedule(){
     >
 
     </Calendar>
+        <Button
+            fluid
+            onClick={getUserSchedule}
+        >Load Schedule </Button>
     </Container>
 
 

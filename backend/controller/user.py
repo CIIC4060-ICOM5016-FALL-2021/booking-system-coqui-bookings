@@ -107,6 +107,15 @@ class BaseUser:
             result = self.build_user_map_dict(user_tuple)
             return jsonify(result), 200
 
+    # def getUserByEmail(self, user_email):
+    #     dao = UserDAO()
+    #     user_tuple = dao.getUserByEmail(user_email)
+    #     if not user_tuple:  # User Not Found
+    #         return jsonify("User Not Found"), 404
+    #     else:
+    #         result = self.build_user_map_dict(user_tuple)
+    #     return jsonify(result), 200
+
     def getUserRoleById(self, user_id):
         dao = UserDAO()
         user_role = dao.getUserRoleById(user_id)

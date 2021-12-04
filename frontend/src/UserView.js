@@ -27,11 +27,9 @@ function UserView(){
         {
             menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>
         },
-
         {
-        menuItem :  <Button onClick={logout}>Log Out</Button>, 
+            menuItem :  <Button onClick={logout}>Log Out</Button>
         },
-
     ]
 
    return (

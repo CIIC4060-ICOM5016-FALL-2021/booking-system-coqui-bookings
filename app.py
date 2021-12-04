@@ -48,6 +48,14 @@ def handleUserRoleById(user_id):
         return jsonify("Method Not Allowed"), 405
 
 
+# @app.route('/coqui-bookings/User/users/email', methods=['GET'])
+# def handleUserByEmail(user_email):
+#     if request.method == 'GET':
+#         return BaseUser().getUserByEmail(user_email)
+#     else:
+#         return jsonify("Method Not Allowed"), 405
+
+
 @app.route('/coqui-bookings/User/users/<int:user_id>/schedule', methods=['GET'])
 def handleUserSchedule(user_id):
     if request.method == 'GET':
