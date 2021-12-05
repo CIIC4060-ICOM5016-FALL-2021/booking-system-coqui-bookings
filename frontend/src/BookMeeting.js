@@ -17,17 +17,11 @@ import {Button, Card, Container, Divider, Form, Grid, Header, Modal, Segment, Ta
 
 function BookMeeting(){
     const [dates, setDates] = useState([]);
-    const [openBook, setOpenBook] = useState(false);
-    const [openMark, setOpenMark] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [mark_open, setMarkOpen] = useState(false);
     const localizer = momentLocalizer(moment)
 
-    const bookNewMeeting = event => {
-
-    }
-
-    const markUnavailable = event => {
-
-    }
+    
 
     return <Container style={{ height: 800 }}><Calendar
         selectable
@@ -48,9 +42,10 @@ function BookMeeting(){
     </Calendar>
         <Modal
             centered={false}
-            openBook={openBook}
-            onCloseBook={() => setOpenBook(false)}
-            onOpenBook={() => setOpenBook(true)}
+            open={open}
+            onClose={() => setOpen(false)}
+            onOpen={() => setOpen(true)}
+
         >
             <Modal.Header>Create New Meeting</Modal.Header>
             <Modal.Content>
@@ -88,53 +83,45 @@ function BookMeeting(){
                 </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
-                <Button onClick={() => setOpenBook(false)}>Create</Button>
-                <Button content='BookNewMeeting' primary onClick={bookNewMeeting}/>
+                <Button onClick={() => setOpen(false)}>Create</Button>
             </Modal.Actions>
         </Modal>
-    <Container fluid>
 
-    <Button
-        fluid
-        onClick={() => {setOpen(true)}}
-    > Book Meeting </Button>
-    
-    <Modal
-        centered={false}
-        open={open}
-        onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-    >
-        <Modal.Header>Mark Unavailable</Modal.Header>
-        <Modal.Content>
-            <Modal.Description>
-                <Form>
-                <Form.Input
-                    id='Date'
-                    label='Date'
-                    onChange={(event) => {
-                        // TODO: ADD DATE FUNCTIONALITY
-                    }}
-                />
-                <Form.Input
-                    id='Time'
-                    label='Time'
-                    onChange={(event) => {
-                        // TODO: ADD time FUNCTIONALITY
-                    }}
-                />
-                </Form>
-            </Modal.Description>
-        </Modal.Content>
-        <Modal.Actions>
-            <Button onClick={() => setOpen(false)}>Create</Button>
-            <Button content='MarkUnavailable' primary onClick={markUnavailable}/>
-        </Modal.Actions>
-    </Modal>
-    <Button
-        fluid
-        onClick={() => {setOpen(true)}}
-    > Mark as unavailable</Button>
+        <Modal
+            centered={false}
+            open={mark_open}
+            onClose={() => setMarkOpen(false)}
+            onOpen={() => setMarkOpen(true)}
+            
+        >
+            <Modal.Header>Mark Unavailable</Modal.Header>
+            <Modal.Content>
+                <Modal.Description>
+                    <Form>
+                    <Form.Input
+                        id='Date'
+                        label='Date'
+                        onChange={(event) => {
+                            // TODO: ADD DATE FUNCTIONALITY
+                        }}
+                    />
+                    </Form>
+                </Modal.Description>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button onClick={() => setMarkOpen(false)}>Create</Button>
+            </Modal.Actions>
+        </Modal>
+        <Container fluid>
+        <Button
+            fluid
+            onClick={() => {setOpen(true)}}
+        > Book Meeting </Button>
+        <Button
+            fluid
+            onClick={() => {setMarkOpen(true)}}
+        > Mark as unavailable</Button>
+
     </Container>
     </Container>
 
