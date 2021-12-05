@@ -27,4 +27,7 @@ function BookMeeting(){
 
 
 }
+
+// invitee most booked with: /coqui-bookings/User/users/<int:user_id>/invitee-most-booked-with
+// 
 export default BookMeeting;

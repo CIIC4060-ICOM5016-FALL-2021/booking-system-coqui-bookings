@@ -9,6 +9,7 @@ import HomePage from "./HomePage";
 import Axios from "axios";
 import Account from "./Account";
 import RoomSchedule from "./RoomSchedule";
+import UserStatistics from "./UserStatistics";
 
 function UserView(){
     const logout = event => {
@@ -28,6 +29,9 @@ function UserView(){
         },
         {
             menuItem: 'Room Schedule', render: () => <RoomSchedule/>
+        },
+        {
+            menuItem: 'User Statistics', render: () => <UserStatistics/>
         },
         {
             menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>
