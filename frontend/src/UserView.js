@@ -4,10 +4,11 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import {Button, Card, Container, Divider, Form, Grid, Header, Modal, Segment, Tab} from "semantic-ui-react";
 import BookMeeting from "./BookMeeting";
-import Schedule from "./Schedule";
+import UserSchedule from "./UserSchedule";
 import HomePage from "./HomePage";
 import Axios from "axios";
 import Account from "./Account";
+import RoomSchedule from "./RoomSchedule";
 
 function UserView(){
     const logout = event => {
@@ -23,14 +24,16 @@ function UserView(){
             menuItem: 'Booking', render: () => <BookMeeting/>
         },
         {
-            menuItem: 'Schedule', render: () => <Schedule/>
+            menuItem: 'User Schedule', render: () => <UserSchedule/>
+        },
+        {
+            menuItem: 'Room Schedule', render: () => <RoomSchedule/>
+        },
+        {
+            menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>
         },
         {
             menuItem: 'Account', render: () => <Account/>
-        },
-
-        {
-            menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>
         },
         {
             menuItem :  <Button onClick={logout}>Log Out</Button>

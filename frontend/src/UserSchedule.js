@@ -5,7 +5,7 @@ import moment from 'moment';
 import {Button, Card, Container, Form, Grid, Modal, Segment} from "semantic-ui-react";
 import axios from "axios";
 
-function Schedule() {
+function UserSchedule() {
     const evs = []
     const data = {
         user_id: localStorage.getItem("user_id")
@@ -43,4 +43,4 @@ function Schedule() {
     </Container>
 
 }
-export default Schedule;
+export default UserSchedule;
