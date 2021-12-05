@@ -1,11 +1,11 @@
 from flask import jsonify
 
-from backend.controller.room import BaseRoom
-from backend.controller.user import BaseUser
-from backend.model.booking import BookingDAO
-from backend.model.booking_invitee import BookingInviteeDAO
-from backend.model.room import RoomDAO
-from backend.model.user import UserDAO
+from controller.room import BaseRoom
+from controller.user import BaseUser
+from model.booking import BookingDAO
+from model.booking_invitee import BookingInviteeDAO
+from model.room import RoomDAO
+from model.user import UserDAO
 import datetime as dt
 
 # CONSTANT VALUES IN DATABASE

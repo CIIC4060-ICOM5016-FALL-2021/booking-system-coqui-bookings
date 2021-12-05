@@ -1,10 +1,10 @@
 import datetime as dt
 from flask import jsonify
 
-from backend.controller.user import BaseUser
-from backend.model.booking import BookingDAO
-from backend.model.booking_invitee import BookingInviteeDAO
-from backend.model.user import UserDAO
+from controller.user import BaseUser
+from model.booking import BookingDAO
+from model.booking_invitee import BookingInviteeDAO
+from model.user import UserDAO
 
 # CONSTANT VALUES IN DATABASE
 PROFESSOR_ROLE = 1
