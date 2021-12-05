@@ -120,9 +120,9 @@ def handleRooms():
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/coqui-bookings/Room/rooms/verifytimeframe', methods=['GET'])
+@app.route('/coqui-bookings/Room/rooms/verifytimeframe', methods=['POST'])
 def handleRoomVerifications():
-    if request.method == 'GET':
+    if request.method == 'POST':
         return BaseRoom().getAllAvailableRoomsAtTimeFrame(request.json)
     else:
         return jsonify("Method Not Allowed"), 405
