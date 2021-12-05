@@ -4,29 +4,6 @@ import Axios from "axios";
 import $ from 'jquery';
 import {useNavigate} from "react-router-dom";
 
-
-// $(document).ready(function(){
-//     $('').prop('disabled', true)
-// });
-//
-// function validateSignUp(){
-//  if( $("#first_name").val() === null ||
-//      $("#first_name").val() === "" ||
-//      $("#last_name").val() === null ||
-//      $("#last_name").val() === "" ||
-//      $("#email").val() === null ||
-//      $("#email").val() === "" ||
-//      $("#password").val() === null ||
-//      $("#password").val() === ""
-//  ) {
-//      $("#sign-up").prop("disabled", true)
-//  }
-//  else{
-//      $("#sign-up").removeAttr("disabled")
-//  }
-//
-// }
-
 function HomePage() {
     let navigate = useNavigate();
     const [open, setOpen] = useState(false);
