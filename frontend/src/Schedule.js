@@ -8,53 +8,51 @@ import axios from "axios";
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
 
-class Schedule extends Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            cal_events: []
-        }
+
+function Schedule() {
+    const evs = []
+    const [dates, setDates] = useState([{
+        'title': 'Selection',
+        'allDay': false,
+        'start': new Date(moment.now()),
+        'end': new Date(moment.now())
+    }]);
+    const data = {
+        user_id: localStorage.getItem("user_id")
     }
-    componentDidMount(){
-        let self = this
-        const data = {
-            user_id: localStorage.getItem("user_id")
-        }
         axios.get('https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/unavailable-time-users/' + data.user_id)
             .then(function (response) {
                 console.log(response.data);
                 let appointments = response.data;
-                let events = [];
                 for (let i = 0; i < appointments.length; i++) {
-                    let event = {
-                        title: "Unavailable",
-                        start: appointments[i].unavailable_time_user_start,
-                        end: appointments[i].unavailable_time_user_finish
-                    }
-                    events.push(event);
-                    console.log(event)
+                    evs.push({
+                        'title': "Unavailable",
+                        'allDay': false,
+                        'start':new Date(appointments[i].unavailable_time_user_start),
+                        'end': new Date(appointments[i].unavailable_time_user_finish)
+                    })
+
+                    // TODO DO ANOTHER AXIOS TO VERIFY IF BOOKING OR MARKED BY USER
                 }
-                self.setState({
-                    cal_events:events
+            }).catch(
+                err => {
+                    console.log("Error:" + err)
                 })
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
-    render(){
-        const {cal_events} = this.state;
-        return(
-            <Container style ={{ height: 800}}>
-                <Calendar
-                    localizer={localizer}
-                    events={cal_events}
-                    startAccessor="start"
-                    endAccessor="end"
-                    views = {["month", "day"]}
-                    defaultDate = {Date.now()}
-                />
-            </Container>
+
+    //const [open, setOpen] = useState(false);
+    const localizer = momentLocalizer(moment)
+
+    return <Container style={{ height: 800 }}><Calendar
+        localizer={localizer}
+        startAccessor="start"
+        events={evs}
+        endAccessor="end"
+        views={["month", "day"]}
+        defaultDate={Date.now()}
+    >
+
+    </Calendar>
+    </Container>
 
         )
     }
