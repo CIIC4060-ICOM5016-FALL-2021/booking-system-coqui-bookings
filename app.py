@@ -231,9 +231,9 @@ def handleBookingByUserId(user_id):
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/coqui-bookings/Booking/bookings/User/TimeFrame/<int:room_id>', methods=['GET'])
+@app.route('/coqui-bookings/Booking/bookings/User/TimeFrame/<int:room_id>', methods=['POST'])
 def handleWhoAppointedRoom(room_id):
-    if request.method == 'GET':
+    if request.method == 'POST':
         return BaseBooking().getUserBookedRoomAtTimeFrame(room_id, request.json)
     else:
         return jsonify("Method Not Allowed"), 405

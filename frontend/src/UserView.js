@@ -9,7 +9,8 @@ import HomePage from "./HomePage";
 import Axios from "axios";
 import Account from "./Account";
 import RoomSchedule from "./RoomSchedule";
-import RoomManagement from "./RoomManagement";
+import RoomAvailability from "./RoomAvailability";
+import WhoBookedRoom from "./WhoBookedRoom";
 
 function UserView(){
     const logout = event => {
@@ -31,10 +32,10 @@ function UserView(){
             menuItem: 'Room Schedule', render: () => <RoomSchedule/>
         },
         {
-            menuItem: 'Room Schedule', render: () => <RoomSchedule/>
+            menuItem: 'Room Availability', render: () => <RoomAvailability/>
         },
         {
-            menuItem: 'Room Management', render: () => <RoomManagement/>
+            menuItem: 'Booked Room', render: () => <WhoBookedRoom/>
         },
         {
             menuItem: 'Account', render: () => <Account/>
