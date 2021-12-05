@@ -28,9 +28,13 @@ class BaseUser:
         return result
 
     def build_unavailable_time_user_map_dict(self, row):
+        # result = {'unavailable_time_user_id': row[0],
+        #           'unavailable_time_user_start': dt.datetime.strftime(row[1], '%Y-%m-%d %H:%M') + " AST",
+        #           'unavailable_time_user_finish': dt.datetime.strftime(row[2], '%Y-%m-%d %H:%M') + " AST",
+        #           'user_id': row[3]}
         result = {'unavailable_time_user_id': row[0],
-                  'unavailable_time_user_start': dt.datetime.strftime(row[1], '%Y-%m-%d %H:%M') + " AST",
-                  'unavailable_time_user_finish': dt.datetime.strftime(row[2], '%Y-%m-%d %H:%M') + " AST",
+                  'unavailable_time_user_start': row[1],
+                  'unavailable_time_user_finish': row[2],
                   'user_id': row[3]}
         return result
 

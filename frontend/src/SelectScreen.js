@@ -18,7 +18,7 @@ function SelectScreen() {
                     <Grid.Column verticalAlign='middle'>
                         <Button  content='DashBoard'  size='big' onClick={() => {navigate("/Dashboard");}}/>
                         <Button  content='UserView'  size='big' onClick={() => {navigate("/UserView");}}/>
-                        <Button  content='Schedule'  size='big' onClick={() => {navigate("/SelectScreen");}}/>
+                        <Button  content='UserSchedule'  size='big' onClick={() => {navigate("/SelectScreen");}}/>
                     </Grid.Column>
                 </Grid>
             </Segment>
