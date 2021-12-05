@@ -1,11 +1,11 @@
 from flask import jsonify
 
-from controller.room import BaseRoom
-from controller.user import BaseUser
-from model.booking import BookingDAO
-from model.booking_invitee import BookingInviteeDAO
-from model.room import RoomDAO
-from model.user import UserDAO
+from backend.controller.room import BaseRoom
+from backend.controller.user import BaseUser
+from backend.model.booking import BookingDAO
+from backend.model.booking_invitee import BookingInviteeDAO
+from backend.model.room import RoomDAO
+from backend.model.user import UserDAO
 import datetime as dt
 
 # CONSTANT VALUES IN DATABASE
@@ -75,7 +75,7 @@ class BaseBooking:
         booking_name = json['booking_name']
         booking_start = json['booking_start_date'] + " " + json['booking_start_time']
         booking_finish = json['booking_finish_date'] + " " + json['booking_finish_time']
-        booking_invitees = json['booking_invitee_id']
+        booking_invitees = json['booking_invitee_id'].split(",")
         room_id = json['room_id']
 
         booking_dao = BookingDAO()

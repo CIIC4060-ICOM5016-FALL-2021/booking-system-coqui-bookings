@@ -57,6 +57,7 @@ function BookMeeting(){
                 console.log(res)
             }).catch(
             err => {
+                window.alert(err)
                 console.log("Error:" + err)
             })
 
@@ -84,6 +85,7 @@ function BookMeeting(){
                 console.log(res)
             }).catch(
             err => {
+                window.alert(err)
                 console.log("Error:" + err)
             })
 
@@ -222,7 +224,6 @@ function BookMeeting(){
                         onChange={(event) => {
                             set_booking_finish_time(event.target.value)
                         }}
-                    />
                     />
                     </Form>
                 </Modal.Description>

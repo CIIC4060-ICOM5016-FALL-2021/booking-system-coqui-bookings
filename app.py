@@ -1,10 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from .controller.booking import BaseBooking
-from .controller.booking_invitee import BaseBookingInvitee
-from .controller.user import BaseUser
-from .controller.room import BaseRoom
+from backend.controller.booking import BaseBooking
+from backend.controller.booking_invitee import BaseBookingInvitee
+from backend.controller.user import BaseUser
+from backend.controller.room import BaseRoom
 
 app = Flask(__name__)
 CORS(app)
