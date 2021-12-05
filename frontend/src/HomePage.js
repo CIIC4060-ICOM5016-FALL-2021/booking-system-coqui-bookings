@@ -34,31 +34,31 @@ function HomePage() {
     const handleChange = (event, newValue) => {
         setOpen(true);
     }
-        const [user_email, set_email] = useState("");
-        const [user_password, set_password] = useState("");
-        const [user_first_name, set_first_name] = useState("");
-        const [user_last_name, set_last_name] = useState("");
-        const [role_id, set_role_id] = useState("");
+    const [user_email, set_email] = useState("");
+    const [user_password, set_password] = useState("");
+    const [user_first_name, set_first_name] = useState("");
+    const [user_last_name, set_last_name] = useState("");
+    const [role_id, set_role_id] = useState("");
 
-        const signUp = event => {
-            event.preventDefault();
-            const data = {
-                user_email: user_email,
-                user_password: user_password,
-                user_first_name: user_first_name,
-                user_last_name: user_last_name,
-                role_id: role_id
-            };
-            console.log(data)
-            Axios.post("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users", data).then(
-                res => {
-                    window.alert("User has been created.")
-                    console.log(res)
-                }).catch(
-                err => {
-                    console.log("Error:" + err)
-                })
-        }
+    const signUp = event => {
+        event.preventDefault();
+        const data = {
+            user_email: user_email,
+            user_password: user_password,
+            user_first_name: user_first_name,
+            user_last_name: user_last_name,
+            role_id: role_id
+        };
+        console.log(data)
+        Axios.post("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users", data).then(
+            res => {
+                window.alert("User has been created.")
+                console.log(res)
+            }).catch(
+            err => {
+                console.log("Error:" + err)
+            })
+    }
 
     const logIn = event => {
         event.preventDefault();

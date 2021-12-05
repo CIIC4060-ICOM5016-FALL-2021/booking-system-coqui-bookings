@@ -2,7 +2,8 @@ import React, {Component, useState} from 'react';
 import {Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
-import {Button, Card, Container, Modal} from "semantic-ui-react";
+import {Button, Card, Container, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
+
 
 
 // Event {
@@ -16,8 +17,17 @@ import {Button, Card, Container, Modal} from "semantic-ui-react";
 
 function BookMeeting(){
     const [dates, setDates] = useState([]);
-    const [open, setOpen] = useState(false);
+    const [openBook, setOpenBook] = useState(false);
+    const [openMark, setOpenMark] = useState(false);
     const localizer = momentLocalizer(moment)
+
+    const bookNewMeeting = event => {
+
+    }
+
+    const markUnavailable = event => {
+
+    }
 
     return <Container style={{ height: 800 }}><Calendar
         selectable
@@ -38,29 +48,93 @@ function BookMeeting(){
     </Calendar>
         <Modal
             centered={false}
-            open={open}
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
+            openBook={openBook}
+            onCloseBook={() => setOpenBook(false)}
+            onOpenBook={() => setOpenBook(true)}
         >
-            <Modal.Header>Needs changing!</Modal.Header>
+            <Modal.Header>Create New Meeting</Modal.Header>
             <Modal.Content>
                 <Modal.Description>
-                    This is a modal but it serves to show how buttons and functions can be implemented.
+                    <Form>
+                    <Form.Input
+                        id='Name'
+                        label='Name'
+                        onChange={(event) => {
+                            //set_name(event.target.value); //TODO: create set name
+                        }}
+                    />
+                    <Form.Input
+                        id='Date'
+                        label='Date'
+                        onChange={(event) => {
+                            // TODO: ADD DATE FUNCTIONALITY
+                        }}
+                    />
+                    <Form.Input
+                        id='Invitees'
+                        label='Invitees'
+                        onChange={(event) => {
+                            //set_invitees(event.target.value) //TODO: set invitees list
+                        }}
+                    />
+                    <Form.Input
+                        id='Room-id'
+                        label='Room id'
+                        onChange={(event) => {
+                            //set_room_id(event.target.value)
+                        }}
+                    />
+                    </Form>
                 </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
-                <Button onClick={() => setOpen(false)}>OK</Button>
+                <Button onClick={() => setOpenBook(false)}>Create</Button>
+                <Button content='BookNewMeeting' primary onClick={bookNewMeeting}/>
             </Modal.Actions>
         </Modal>
-        <Container fluid>
-        <Button
-            fluid
-            onClick={() => {setOpen(true)}}
-        > Book Meeting </Button>
-        <Button
-            fluid
-            onClick={() => {setOpen(true)}}
-        > Mark as unavailable</Button>
+    <Container fluid>
+
+    <Button
+        fluid
+        onClick={() => {setOpen(true)}}
+    > Book Meeting </Button>
+    
+    <Modal
+        centered={false}
+        open={open}
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+    >
+        <Modal.Header>Mark Unavailable</Modal.Header>
+        <Modal.Content>
+            <Modal.Description>
+                <Form>
+                <Form.Input
+                    id='Date'
+                    label='Date'
+                    onChange={(event) => {
+                        // TODO: ADD DATE FUNCTIONALITY
+                    }}
+                />
+                <Form.Input
+                    id='Time'
+                    label='Time'
+                    onChange={(event) => {
+                        // TODO: ADD time FUNCTIONALITY
+                    }}
+                />
+                </Form>
+            </Modal.Description>
+        </Modal.Content>
+        <Modal.Actions>
+            <Button onClick={() => setOpen(false)}>Create</Button>
+            <Button content='MarkUnavailable' primary onClick={markUnavailable}/>
+        </Modal.Actions>
+    </Modal>
+    <Button
+        fluid
+        onClick={() => {setOpen(true)}}
+    > Mark as unavailable</Button>
     </Container>
     </Container>
 
