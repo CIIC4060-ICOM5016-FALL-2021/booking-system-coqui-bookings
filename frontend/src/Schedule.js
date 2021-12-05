@@ -39,7 +39,6 @@ function Schedule() {
         views={["month", "day"]}
         defaultDate={Date.now()}
     >
-
     </Calendar>
     </Container>
 
