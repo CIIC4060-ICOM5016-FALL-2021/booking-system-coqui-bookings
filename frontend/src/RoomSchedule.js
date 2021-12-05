@@ -13,7 +13,13 @@ function RoomSchedule() {
     }
 
     function getRoomSchedule() {
-        axios.get('https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/rooms/unavailable-time-rooms' + data.room_id)
+        if(evs.length !== 0) { // In case evs contain old data
+            const len = evs.length
+            for (let i = 0; i < len; i++) {
+                evs.pop()
+            }
+        }
+        axios.get('http://127.0.0.1:5000/coqui-bookings/Room/unavailable-time-rooms/' + data.room_id)
             .then(function (response) {
                 console.log(response.data);
                 let appointments = response.data;
@@ -21,15 +27,15 @@ function RoomSchedule() {
                     evs.push({
                         'title': "Unavailable",
                         'allDay': false,
-                        'start': new Date(appointments[i].unavailable_time_user_start),
-                        'end': new Date(appointments[i].unavailable_time_user_finish)
+                        'start': new Date(appointments[i].unavailable_time_room_start),
+                        'end': new Date(appointments[i].unavailable_time_room_finish)
                     })
 
                     // TODO DO ANOTHER AXIOS TO VERIFY IF BOOKING OR MARKED BY USER
                 }
             }).catch(
             err => {
-                console.log("Error:" + err)
+                console.log(err)
             })
     }
         const localizer = momentLocalizer(moment)
@@ -42,13 +48,14 @@ function RoomSchedule() {
                         label='Room'
                         placeholder='Room Id'
                         onChange={(event) => {
-                            set_room(event.target.value);}}
+                            set_room(event.target.value);
+                        }}
                     />
                 </Form>
             </Grid.Column>
             <Grid.Column>
                 <Form>
-                    <Button content='Get Schedule' style={{marginTop:28}} primary onClick={getRoomSchedule}/>
+                    <Button content='Get Schedule' style={{marginTop:28}} primary onClick={getRoomSchedule} />
                 </Form>
             </Grid.Column>
         </Grid>
