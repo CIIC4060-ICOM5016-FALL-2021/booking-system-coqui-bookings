@@ -29,8 +29,28 @@ function BookMeeting(){
     const [booking_invitee_id, set_booking_invitee_id] = useState("");
     const [room_id, set_room_id] = useState("");
 
+    const evs = []
+    const data = {
+        user_id: localStorage.getItem("user_id")
+    }
+        Axios.get('https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/unavailable-time-users/' + data.user_id)
+            .then(function (response) {
+                console.log(response.data);
+                let appointments = response.data;
+                for (let i = 0; i < appointments.length; i++) {
+                    evs.push({
+                        'title': "Unavailable",
+                        'allDay': false,
+                        'start':new Date(appointments[i].unavailable_time_user_start),
+                        'end': new Date(appointments[i].unavailable_time_user_finish)
+                    })
 
-
+                    // TODO DO ANOTHER AXIOS TO VERIFY IF BOOKING OR MARKED BY USER
+                }
+            }).catch(
+                err => {
+                    console.log("Error:" + err)
+                })
 
     const handleBookClick = () =>{
         setOpen(false);
@@ -91,12 +111,11 @@ function BookMeeting(){
 
     }
 
-
     return <Container style={{ height: 800 }}><Calendar
         selectable
         localizer={localizer}
         startAccessor="start"
-        events={dates}
+        events={evs}
         endAccessor="end"
         views={["month", "day"]}
         defaultDate={Date.now()}
