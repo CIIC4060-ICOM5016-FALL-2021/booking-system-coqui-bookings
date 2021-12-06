@@ -18,9 +18,10 @@ function Account() {
             user_password: user_password,
             user_first_name: user_first_name,
             user_last_name: user_last_name,
+            role_id: role_id,
         };
         console.log(data)
-        Axios.put("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/" + user_id, data).then(
+        Axios.put("coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/" + user_id, data).then(
             res => {
                 window.alert("User credentials have been updated.")
                 console.log(res)

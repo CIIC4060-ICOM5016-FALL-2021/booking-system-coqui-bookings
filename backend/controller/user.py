@@ -299,7 +299,7 @@ class BaseUser:
         elif existing_user[1] != user_email and existing_email:
             return jsonify("An user with that email address already exists"), 409
         else:
-            dao.updateUser(user_id, user_email, user_password, user_first_name, user_last_name, role_id, )
+            dao.updateUser(user_id, user_email, user_password, user_first_name, user_last_name, role_id,)
             result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name,
                                                role_id, )
             return jsonify(result), 200
