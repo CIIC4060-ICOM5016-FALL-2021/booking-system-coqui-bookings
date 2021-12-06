@@ -216,7 +216,7 @@ def handleBookingByIdWithRole(booking_id, user_id):
 
 
 @app.route('/coqui-bookings/Booking/bookings/<int:booking_id>/updateName', methods=['PUT'])
-def handleBookingByIdWithName(booking_id):
+def handleBookingByName(booking_id):
     if request.method == 'PUT':
         return BaseBooking().updateBookingName(booking_id, request.json)
     else:
