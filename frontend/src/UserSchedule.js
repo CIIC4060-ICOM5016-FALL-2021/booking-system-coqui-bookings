@@ -3,7 +3,7 @@ import {Calendar, dateFormat, momentLocalizer, Views} from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import {Button, Card, Container, Form, Grid, Modal, Segment} from "semantic-ui-react";
-import axios from "axios";
+import Axios from "axios";
 
 function UserSchedule() {
     const [dates, setDates] = useState([]);
@@ -21,7 +21,7 @@ function UserSchedule() {
     const data = {
         user_id: localStorage.getItem("user_id")
     }
-        axios.get('https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/unavailable-time-users/' + data.user_id)
+        Axios.get('https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/unavailable-time-users/' + data.user_id)
             .then(function (response) {
                 console.log(response.data);
                 let appointments = response.data;
@@ -40,7 +40,6 @@ function UserSchedule() {
                     console.log("Error:" + err)
                 })
 
-    const localizer = momentLocalizer(moment)
 
     const handleMarkClick = () =>{
         setMarkOpen(false);

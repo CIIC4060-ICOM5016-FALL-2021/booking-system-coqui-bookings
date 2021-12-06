@@ -3,7 +3,7 @@ import {Calendar, dateFormat, momentLocalizer, Views} from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import {Button, Card, Container, Form, Grid, Modal, Segment} from "semantic-ui-react";
-import axios from "axios";
+import Axios from "axios";
 
 function RoomSchedule() {
     const [room, set_room] = useState("");
@@ -31,7 +31,7 @@ function RoomSchedule() {
                 evs.pop()
             }
         }
-        axios.get('https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/unavailable-time-rooms/' + data.room_id)
+        Axios.get('https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/unavailable-time-rooms/' + data.room_id)
             .then(function (response) {
                 console.log(response.data);
                 let appointments = response.data;
@@ -50,7 +50,6 @@ function RoomSchedule() {
                 console.log(err)
             })
     }
-    const localizer = momentLocalizer(moment)
 
     const handleMarkClick = () =>{
         setMarkOpen(false);

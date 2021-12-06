@@ -15,6 +15,7 @@ import WhoBookedRoom from "./WhoBookedRoom";
 import UserAvailability from "./UserAvailability";
 import {useNavigate} from 'react-router-dom';
 import CreateRoom from "./CreateRoom";
+import DeleteRoom from "./DeleteRoom";
 
 
 function UserView(){
@@ -27,19 +28,15 @@ function UserView(){
     }
     const data = {
         user_id: localStorage.getItem("user_id"),
-        role_id: localStorage.getItem("role_id")
     }
 
     const [isAuth, setIsAuth] = useState(false)
 
-    // add create room and delete room
-
-    // move mark as un to user schedule
-    // add mark as un to room schedule
+    let panes = []
     
-    if (data.role_id === 3){
+    if (parseInt(localStorage.getItem("role_id")) === 3){
 
-        const panes = [
+        panes = [
             {
                 menuItem: 'Create Room', render: () => <CreateRoom/>
             },
@@ -51,9 +48,6 @@ function UserView(){
             },
             {
                 menuItem: 'User Statistics', render: () => <UserStatistics/>
-            },
-            {
-                menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>
             },
             {
                 menuItem: 'Room Availability', render: () => <RoomAvailability/>
@@ -68,6 +62,9 @@ function UserView(){
                 menuItem: 'Booked Room', render: () => <WhoBookedRoom/>
             },
             {
+                menuItem: 'Delete Room', render: () => <DeleteRoom/>
+            },
+            {
                 menuItem: 'Account', render: () => <Account/>
             },
             {
@@ -78,7 +75,7 @@ function UserView(){
             },
         ]
     }else{
-        const panes = [
+        panes = [
             {
                 menuItem: 'User Schedule', render: () => <UserSchedule/>
             },
