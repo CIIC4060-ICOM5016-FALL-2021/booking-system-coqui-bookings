@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import {Calendar, momentLocalizer, Views } from 'react-big-calendar';
+import {Calendar, momentLocalizer, Views} from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import {Button, Card, Container, Divider, Form, Grid, Header, Modal, Segment, Tab} from "semantic-ui-react";
@@ -12,6 +12,7 @@ import RoomSchedule from "./RoomSchedule";
 import RoomAvailability from "./RoomAvailability";
 import WhoBookedRoom from "./WhoBookedRoom";
 import UserAvailability from "./UserAvailability";
+import {useNavigate} from 'react-router-dom';
 
 function UserView(){
     const logout = event => {
@@ -48,6 +49,9 @@ function UserView(){
         },
         {
             menuItem :  <Button onClick={logout}>Log Out</Button>
+        },
+        {
+            menuItem :  <Button secondary onClick={() => {window.location.href ="/Dashboard"}}>Dashboard</Button>
         },
     ]
 
