@@ -29,29 +29,32 @@ function BookMeeting(){
     const [booking_invitee_id, set_booking_invitee_id] = useState("");
     const [booking_id, set_booking_id] = useState("");
     const [room_id, set_room_id] = useState("");
+    const [invitee_id, set_invitee_id] = useState("");
+
 
     const evs = []
     const data = {
         user_id: localStorage.getItem("user_id")
     }
-        Axios.get('https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/unavailable-time-users/' + data.user_id)
-            .then(function (response) {
-                console.log(response.data);
-                let appointments = response.data;
-                for (let i = 0; i < appointments.length; i++) {
-                    evs.push({
-                        'title': "Unavailable",
-                        'allDay': false,
-                        'start':new Date(appointments[i].unavailable_time_user_start),
-                        'end': new Date(appointments[i].unavailable_time_user_finish)
-                    })
 
-                    // TODO DO ANOTHER AXIOS TO VERIFY IF BOOKING OR MARKED BY USER
-                }
-            }).catch(
-                err => {
-                    console.log("Error:" + err)
+    Axios.get('https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/unavailable-time-users/' + data.user_id)
+        .then(function (response) {
+            console.log(response.data);
+            let appointments = response.data;
+            for (let i = 0; i < appointments.length; i++) {
+                evs.push({
+                    'title': "Unavailable",
+                    'allDay': false,
+                    'start':new Date(appointments[i].unavailable_time_user_start),
+                    'end': new Date(appointments[i].unavailable_time_user_finish)
                 })
+
+                // TODO DO ANOTHER AXIOS TO VERIFY IF BOOKING OR MARKED BY USER
+            }
+        }).catch(
+            err => {
+                console.log("Error:" + err)
+            })
 
     const handleBookClick = () =>{
         setOpen(false);
@@ -83,14 +86,14 @@ function BookMeeting(){
             })
 
     }
-    //add update meeting only name
+
     const updateMeeting = event=> {
         //event.preventDefault();
         const data ={
             booking_name : booking_name
         };
         console.log(data)
-        Axios.put(`https://localhost:5000/coqui-bookings/Booking/bookings/${booking_id}/updateName`, data).then(
+        Axios.put(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/${booking_id}/updateName`, data).then(
             res => {
                 window.alert("Meeting has been updated.")
                 console.log(res)
@@ -102,6 +105,42 @@ function BookMeeting(){
 
     }
 
+    const deleteInvitee = event=> {
+        //event.preventDefault();
+        const user_id = localStorage.getItem("user_id");
+        const data ={
+            user_id : user_id
+        };
+        console.log(data)
+        Axios.delete(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/${booking_id}/BookingInvitee/bookingInvitees/delete/${invitee_id}`, data).then(
+            res => {
+                window.alert("Invitee has been deleted.")
+                console.log(res)
+            }).catch(
+            err => {
+                window.alert(err)
+                console.log(err)
+            })
+    }
+
+    const deleteMeeting = event=> {
+        //event.preventDefault();
+        const user_id = localStorage.getItem("user_id");
+        const data ={
+            user_id : user_id
+        };
+        console.log(data)
+        Axios.delete(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/${booking_id}`, data).then(
+            res => {
+                window.alert("Meeting has been deleted.")
+                console.log(res)
+            }).catch(
+            err => {
+                window.alert(err)
+                console.log(err)
+            })
+
+    }
     return <Container style={{ height: 800 }}><Calendar
         selectable
         localizer={localizer}
@@ -224,7 +263,47 @@ function BookMeeting(){
                 <Button content={'Update Meeting'} primary  onClick={updateMeeting}/>
             </Grid.Column>
         </Grid>
-
+        <hr/>
+        <Grid columns={2} relaxed='very' stackable>
+            <Grid.Column>
+                <Form>
+                    <Form.Input
+                        id='Invitee Id'
+                        label='Invitee Id'
+                        onChange={(event) => {
+                            set_invitee_id(event.target.value); 
+                        }}
+                    />
+                    <Form.Input
+                        id='Meeting Id'
+                        label='Meeting Id'
+                        onChange={(event) => {
+                            set_booking_id(event.target.value); 
+                        }}
+                    />
+                </Form>
+            </Grid.Column>
+            <Grid.Column>
+                <Button content={'Delete Invitee'} primary  onClick={deleteInvitee}/>
+            </Grid.Column>
+        </Grid>
+        <hr/>
+        <Grid columns={2} relaxed='very' stackable>
+            <Grid.Column>
+                <Form>
+                    <Form.Input
+                        id='Meeting Id'
+                        label='Meeting Id'
+                        onChange={(event) => {
+                            set_booking_id(event.target.value); 
+                        }}
+                    />
+                </Form>
+            </Grid.Column>
+            <Grid.Column>
+                <Button content={'Delete Meeting'} primary  onClick={deleteMeeting}/>
+            </Grid.Column>
+        </Grid>
     </Container>
 
 

@@ -13,6 +13,8 @@ function Account() {
         event.preventDefault();
 
         const user_id = localStorage.getItem("user_id")
+        const role_id = localStorage.getItem("user_id")
+
         const data = {
             user_email: user_email,
             user_password: user_password,
