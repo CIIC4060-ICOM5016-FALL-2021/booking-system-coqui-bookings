@@ -10,6 +10,10 @@ import Axios from "axios";
 import Account from "./Account";
 import RoomSchedule from "./RoomSchedule";
 import UserStatistics from "./UserStatistics";
+import RoomAvailability from "./RoomAvailability";
+import WhoBookedRoom from "./WhoBookedRoom";
+import UserAvailability from "./UserAvailability";
+
 
 function UserView(){
     const logout = event => {
@@ -22,9 +26,6 @@ function UserView(){
     const [isAuth, setIsAuth] = useState(false)
     const panes = [
         {
-            menuItem: 'Booking', render: () => <BookMeeting/>
-        },
-        {
             menuItem: 'User Schedule', render: () => <UserSchedule/>
         },
         {
@@ -35,6 +36,22 @@ function UserView(){
         },
         {
             menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>
+          
+         },
+         {
+            menuItem: 'Room Availability', render: () => <RoomAvailability/>
+
+        },
+        {
+            menuItem: 'User Availability', render: () => <UserAvailability/>
+
+        },
+        {
+            menuItem: 'Booking', render: () => <BookMeeting/>
+        },
+        {
+            menuItem: 'Booked Room', render: () => <WhoBookedRoom/>
+
         },
         {
             menuItem: 'Account', render: () => <Account/>

@@ -19,8 +19,8 @@ class BaseRoom:
 
     def build_unavailable_time_room_map_dict(self, row):
         result = {'unavailable_time_room_id': row[0],
-                  'unavailable_time_room_start': dt.datetime.strftime(row[1], '%Y-%m-%d %H:%M') + " AST",
-                  'unavailable_time_room_finish': dt.datetime.strftime(row[2], '%Y-%m-%d %H:%M') + " AST",
+                  'unavailable_time_room_start': row[1],
+                  'unavailable_time_room_finish': row[2],
                   'room_id': row[3]}
         return result
 
