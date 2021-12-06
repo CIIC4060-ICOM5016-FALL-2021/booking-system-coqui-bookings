@@ -284,11 +284,11 @@ def handleBookingInviteesByBookingId(booking_id):
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/coqui-bookings/Booking/<int:booking_id>/BookingInvitee/bookingInvitees/delete/<int:invitee_id>',
+@app.route('/coqui-bookings/User/<int:user_id>/Booking/<int:booking_id>/BookingInvitee/bookingInvitees/delete/<int:invitee_id>',
            methods=['DELETE'])
-def handleBookingInviteeDeletion(booking_id, invitee_id):
+def handleBookingInviteeDeletion(booking_id, invitee_id, user_id):
     if request.method == 'DELETE':
-        return BaseBookingInvitee().deleteInviteebyHost(booking_id, invitee_id, request.json)
+        return BaseBookingInvitee().deleteInviteebyHost(booking_id, invitee_id, user_id)
     else:
         return jsonify("Method Not Allowed"), 405
 
