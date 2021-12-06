@@ -126,12 +126,12 @@ class UserDAO:
         return result
 
     # Update
-    def updateUser(self, user_id, user_email, user_password, user_first_name, user_last_name, role_id):
+    def updateUser(self, user_id, user_email, user_password, user_first_name, user_last_name,):
         cursor = self.conn.cursor()
         query = 'update "User" ' \
                 'set user_email = %s, user_password = %s, user_first_name = %s, user_last_name = %s , role_id = %s ' \
                 'where user_id = %s '
-        cursor.execute(query, (user_email, user_password, user_first_name, user_last_name, role_id, user_id))
+        cursor.execute(query, (user_email, user_password, user_first_name, user_last_name, user_id))
         self.conn.commit()
         return True
 
