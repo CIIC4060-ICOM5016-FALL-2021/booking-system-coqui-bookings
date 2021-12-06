@@ -329,20 +329,20 @@ class BaseUser:
 
     def deleteUserbyUser(self, user_id):
         user_dao = UserDAO()
-        booking_dao = BookingDAO()
-        invitee_dao = BookingInviteeDAO()
-        room_dao = RoomDAO()
-        all_bookings = booking_dao.getAllBookings()
-        all_invitees = invitee_dao.getAllInvitees()
-        if not user_dao.getUserById(user_id):
-            return jsonify("User Not Found"), 404
-        for booking in all_bookings:
-            if user_id == booking[user_id]:
-                return jsonify("Cannot delete user because is host "), 404
+        # booking_dao = BookingDAO()
+        # invitee_dao = BookingInviteeDAO()
+        # room_dao = RoomDAO()
+        # all_bookings = booking_dao.getAllBookings()
+        # all_invitees = invitee_dao.getAllInvitees()
+        # if not user_dao.getUserById(user_id):
+        #     return jsonify("User Not Found"), 404
+        # for booking in all_bookings:
+        #     if user_id == booking[user_id]:
+        #         return jsonify("Cannot delete user because is host "), 404
 
-        for booking_id, invitee_id in all_invitees:
-            if user_id == invitee_id:
-                return jsonify("Cannot delete user because is invitee "), 404
+        # for booking_id, invitee_id in all_invitees:
+        #     if user_id == invitee_id:
+        #         return jsonify("Cannot delete user because is invitee "), 404
         
         # unavailable_user_slots = user_dao.getUnavailableTimeOfUserById(user_id)
         # for slot in unavailable_user_slots:
