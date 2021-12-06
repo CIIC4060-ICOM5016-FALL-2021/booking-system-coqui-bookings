@@ -192,8 +192,7 @@ class BaseBookingInvitee:
         user_dao.deleteUnavailableUserTimeFrame(invitee_id, bookingTime[0], bookingTime[1])
         return jsonify("Invitee Deleted Successfully"), 200
 
-    def deleteInviteebyHost(self, booking_id, invitee_id, json):
-        user_id = json['user_id']
+    def deleteInviteebyHost(self, booking_id, invitee_id, user_id):
         invitee_dao = BookingInviteeDAO()
         booking_dao = BookingDAO()
         user_dao = UserDAO()
