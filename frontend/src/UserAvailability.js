@@ -56,7 +56,7 @@ import Axios from "axios";
                             />
                             <Form.Input
                                 id='user_id_list'
-                                icon='user'
+                                icon='users'
                                 iconPosition='left'
                                 label='Users'
                                 placeholder='1, 2 ,3'

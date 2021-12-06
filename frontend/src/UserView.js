@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import {Calendar, momentLocalizer, Views } from 'react-big-calendar';
+import {Calendar, momentLocalizer, Views} from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import {Button, Card, Container, Divider, Form, Grid, Header, Modal, Segment, Tab} from "semantic-ui-react";
@@ -13,6 +13,8 @@ import UserStatistics from "./UserStatistics";
 import RoomAvailability from "./RoomAvailability";
 import WhoBookedRoom from "./WhoBookedRoom";
 import UserAvailability from "./UserAvailability";
+import {useNavigate} from 'react-router-dom';
+import CreateRoom from "./CreateRoom";
 
 
 function UserView(){
@@ -39,6 +41,9 @@ function UserView(){
 
         const panes = [
             {
+                menuItem: 'Create Room', render: () => <CreateRoom/>
+            },
+            {
                 menuItem: 'User Schedule', render: () => <UserSchedule/>
             },
             {
@@ -49,25 +54,24 @@ function UserView(){
             },
             {
                 menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>
-            
             },
             {
                 menuItem: 'Room Availability', render: () => <RoomAvailability/>
-
             },
             {
                 menuItem: 'User Availability', render: () => <UserAvailability/>
-
             },
             {
                 menuItem: 'Booking', render: () => <BookMeeting/>
             },
             {
                 menuItem: 'Booked Room', render: () => <WhoBookedRoom/>
-
             },
             {
                 menuItem: 'Account', render: () => <Account/>
+            },
+            {
+                menuItem :  <Button secondary onClick={() => {window.location.href ="/Dashboard"}}>Dashboard</Button>
             },
             {
                 menuItem :  <Button onClick={logout}>Log Out</Button>
@@ -83,10 +87,12 @@ function UserView(){
             },
             {
                 menuItem: 'User Availability', render: () => <UserAvailability/>
-
             },
             {
                 menuItem: 'Account', render: () => <Account/>
+            },
+            {
+                menuItem :  <Button secondary onClick={() => {window.location.href ="/Dashboard"}}>Dashboard</Button>
             },
             {
                 menuItem :  <Button onClick={logout}>Log Out</Button>
