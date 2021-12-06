@@ -47,7 +47,7 @@ function Dashboard(){
         let most_booked = response.data;
         for (let i = 0; i < most_booked.length; i++) {
             data_most_booked_room.push({
-                "room_id" : most_booked[i].room_id,
+                "room_id" : most_booked[i].room_name,
                 "most_booked_room": most_booked[i].times_booked
             })
         }
