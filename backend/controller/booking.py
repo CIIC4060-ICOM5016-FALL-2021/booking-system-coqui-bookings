@@ -228,7 +228,7 @@ class BaseBooking:
         else:
             result_list = []
             for row in top_booked_rooms:
-                obj = BaseRoom().build_room_map_dict(row)
+                obj = BaseRoom().build_most_booked_map_dict(row)
                 result_list.append(obj)
             return jsonify(result_list), 200
 
