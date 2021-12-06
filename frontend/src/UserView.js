@@ -13,6 +13,7 @@ import RoomAvailability from "./RoomAvailability";
 import WhoBookedRoom from "./WhoBookedRoom";
 import UserAvailability from "./UserAvailability";
 import {useNavigate} from 'react-router-dom';
+import CreateRoom from "./CreateRoom";
 
 function UserView(){
     const logout = event => {
@@ -24,6 +25,9 @@ function UserView(){
     }
     const [isAuth, setIsAuth] = useState(false)
     const panes = [
+        {
+            menuItem: 'Create Room', render: () => <CreateRoom/>
+        },
         {
             menuItem: 'User Schedule', render: () => <UserSchedule/>
         },
@@ -48,10 +52,10 @@ function UserView(){
             menuItem: 'Account', render: () => <Account/>
         },
         {
-            menuItem :  <Button onClick={logout}>Log Out</Button>
+            menuItem :  <Button secondary onClick={() => {window.location.href ="/Dashboard"}}>Dashboard</Button>
         },
         {
-            menuItem :  <Button secondary onClick={() => {window.location.href ="/Dashboard"}}>Dashboard</Button>
+            menuItem :  <Button onClick={logout}>Log Out</Button>
         },
     ]
 
