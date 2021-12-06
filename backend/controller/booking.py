@@ -377,8 +377,7 @@ class BaseBooking:
         booking_dao.deleteBooking(booking_id)
         return jsonify("Booking Deleted Successfully"), 200
 
-    def deleteBookingByHost(self, booking_id, json):
-        user_id = json['user_id']
+    def deleteBookingByHost(self, booking_id, user_id):
         booking_dao = BookingDAO()
         existent_booking = booking_dao.getBookingById(booking_id)
         if not existent_booking:
