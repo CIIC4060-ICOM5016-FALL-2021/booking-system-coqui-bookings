@@ -150,7 +150,7 @@ class BaseBooking:
             room_dao = RoomDAO()
             room_type = room_dao.getRoomTypeById(booking_tuple[5])[0]
             if role == STAFF_ROLE or (role == PROFESSOR_ROLE and room_type == CLASSROOM_TYPE):
-                result = self.build_booking_attr_dict(booking_tuple[0], booking_tuple[1],
+                 result = self.build_booking_attr_dict(booking_tuple[0], booking_tuple[1],
                                                       dt.datetime.strftime(booking_tuple[2], '%Y-%m-%d %H:%M'),
                                                       dt.datetime.strftime(booking_tuple[3], '%Y-%m-%d %H:%M'),
                                                       booking_tuple[4], booking_tuple[5], [])

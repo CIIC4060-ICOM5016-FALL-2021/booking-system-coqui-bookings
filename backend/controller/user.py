@@ -195,7 +195,7 @@ class BaseUser:
         if not valid_user:
             return jsonify("Username or Password entered incorrectly"), 401
         else:
-            return jsonify("User logged in successfully", valid_user[0]), 200
+            return jsonify("User logged in successfully", valid_user[0], valid_user[5]), 200
 
     def getFreeTimeForUsers(self, json):
         date = json['date']  # Get Date to verify
