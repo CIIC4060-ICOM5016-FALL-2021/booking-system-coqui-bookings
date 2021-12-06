@@ -329,16 +329,16 @@ class BaseUser:
 
     def deleteUserbyUser(self, user_id):
         user_dao = UserDAO()
-        # booking_dao = BookingDAO()
-        # invitee_dao = BookingInviteeDAO()
-        # room_dao = RoomDAO()
-        # all_bookings = booking_dao.getAllBookings()
-        # all_invitees = invitee_dao.getAllInvitees()
-        # if not user_dao.getUserById(user_id):
-        #     return jsonify("User Not Found"), 404
-        # for booking in all_bookings:
-        #     if user_id == booking[user_id]:
-        #         return jsonify("Cannot delete user because is host "), 404
+        booking_dao = BookingDAO()
+        invitee_dao = BookingInviteeDAO()
+        room_dao = RoomDAO()
+        all_bookings = booking_dao.getAllBookings()
+        all_invitees = invitee_dao.getAllInvitees()
+        if not user_dao.getUserById(user_id):
+            return jsonify("User Not Found"), 404
+        for booking in all_bookings:
+            if user_id == booking[user_id]:
+                return jsonify("Cannot delete user because is host "), 404
 
         # for booking_id, invitee_id in all_invitees:
         #     if user_id == invitee_id:
@@ -355,6 +355,6 @@ class BaseUser:
         #     invitees = invitee_dao.getInviteeIdListFromBooking(booking[0])
         #     if user_id in invitees:
         #         invitee_dao.deleteInvitee(booking[0], user_id)  # Remove Invitee From Booking
-        user_dao.deleteUser(user_id)
-        return jsonify("User Deleted Successfully"), 200
+        # user_dao.deleteUser(user_id)
+        # return jsonify("User Deleted Successfully"), 200
     
