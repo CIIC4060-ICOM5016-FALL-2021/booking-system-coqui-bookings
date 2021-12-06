@@ -35,7 +35,7 @@ function CreateRoom() {
             room_type_id: room_type_id,
         };
         console.log(data)
-        Axios.post(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/rooms/${room_id}`, data).then(
+        Axios.put(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/rooms/${room_id}`, data).then(
             res => {
                 window.alert("Room updated successfully.")
                 console.log(res)
