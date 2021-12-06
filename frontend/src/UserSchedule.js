@@ -27,7 +27,7 @@ function UserSchedule() {
                 let appointments = response.data;
                 for (let i = 0; i < appointments.length; i++) {
                     evs.push({
-                        'title': "Unavailable",
+                        'title': "Busy",
                         'allDay': false,
                         'start':new Date(appointments[i].unavailable_time_user_start),
                         'end': new Date(appointments[i].unavailable_time_user_finish)

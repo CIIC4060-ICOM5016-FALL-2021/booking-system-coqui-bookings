@@ -35,7 +35,7 @@ def handleUserById(user_id):
     elif request.method == 'PUT':
         return BaseUser().updateUser(user_id, request.json)
     elif request.method == 'DELETE':
-        return BaseUser().deleteUser(user_id)
+        return BaseUser().deleteUserbyUser(user_id)
     else:
         return jsonify("Method Not Allowed"), 405
 
