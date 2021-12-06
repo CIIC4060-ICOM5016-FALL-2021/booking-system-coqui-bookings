@@ -199,10 +199,10 @@ def handleGetAllBookings(user_id):
         return jsonify("Method Not Allowed"), 405
 
 
-@app.route('/coqui-bookings/Booking/bookings/<int:booking_id>', methods=['DELETE'])
-def handleBookingById(booking_id):
+@app.route('/coqui-bookings/User/<int:user_id>/Booking/bookings/<int:booking_id>', methods=['DELETE'])
+def handleBookingById(booking_id, user_id):
     if request.method == 'DELETE':
-        return BaseBooking().deleteBookingByHost(booking_id, request.json)
+        return BaseBooking().deleteBookingByHost(booking_id, user_id)
     else:
         return jsonify("Method Not Allowed"), 405
 
