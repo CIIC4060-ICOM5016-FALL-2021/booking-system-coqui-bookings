@@ -23,7 +23,8 @@ function UserStatistics(){
             .then(function (response) {
                 console.log(response.data);
                 //set_invitee_id(response.data);
-                let invitee_id=response.data
+                let invitee_id=response.data.user_first_name +" "+ response.data.user_last_name
+                localStorage.setItem('invitee_id',invitee_id)
                 //return invitee_id
 
             }).catch(
@@ -36,10 +37,12 @@ function UserStatistics(){
         Axios.get("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/"+ user_id +"/most_used_room")
             .then(function (response) {
                 console.log(response.data);
-                let room_id = response.data
+                let room_id = response.data.room_name
+                localStorage.setItem('room_id', room_id)
+
                 // set_room_id(response.data);  
                 // room_id=response.data
-                //return room_id
+                // return room_id
 
             }).catch(
                 err => {
@@ -48,16 +51,24 @@ function UserStatistics(){
         //}
 
     return (<Container style={{ height: 800 }}>
-        
-        <Statistic>
-            <Statistic.Value></Statistic.Value>
-            <Statistic.Label>Most Used Room By User</Statistic.Label>
-        </Statistic>
 
-        <Statistic>
-            <Statistic.Value></Statistic.Value>
-            <Statistic.Label>User Most Booked With</Statistic.Label>
-        </Statistic>
+            <Card>
+        <Card.Content>
+        <Card.Header>Most Used Room By User</Card.Header>
+        <Card.Description>
+            {localStorage.getItem('room_id')}
+        </Card.Description>
+        </Card.Content>
+    </Card>
+    <Card>
+    <Card.Content>
+        <Card.Header>User Most Booked With</Card.Header>
+        <Card.Description>
+            {localStorage.getItem('invitee_id')}
+        </Card.Description>
+        </Card.Content>
+    </Card>
+
     </Container>)
 
 
