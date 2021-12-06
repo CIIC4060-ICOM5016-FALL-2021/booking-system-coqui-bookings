@@ -215,6 +215,14 @@ def handleBookingByIdWithRole(booking_id, user_id):
         return jsonify("Method Not Allowed"), 405
 
 
+@app.route('/coqui-bookings/Booking/bookings/<int:booking_id>/User/<int:user_id>/updateName', methods=['PUT'])
+def handleBookingByIdWithName(booking_id, user_id):
+    if request.method == 'PUT':
+        return BaseBooking().updateBookingName(booking_id, user_id, request.json)
+    else:
+        return jsonify("Method Not Allowed"), 405
+
+
 @app.route('/coqui-bookings/Booking/bookings/<int:booking_id>/User/<int:user_id>/get', methods=['GET'])
 def handleGetBookingById(booking_id, user_id):
     if request.method == 'GET':

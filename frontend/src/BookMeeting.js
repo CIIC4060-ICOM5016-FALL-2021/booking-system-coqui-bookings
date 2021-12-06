@@ -27,6 +27,7 @@ function BookMeeting(){
     const [booking_finish_date, set_booking_finish_date] = useState("");
     const [booking_finish_time, set_booking_finish_time] = useState("");
     const [booking_invitee_id, set_booking_invitee_id] = useState("");
+    const [booking_id, set_booking_id] = useState("");
     const [room_id, set_room_id] = useState("");
 
     const evs = []
@@ -82,8 +83,25 @@ function BookMeeting(){
             })
 
     }
+    //add update meeting only name
+    const updateMeeting = event=> {
+        //event.preventDefault();
+        const user_id = localStorage.getItem("user_id");
+        const data ={
+            booking_name : booking_name
+        };
+        console.log(data)
+        Axios.post(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/${booking_id}/User/${user_id}/updateName`, data).then(
+            res => {
+                window.alert("Meeting has been updated.")
+                console.log(res)
+            }).catch(
+            err => {
+                window.alert(err)
+                console.log("Error:" + err)
+            })
 
- 
+    }
 
     return <Container style={{ height: 800 }}><Calendar
         selectable
@@ -183,6 +201,31 @@ function BookMeeting(){
         > Book Meeting </Button>
 
     </Container>
+    <hr/>
+        <Grid columns={2} relaxed='very' stackable>
+            <Grid.Column>
+                <Form>
+                    <Form.Input
+                        id='Name'
+                        label='Name'
+                        onChange={(event) => {
+                            set_booking_name(event.target.value); 
+                        }}
+                    />
+                    <Form.Input
+                        id='Meeting Id'
+                        label='Meeting Id'
+                        onChange={(event) => {
+                            set_booking_id(event.target.value); 
+                        }}
+                    />
+                </Form>
+            </Grid.Column>
+            <Grid.Column>
+                <Button content={'Update Meeting'} primary  onClick={updateMeeting}/>
+            </Grid.Column>
+        </Grid>
+
     </Container>
 
 

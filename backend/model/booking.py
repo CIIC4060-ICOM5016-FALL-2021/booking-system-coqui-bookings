@@ -143,6 +143,15 @@ class BookingDAO:
         self.conn.commit()
         return True
 
+     # Update
+    def updateBookingName(self, booking_id, booking_name, user_id):
+        cursor = self.conn.cursor()
+        query = 'update "Booking" set booking_name = %s, user_id = %s,' \
+                'where booking_id = %s'
+        cursor.execute(query, (booking_name, user_id, booking_id))
+        self.conn.commit()
+        return True
+
     # Delete
     def deleteBooking(self, booking_id):
         cursor = self.conn.cursor()
