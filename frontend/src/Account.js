@@ -8,7 +8,6 @@ function Account() {
     const [user_password, set_password] = useState("");
     const [user_first_name, set_first_name] = useState("");
     const [user_last_name, set_last_name] = useState("");
-    const [role_id, set_role_id] = useState("");
 
     const update = event => {
         event.preventDefault();
@@ -19,7 +18,6 @@ function Account() {
             user_password: user_password,
             user_first_name: user_first_name,
             user_last_name: user_last_name,
-            role_id: role_id
         };
         console.log(data)
         Axios.put("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/" + user_id, data).then(
@@ -68,14 +66,6 @@ function Account() {
                                 label='Last Name'
                                 onChange={(event) => {
                                     set_last_name(event.target.value);}}
-                            />
-                            <Form.Input
-                                id='role_id'
-                                iconPosition='left'
-                                label='Role'
-                                type='number'
-                                onChange={(event) => {
-                                    set_role_id(event.target.value);}}
                             />
                         </Form>
                     </Grid.Column>
