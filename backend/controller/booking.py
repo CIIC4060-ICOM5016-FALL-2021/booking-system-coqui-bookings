@@ -228,8 +228,8 @@ class BaseBooking:
         else:
             result_list = []
             for row in top_booked_rooms:
-                obj = BaseRoom().build_room_map_dict(row)
-                result_list.append(obj)
+                # obj = BaseRoom().build_room_map_dict(row)
+                result_list.append(row)
             return jsonify(result_list), 200
 
     # def getUserDaySchedule(self, user_id, json):

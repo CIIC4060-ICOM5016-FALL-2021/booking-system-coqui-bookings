@@ -1,10 +1,7 @@
-import React, {Component, useState} from 'react';
-import {Calendar, momentLocalizer, Views } from 'react-big-calendar';
+import React from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import moment from 'moment';
-import {Button, Card, Container, Modal} from "semantic-ui-react";
+import {Container} from "semantic-ui-react";
 import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
-import { data } from 'jquery';
 import Axios from "axios";
 
 function Dashboard(){
