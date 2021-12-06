@@ -23,46 +23,81 @@ function UserView(){
         window.setInterval('window.location.href = "/"', 1000);
 
     }
+    const data = {
+        user_id: localStorage.getItem("user_id"),
+        role_id: localStorage.getItem("role_id")
+    }
+
     const [isAuth, setIsAuth] = useState(false)
-    const panes = [
-        {
-            menuItem: 'User Schedule', render: () => <UserSchedule/>
-        },
-        {
-            menuItem: 'Room Schedule', render: () => <RoomSchedule/>
-        },
-        {
-            menuItem: 'User Statistics', render: () => <UserStatistics/>
-        },
-        {
-            menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>
-          
-         },
-         {
-            menuItem: 'Room Availability', render: () => <RoomAvailability/>
 
-        },
-        {
-            menuItem: 'User Availability', render: () => <UserAvailability/>
+    // add create room and delete room
 
-        },
-        {
-            menuItem: 'Booking', render: () => <BookMeeting/>
-        },
-        {
-            menuItem: 'Booked Room', render: () => <WhoBookedRoom/>
+    // move mark as un to user schedule
+    // add mark as un to room schedule
+    
+    if (data.role_id === 3){
 
-        },
-        {
-            menuItem: 'Account', render: () => <Account/>
-        },
-        {
-            menuItem :  <Button onClick={logout}>Log Out</Button>
-        },
-    ]
+        const panes = [
+            {
+                menuItem: 'User Schedule', render: () => <UserSchedule/>
+            },
+            {
+                menuItem: 'Room Schedule', render: () => <RoomSchedule/>
+            },
+            {
+                menuItem: 'User Statistics', render: () => <UserStatistics/>
+            },
+            {
+                menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>
+            
+            },
+            {
+                menuItem: 'Room Availability', render: () => <RoomAvailability/>
+
+            },
+            {
+                menuItem: 'User Availability', render: () => <UserAvailability/>
+
+            },
+            {
+                menuItem: 'Booking', render: () => <BookMeeting/>
+            },
+            {
+                menuItem: 'Booked Room', render: () => <WhoBookedRoom/>
+
+            },
+            {
+                menuItem: 'Account', render: () => <Account/>
+            },
+            {
+                menuItem :  <Button onClick={logout}>Log Out</Button>
+            },
+        ]
+    }else{
+        const panes = [
+            {
+                menuItem: 'User Schedule', render: () => <UserSchedule/>
+            },
+            {
+                menuItem: 'User Statistics', render: () => <UserStatistics/>
+            },
+            {
+                menuItem: 'User Availability', render: () => <UserAvailability/>
+
+            },
+            {
+                menuItem: 'Account', render: () => <Account/>
+            },
+            {
+                menuItem :  <Button onClick={logout}>Log Out</Button>
+            },
+        ]
+    }
 
    return (
        <Tab panes={panes}/>
-        )
+    )
+
+    
 }
 export default UserView;

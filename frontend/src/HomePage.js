@@ -31,6 +31,7 @@ function HomePage() {
             res => {
                 window.alert("User has been created.")
                 console.log(res)
+                localStorage.setItem("role_id",  role_id);
             }).catch(
             err => {
                 console.log("Error:" + err)
@@ -51,6 +52,7 @@ function HomePage() {
                 localStorage.setItem("user_email",  user_email);
                 localStorage.setItem("user_password", user_password);
                 localStorage.setItem("user_id", res.data[1]);
+
                 console.log(res.data)
             }).catch(
             err => {
@@ -58,6 +60,7 @@ function HomePage() {
                 window.alert("User failed logged in.")
             })
     }
+
 
     return (<Segment><Header dividing textAlign="center" size="huge">Welcome to Coqui Bookings</Header>
             <Modal
