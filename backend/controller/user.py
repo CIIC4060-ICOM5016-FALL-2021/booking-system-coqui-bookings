@@ -293,6 +293,7 @@ class BaseUser:
         user_password = json['user_password']
         user_first_name = json['user_first_name']
         user_last_name = json['user_last_name']
+        role_id = json['role_id']
         dao = UserDAO()
         existing_user = dao.getUserById(user_id)
         existing_email = dao.getUserByEmail(user_email)
@@ -304,7 +305,7 @@ class BaseUser:
             return jsonify("An user with that email address already exists"), 409
         else:
             dao.updateUser(user_id, user_email, user_password, user_first_name, user_last_name, )
-            result = self.build_user_attr_dict_for_update(user_id, user_email, user_password, user_first_name, user_last_name,)
+            result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name, role_id)
             return jsonify(result), 200
 
     # Delete
