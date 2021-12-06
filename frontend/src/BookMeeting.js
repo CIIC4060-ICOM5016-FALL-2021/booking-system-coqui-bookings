@@ -86,19 +86,18 @@ function BookMeeting(){
     //add update meeting only name
     const updateMeeting = event=> {
         //event.preventDefault();
-        const user_id = localStorage.getItem("user_id");
         const data ={
             booking_name : booking_name
         };
         console.log(data)
-        Axios.put(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/${booking_id}/updateName`, data).then(
+        Axios.put(`https://localhost:5000/coqui-bookings/Booking/bookings/${booking_id}/updateName`, data).then(
             res => {
                 window.alert("Meeting has been updated.")
                 console.log(res)
             }).catch(
             err => {
                 window.alert(err)
-                console.log("Error:" + err)
+                console.log(err)
             })
 
     }
