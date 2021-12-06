@@ -337,7 +337,7 @@ class BaseUser:
         if not user_dao.getUserById(user_id):
             return jsonify("User Not Found"), 404
         for booking in all_bookings:
-            if user_id == booking[user_id]:
+            if user_id == booking[4]:
                 return jsonify("Cannot delete user because is host "), 404
 
         # for booking_id, invitee_id in all_invitees:
