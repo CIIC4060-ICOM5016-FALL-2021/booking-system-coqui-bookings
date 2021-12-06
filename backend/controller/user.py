@@ -299,7 +299,7 @@ class BaseUser:
         elif existing_user[1] != user_email and existing_email:
             return jsonify("An user with that email address already exists"), 409
         else:
-            dao.updateUser(user_id, user_email, user_password, user_first_name, user_last_name, role_id,)
+            dao.updateUser(user_id, user_email, user_password, user_first_name, user_last_name, role_id, )
             result = self.build_user_attr_dict(user_id, user_email, user_password, user_first_name, user_last_name,
                                                role_id, )
             return jsonify(result), 200
@@ -325,3 +325,35 @@ class BaseUser:
                 invitee_dao.deleteInvitee(booking[0], user_id)  # Remove Invitee From Booking
         user_dao.deleteUser(user_id)
         return jsonify("User Deleted Successfully"), 200
+
+    def deleteUserbyUser(self, user_id):
+        user_dao = UserDAO()
+        booking_dao = BookingDAO()
+        invitee_dao = BookingInviteeDAO()
+        room_dao = RoomDAO()
+        all_bookings = booking_dao.getAllBookings()
+        all_invitees = invitee_dao.getAllInvitees()
+        if not user_dao.getUserById(user_id):
+            return jsonify("User Not Found"), 404
+        for user in all_bookings:
+            print(all_bookings[user[4]])
+            if user_id == all_bookings[user[4]]:
+                return jsonify("Cannot delete user because is host "), 404
+        for invitee in all_invitees:
+            if user_id == all_invitees[1]:
+                return jsonify("Cannot delete user because is invitee "), 404
+        else:
+            unavailable_user_slots = user_dao.getUnavailableTimeOfUserById(user_id)
+            for slot in unavailable_user_slots:
+                user_dao.deleteUnavailableUserTimeFrame(user_id, slot[1], slot[2])  # Remove Unavailable Time From User
+            all_bookings = booking_dao.getAllBookings()
+            for booking in all_bookings:
+                if booking[0] == user_id:
+                    booking_dao.deleteBooking(booking[0])  # Booking Without Creator Cannot Exist
+                    room_dao.deleteUnavailableRoomTime(booking[5], booking[2], booking[3])  # Delete Unavailable Room Time
+                invitees = invitee_dao.getInviteeIdListFromBooking(booking[0])
+                if user_id in invitees:
+                    invitee_dao.deleteInvitee(booking[0], user_id)  # Remove Invitee From Booking
+            user_dao.deleteUser(user_id)
+            return jsonify("User Deleted Successfully"), 200
+

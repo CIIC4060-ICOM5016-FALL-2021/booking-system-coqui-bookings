@@ -35,7 +35,7 @@ def handleUserById(user_id):
     elif request.method == 'PUT':
         return BaseUser().updateUser(user_id, request.json)
     elif request.method == 'DELETE':
-        return BaseUser().deleteUser(user_id)
+        return BaseUser().deleteUserbyUser(user_id)
     else:
         return jsonify("Method Not Allowed"), 405
 
@@ -202,7 +202,7 @@ def handleGetAllBookings(user_id):
 @app.route('/coqui-bookings/Booking/bookings/<int:booking_id>', methods=['DELETE'])
 def handleBookingById(booking_id):
     if request.method == 'DELETE':
-        return BaseBooking().deleteBooking(booking_id)
+        return BaseBooking().deleteBookingByHost(booking_id, request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
@@ -288,7 +288,7 @@ def handleBookingInviteesByBookingId(booking_id):
            methods=['DELETE'])
 def handleBookingInviteeDeletion(booking_id, invitee_id):
     if request.method == 'DELETE':
-        return BaseBookingInvitee().deleteInvitee(booking_id, invitee_id)
+        return BaseBookingInvitee().deleteInviteebyHost(booking_id, invitee_id, request.json)
     else:
         return jsonify("Method Not Allowed"), 405
 
