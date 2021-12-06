@@ -71,7 +71,7 @@ function BookMeeting(){
             room_id : room_id
         };
         console.log(data)
-        Axios.post(`http://127.0.0.1:5000/coqui-bookings/Booking/bookings/user/${user_id}/create`, data).then(
+        Axios.post(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/user/${user_id}/create`, data).then(
             res => {
                 window.alert("Meeting has been created.")
                 console.log(res)
@@ -99,7 +99,7 @@ function BookMeeting(){
             finish_time : booking_finish_time,
         };
         console.log(data)
-        Axios.post(`http://127.0.0.1:5000/coqui-bookings/User/${user_id}/unavailable-time-slot/`, data).then(
+        Axios.post(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/${user_id}/unavailable-time-slot/`, data).then(
             res => {
                 window.alert("Unavailable Time Slot has been created.")
                 console.log(res)
@@ -157,7 +157,8 @@ function BookMeeting(){
                     <Form.Input
                         id='StartTime'
                         label='StartTime'
-                        type='time'
+                        type='text'
+                        placeholder='00:00'
                         onChange={(event) => {
                             set_booking_start_time(event.target.value)
                         }}
@@ -173,7 +174,8 @@ function BookMeeting(){
                     <Form.Input
                         id='EndTime'
                         label='EndTime'
-                        type='time'
+                        type='text'
+                        placeholder='00:00'
                         onChange={(event) => {
                             set_booking_finish_time(event.target.value)
                         }}
@@ -223,7 +225,8 @@ function BookMeeting(){
                     <Form.Input
                         id='StartTime'
                         label='StartTime'
-                        type='time'
+                        type='text'
+                        placeholder='00:00'
                         onChange={(event) => {
                             set_booking_start_time(event.target.value)
                         }}
@@ -239,7 +242,8 @@ function BookMeeting(){
                     <Form.Input
                         id='EndTime'
                         label='EndTime'
-                        type='time'
+                        type='text'
+                        placeholder='00:00'
                         onChange={(event) => {
                             set_booking_finish_time(event.target.value)
                         }}
