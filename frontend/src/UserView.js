@@ -9,11 +9,13 @@ import HomePage from "./HomePage";
 import Axios from "axios";
 import Account from "./Account";
 import RoomSchedule from "./RoomSchedule";
+import UserStatistics from "./UserStatistics";
 import RoomAvailability from "./RoomAvailability";
 import WhoBookedRoom from "./WhoBookedRoom";
 import UserAvailability from "./UserAvailability";
 import {useNavigate} from 'react-router-dom';
 import CreateRoom from "./CreateRoom";
+
 
 function UserView(){
     const logout = event => {
@@ -35,6 +37,13 @@ function UserView(){
             menuItem: 'Room Schedule', render: () => <RoomSchedule/>
         },
         {
+            menuItem: 'User Statistics', render: () => <UserStatistics/>
+        },
+        {
+            menuItem: 'Room Management', render: () => <Tab.Pane active={isAuth}><BookMeeting/></Tab.Pane>
+          
+         },
+         {
             menuItem: 'Room Availability', render: () => <RoomAvailability/>
 
         },
@@ -47,6 +56,7 @@ function UserView(){
         },
         {
             menuItem: 'Booked Room', render: () => <WhoBookedRoom/>
+
         },
         {
             menuItem: 'Account', render: () => <Account/>
