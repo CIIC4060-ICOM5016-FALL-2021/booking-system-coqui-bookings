@@ -40,8 +40,8 @@ class BaseBooking:
             result['booking_invitees'] = booking_invitees
         return result
     
-    def build_bookingName_attr_dict(self, booking_id, booking_name, user_id):
-        result = {'booking_id': booking_id, 'booking_name': booking_name, 'user_id':user_id}
+    def build_bookingName_attr_dict(self, booking_id, booking_name):
+        result = {'booking_id': booking_id, 'booking_name': booking_name}
         return result
 
     def build_booking_attr_student_dict(self, booking_name, booking_start, booking_finish, room_id):
@@ -259,13 +259,13 @@ class BaseBooking:
     #         return jsonify("User is available all day"), 200
 
     # Update
-    def updateBookingName(self, booking_id, user_id, json):
+    def updateBookingName(self, booking_id, json):
         booking_name = json['booking_name']
 
         booking_dao = BookingDAO()
    
-        booking_dao.updateBookingName(booking_id, booking_name, user_id)
-        result = self.build_bookingName_attr_dict(booking_id, booking_name, user_id)
+        booking_dao.updateBookingName(booking_id, booking_name)
+        result = self.build_bookingName_attr_dict(booking_id, booking_name)
         return jsonify(result), 200  # Successfully Updated Booking
 
     def updateBooking(self, booking_id, user_id, json):

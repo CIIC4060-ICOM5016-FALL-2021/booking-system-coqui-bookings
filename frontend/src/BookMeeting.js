@@ -91,7 +91,7 @@ function BookMeeting(){
             booking_name : booking_name
         };
         console.log(data)
-        Axios.post(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/${booking_id}/User/${user_id}/updateName`, data).then(
+        Axios.put(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/${booking_id}/updateName`, data).then(
             res => {
                 window.alert("Meeting has been updated.")
                 console.log(res)
