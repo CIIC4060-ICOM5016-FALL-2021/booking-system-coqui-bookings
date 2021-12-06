@@ -15,6 +15,7 @@ import WhoBookedRoom from "./WhoBookedRoom";
 import UserAvailability from "./UserAvailability";
 import {useNavigate} from 'react-router-dom';
 import CreateRoom from "./CreateRoom";
+import DeleteRoom from "./DeleteRoom";
 
 
 function UserView(){
@@ -29,6 +30,9 @@ function UserView(){
     const panes = [
         {
             menuItem: 'Create Room', render: () => <CreateRoom/>
+        },
+        {
+            menuItem: 'Delete Room', render: () => <DeleteRoom/>
         },
         {
             menuItem: 'User Schedule', render: () => <UserSchedule/>
