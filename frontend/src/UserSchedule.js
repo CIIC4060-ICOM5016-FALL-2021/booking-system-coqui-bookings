@@ -27,17 +27,15 @@ function UserSchedule() {
                 let appointments = response.data;
                 for (let i = 0; i < appointments.length; i++) {
                     evs.push({
-                        'title': "Busy",
+                        'title': appointments[i].booking_name,
                         'allDay': false,
-                        'start':new Date(appointments[i].unavailable_time_user_start),
-                        'end': new Date(appointments[i].unavailable_time_user_finish)
+                        'start': new Date(appointments[i].start_time),
+                        'end': new Date(appointments[i].finish_time)
                     })
-
-                    // TODO DO ANOTHER AXIOS TO VERIFY IF BOOKING OR MARKED BY USER
                 }
             }).catch(
                 err => {
-                    console.log("Error:" + err)
+                    console.log(err)
                 })
 
 
@@ -48,7 +46,6 @@ function UserSchedule() {
     }
 
     const markNewUnavailable = event=>{
-        //event.preventDefault();
         const user_id = localStorage.getItem("user_id");
         const data ={
             start_date : booking_start_date,
@@ -63,8 +60,8 @@ function UserSchedule() {
                 console.log(res)
             }).catch(
             err => {
-                window.alert( window.alert("Failed: Unavailable Event Creation."))
-                console.log("Error:" + err)
+                window.alert("Failed: Unavailable Event Creation.")
+                console.log(err)
             })
 
     }

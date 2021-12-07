@@ -41,15 +41,15 @@ class BaseUser:
         return result
 
     def build_time_slot_marked_as_busy(self, start_time, finish_time):
-        result = {'start_time': dt.datetime.strftime(start_time, '%Y-%m-%d %H:%M') + " AST",
-                  'finish_time': dt.datetime.strftime(finish_time, '%Y-%m-%d %H:%M') + " AST",
-                  'reason': "Marked as busy by User"}
+        result = {'start_time': start_time,
+                  'finish_time': finish_time,
+                  'booking_name': "Marked as busy by User"}
         return result
 
     def build_booking_map_dict_with_room(self, row):
         result = {'booking_id': row[0], 'booking_name': row[1],
-                  'booking_start': dt.datetime.strftime(row[2], '%Y-%m-%d %H:%M') + " AST",
-                  'booking_finish': dt.datetime.strftime(row[3], '%Y-%m-%d %H:%M') + " AST",
+                  'start_time': row[2],
+                  'finish_time': row[3],
                   'organizer_id': row[4], 'room_id': row[5], 'room_name': row[6]}
         return result
 
@@ -152,21 +152,44 @@ class BaseUser:
         return jsonify(result_list), 200
 
     def getUnavailableTimeOfUserById(self, user_id):
-        dao = UserDAO()
-        user = dao.getUserById(user_id)
+        user_dao = UserDAO()
+        booking_dao = BookingDAO()
+        invitee_dao = BookingInviteeDAO()
+        user = user_dao.getUserById(user_id)
         if not user:  # User Not Found
             return jsonify("User Not Found"), 404
 
-        unavailable_user_tuple = dao.getUnavailableTimeOfUserById(user_id)
+        unavailable_user_tuple = user_dao.getUnavailableTimeOfUserById(user_id)
         if not unavailable_user_tuple:  # Unavailable Time Slot Not Found
             return jsonify("No Unavailable Time Slots Found for this User"), 404
         else:
             result_list = []
             for row in unavailable_user_tuple:
-                obj = self.build_unavailable_time_user_map_dict(row)
-                result_list.append(obj)
+                booking_data = booking_dao.getBookingDataAtTimeFrame(row[1], row[2])
+                if not booking_data:  # No bookings found at this time frame
+                    obj = self.build_time_slot_marked_as_busy(row[1], row[2])
+                    result_list.append(obj)
+                    continue  # Nothing more to check
+                for column in booking_data:
+                    if row[3] != column[4]:  # User did not create booking
+                        invitee_booking_data = invitee_dao.getBookingDataFromInviteeAtTimeFrame(row[3], row[1], row[2])
+                        obj = self.build_booking_map_dict_with_room(invitee_booking_data)
+                    else:
+                        obj = self.build_booking_map_dict_with_room(column)
+                    result_list.append(obj)
             return jsonify(result_list), 200
 
+        #
+        #     result_list = []
+        #     for row in unavailable_user_tuple:
+        #         # if a booking exists:
+        #         #   build a dictionary with the booking
+        #         # else:
+        #         #
+        #         obj = self.build_unavailable_time_user_map_dict(row)
+        #         result_list.append(obj)
+        #     return jsonify(result_list), 200
+        #
     def verifyAvailableUserAtTimeFrame(self, user_id, start_time_to_verify, finish_time_to_verify):
         dao = UserDAO()
 
@@ -194,7 +217,7 @@ class BaseUser:
         user_dao = UserDAO()
         valid_user = user_dao.verifyLogin(user_email, user_password)
         if not valid_user:
-            return jsonify("Username or Password entered incorrectly"), 401
+            return jsonify("Username or Password entered incorrectly"), 404
         else:
             return jsonify("User logged in successfully", valid_user[0], valid_user[5]), 200
 

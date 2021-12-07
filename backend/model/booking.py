@@ -51,6 +51,10 @@ class BookingDAO:
             result.append(row)
         return result
 
+    # Used in Unavailable Time Slots
+    def getBookingDataAtTimeFrameWithUser(self, user_id, booking_start, booking_finish):
+        cursor = self.conn.cursor()
+
     def getUserBookedRoomAtTimeFrame(self, room_id, booking_start, booking_finish):
         cursor = self.conn.cursor()
         query = 'select user_id from "Booking"' \
