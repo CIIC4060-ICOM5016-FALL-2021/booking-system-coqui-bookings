@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"user_email\" : \"luis.perez @upr.edu\",\n \"user_password\" : \"luis567\",\n \"user_first_name\" : \"Luis\", \n \"user_last_name\" : \"Perez\",\n \"role_id\" : 3\n}",
+							"raw": "{\"user_email\" : \"william.pabon@upr.edu\",\n \"user_password\" : \"william\",\n \"user_first_name\" : \"William\", \n \"user_last_name\" : \"Pabon\",\n \"role_id\" : 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -67,7 +67,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/17",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/28",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -78,7 +78,7 @@
 								"coqui-bookings",
 								"User",
 								"users",
-								"17"
+								"28"
 							]
 						}
 					},
@@ -91,7 +91,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n \"user_email\" : \"luis.perez243@upr.edu\",\n \"user_password\" : \"luisito1\",\n \"user_first_name\" : \"Luisitoooo\", \n \"user_last_name\" : \"Perez\",\n \"role_id\" : 2\n}",
+							"raw": "{\n \"user_email\" : \"celines.alfaro2@upr.edu\",\n \"user_password\" : \"celines\",\n \"user_first_name\" : \"Celines\", \n \"user_last_name\" : \"Alfaro\",\n \"role_id\" : 3\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -99,7 +99,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/5",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/28",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -110,7 +110,7 @@
 								"coqui-bookings",
 								"User",
 								"users",
-								"5"
+								"28"
 							]
 						}
 					},
@@ -122,7 +122,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/13",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/81",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -133,7 +133,7 @@
 								"coqui-bookings",
 								"User",
 								"users",
-								"13"
+								"81"
 							]
 						}
 					},
@@ -145,7 +145,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/role/8",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/role/28",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -156,43 +156,7 @@
 								"coqui-bookings",
 								"User",
 								"role",
-								"8"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User Schedule By Id",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"date\" : \"2021-11-15\" }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/7/schedule",
-							"protocol": "https",
-							"host": [
-								"coqui-bookings-database",
-								"herokuapp",
-								"com"
-							],
-							"path": [
-								"coqui-bookings",
-								"User",
-								"users",
-								"7",
-								"schedule"
+								"28"
 							]
 						}
 					},
@@ -204,7 +168,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/6/most_used_room",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/7/most_used_room",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -215,7 +179,7 @@
 								"coqui-bookings",
 								"User",
 								"users",
-								"6",
+								"7",
 								"most_used_room"
 							]
 						}
@@ -245,24 +209,12 @@
 					"response": []
 				},
 				{
-					"name": "Unavailable Time Of User By Id",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "Unavailable User By Id",
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/unavailable-time-users/8",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/unavailable-time-users/28",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -273,7 +225,7 @@
 								"coqui-bookings",
 								"User",
 								"unavailable-time-users",
-								"8"
+								"28"
 							]
 						}
 					},
@@ -286,7 +238,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"start_date\" :\"2021-11-16\",\n\"start_time\": \"8:00\",\n\"finish_date\" : \"2021-11-16\",\n\"finish_time\": \"15:00\"\n }",
+							"raw": "{\n\"start_date\" :\"2021-11-16\",\n\"start_time\": \"10:00\",\n\"finish_date\" : \"2021-11-16\",\n\"finish_time\": \"11:00\"\n }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -294,7 +246,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/8/unavailable-time-slot/",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/7/unavailable-time-slot/",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -304,9 +256,109 @@
 							"path": [
 								"coqui-bookings",
 								"User",
-								"8",
+								"7",
 								"unavailable-time-slot",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Schedule By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"date\" : \"2021-11-21\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/28/schedule",
+							"protocol": "https",
+							"host": [
+								"coqui-bookings-database",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"coqui-bookings",
+								"User",
+								"users",
+								"28",
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Free Time For Users",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date\": \"2021-11-16\",\r\n    \"user_id_list\": [28, 65, 17]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/free-time-for-users",
+							"protocol": "https",
+							"host": [
+								"coqui-bookings-database",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"coqui-bookings",
+								"User",
+								"users",
+								"free-time-for-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Log In",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"user_email\": \"ronald.velez@upr.edu\",\n\"user_password\":\"ronald987\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/login",
+							"protocol": "https",
+							"host": [
+								"coqui-bookings-database",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"coqui-bookings",
+								"User",
+								"users",
+								"login"
 							]
 						}
 					},
@@ -372,11 +424,8 @@
 				},
 				{
 					"name": "All Available Rooms At Time Frame",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -435,7 +484,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"room_name\" : \"S-114A\",\n\"room_type_id\" : 2\n}",
+							"raw": "{\n\"room_name\" : \"Q-150\",\n\"room_type_id\" : 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -443,7 +492,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/rooms/1",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/rooms/24",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -454,7 +503,7 @@
 								"coqui-bookings",
 								"Room",
 								"rooms",
-								"1"
+								"24"
 							]
 						}
 					},
@@ -466,7 +515,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/rooms/15",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/rooms/24",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -477,7 +526,7 @@
 								"coqui-bookings",
 								"Room",
 								"rooms",
-								"15"
+								"24"
 							]
 						}
 					},
@@ -507,11 +556,23 @@
 				},
 				{
 					"name": "Unavailabe Room by Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/unavailable-time-rooms/4",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/unavailable-time-rooms/9",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -522,7 +583,7 @@
 								"coqui-bookings",
 								"Room",
 								"unavailable-time-rooms",
-								"4"
+								"9"
 							]
 						}
 					},
@@ -618,7 +679,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"date\": \"2021-11-15\"\r\n}",
+							"raw": "{\r\n\"date\": \"2021-11-16\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -626,7 +687,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/rooms/4/schedule",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/rooms/9/schedule",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -637,7 +698,7 @@
 								"coqui-bookings",
 								"Room",
 								"rooms",
-								"4",
+								"9",
 								"schedule"
 							]
 						}
@@ -680,7 +741,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/23/User/12/get",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/38/User/28/get",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -691,9 +752,9 @@
 								"coqui-bookings",
 								"Booking",
 								"bookings",
-								"23",
+								"38",
 								"User",
-								"12",
+								"28",
 								"get"
 							]
 						}
@@ -701,13 +762,13 @@
 					"response": []
 				},
 				{
-					"name": "Delete Booking",
+					"name": "Delete Booking (Deprecated) Copy",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/24",
-							"protocol": "https",
+							"raw": "http://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/82",
+							"protocol": "http",
 							"host": [
 								"coqui-bookings-database",
 								"herokuapp",
@@ -717,7 +778,32 @@
 								"coqui-bookings",
 								"Booking",
 								"bookings",
-								"24"
+								"82"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Booking by Host",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://coqui-bookings-database.herokuapp.com/coqui-bookings/User/81/Booking/bookings/87",
+							"protocol": "http",
+							"host": [
+								"coqui-bookings-database",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"coqui-bookings",
+								"User",
+								"81",
+								"Booking",
+								"bookings",
+								"87"
 							]
 						}
 					},
@@ -730,7 +816,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"booking_name\" : \"Study OS Final Again 2\",\n\"booking_start_date\" : \"2022-11-28\",\n\"booking_start_time\": \"13:00\",\n\"booking_finish_date\" : \"2022-11-28\",\n\"booking_finish_time\": \"14:00\",\n\"booking_invitee_id\": [5, 8, 12],\n\"room_id\" : 9\n}",
+							"raw": "{ \n    \"booking_name\" : \"P2\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -738,7 +824,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/20/User/6/update",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/86/updateName",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -749,10 +835,8 @@
 								"coqui-bookings",
 								"Booking",
 								"bookings",
-								"20",
-								"User",
-								"6",
-								"update"
+								"86",
+								"updateName"
 							]
 						}
 					},
@@ -765,7 +849,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"booking_name\" : \"DB Cry g\",\n\"booking_start_date\" : \"2021-11-14\",\n\"booking_start_time\": \"16:00\",\n\"booking_finish_date\" : \"2021-11-14\",\n\"booking_finish_time\": \"17:00\",\n\"booking_invitee_id\": [5, 7, 8, 12],\n\"room_id\" : 10\n}",
+							"raw": "{ \"booking_name\" : \"piano\",\n\"booking_start_date\" : \"2021-11-17\",\n\"booking_start_time\": \"10:00\",\n\"booking_finish_date\" : \"2021-11-17\",\n\"booking_finish_time\": \"10:30\",\n\"booking_invitee_id\": [],\n\"room_id\" : 18\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -773,7 +857,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/user/12/create",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/user/81/create",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -785,7 +869,7 @@
 								"Booking",
 								"bookings",
 								"user",
-								"12",
+								"81",
 								"create"
 							]
 						}
@@ -794,15 +878,12 @@
 				},
 				{
 					"name": "User Who Appointed Room At Time Frame",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"booking_start_time\" : \"14:30\",\n    \"booking_start_date\" : \"2021-11-15\",\n    \"booking_finish_time\" : \"15:00\",\n    \"booking_finish_date\" : \"2021-11-15\"\n}",
+							"raw": "{\n    \"booking_start_time\" : \"00:00\",\n    \"booking_start_date\" : \"2021-12-17\",\n    \"booking_finish_time\" : \"23:59:00\",\n    \"booking_finish_date\" : \"2021-12-17\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -897,41 +978,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Free Time For Users",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"date\": \"2021-11-15\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/27/free-time-for-users",
-							"protocol": "https",
-							"host": [
-								"coqui-bookings-database",
-								"herokuapp",
-								"com"
-							],
-							"path": [
-								"coqui-bookings",
-								"Booking",
-								"27",
-								"free-time-for-users"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -1005,13 +1051,50 @@
 					"response": []
 				},
 				{
-					"name": "Delete Invitee",
+					"name": "Delete Invitee by Host",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://coqui-bookings-database.herokuapp.com/coqui-bookings/User/28/Booking/45/BookingInvitee/bookingInvitees/delete/24",
+							"protocol": "http",
+							"host": [
+								"coqui-bookings-database",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"coqui-bookings",
+								"User",
+								"28",
+								"Booking",
+								"45",
+								"BookingInvitee",
+								"bookingInvitees",
+								"delete",
+								"24"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Invitee (Deprecated) Copy",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/17/BookingInvitee/bookingInvitees/delete/8",
-							"protocol": "https",
+							"raw": "http://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/83/BookingInvitee/bookingInvitees/delete/17",
+							"protocol": "http",
 							"host": [
 								"coqui-bookings-database",
 								"herokuapp",
@@ -1020,11 +1103,11 @@
 							"path": [
 								"coqui-bookings",
 								"Booking",
-								"17",
+								"83",
 								"BookingInvitee",
 								"bookingInvitees",
 								"delete",
-								"8"
+								"17"
 							]
 						}
 					},
@@ -1090,7 +1173,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/7/invitee-most-booked-with",
+							"raw": "https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/28/invitee-most-booked-with",
 							"protocol": "https",
 							"host": [
 								"coqui-bookings-database",
@@ -1101,7 +1184,7 @@
 								"coqui-bookings",
 								"User",
 								"users",
-								"7",
+								"28",
 								"invitee-most-booked-with"
 							]
 						}
