@@ -102,8 +102,12 @@ function Account() {
                             />
                         </Form>
                     </Grid.Column>
-                    <Grid.Column verticalAlign='middle' >
-                        <Button content='Update User' icon='signup' size='big' onClick={update}/>
+                    <Grid.Column width={"2"}>
+                        <Button content='Update User' primary onClick={update}/>
+                    </Grid.Column>
+
+                    <Grid.Column width={"2"}>
+                        <Button content='Delete User' secondary onClick={handle_delete_user}/>
                     </Grid.Column>
                 </Grid>
             <br/><br/>

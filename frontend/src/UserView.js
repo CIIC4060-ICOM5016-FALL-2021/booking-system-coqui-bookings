@@ -2,7 +2,7 @@ import React, {Component, useState} from 'react';
 import {Calendar, momentLocalizer, Views} from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
-import {Button, Card, Container, Divider, Form, Grid, Header, Modal, Segment, Tab} from "semantic-ui-react";
+import {Button, Card, Container, Divider, Form, Grid, Header, Modal, Segment, Tab, TextArea} from "semantic-ui-react";
 import BookMeeting from "./BookMeeting";
 import UserSchedule from "./UserSchedule";
 import HomePage from "./HomePage";
@@ -72,10 +72,16 @@ function UserView(){
                 menuItem: 'Account', render: () => <Account/>
             },
             {
-                menuItem :  <Button secondary onClick={() => {window.location.href ="/Dashboard"}}>Dashboard</Button>
+                menuItem :  <Button secondary
+                                    style={{
+                    height: "52%", marginLeft:4,
+                }} onClick={() => {window.location.href ="/Dashboard"}}>Dashboard</Button>
             },
             {
-                menuItem :  <Button onClick={logout}>Log Out</Button>
+                menuItem :  <Button
+                    style={{
+                        height: "52%"
+                    }}onClick={logout}>Log Out</Button>
             },
         ]
     }else{
