@@ -15,7 +15,7 @@ function DeleteRoom() {
                 console.log(res)
             }).catch(
             err => {
-                console.log("Error:" + err)
+                console.log(err)
             })
     }
     return (<Segment>

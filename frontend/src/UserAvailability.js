@@ -35,6 +35,7 @@ import Axios from "axios";
                     textarea.value = JSON.stringify(result)
                 }).catch(
                 err => {
+                    window.alert(err)
                     console.log(err)
                 })
         }
@@ -45,8 +46,8 @@ import Axios from "axios";
                         <Form>
                             <Form.Input
                                 id='date'
-                                icon='date'
-                                iconPosition='left'
+                                icon={'calendar alternate outline'}
+                                iconPosition={'left'}
                                 label='Date'
                                 placeholder='date'
                                 type='date'
@@ -73,18 +74,21 @@ import Axios from "axios";
                         </Form>
                     </Grid.Column>
                 </Grid>
+                <br/><br/>
                     <TextArea
                         id={'textarea'}
                         style={{
                             cursor: "text",
-                            width: "48%",
+                            width: "48.6%",
                             height: "50%"
                         }}
                         value={result}
                         placeholder="Free Time for Users"
                         disabled
                     />
+                <br/>
             </Segment>
+
 
         )
     }

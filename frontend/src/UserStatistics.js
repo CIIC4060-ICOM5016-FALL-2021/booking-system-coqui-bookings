@@ -35,7 +35,7 @@ function UserStatistics(){
             })
 
     return (<Container style={{ height: 800 }}>
-
+        <br/>
             <Card>
         <Card.Content>
         <Card.Header>Most Used Room By User</Card.Header>

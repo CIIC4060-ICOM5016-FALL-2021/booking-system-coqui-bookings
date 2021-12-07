@@ -25,17 +25,18 @@ function Account() {
         console.log(data)
         Axios.put("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/" + user_id, data).then(
             res => {
-                window.alert("User credentials have been updated.")
+                window.alert("Success: User credentials have been updated.")
                 console.log(res)
             }).catch(
             err => {
-                console.log("Error:" + err)
+                window.alert(err)
+                console.log(err)
             })
     }
 
     const handle_delete_user = ()=>{
         delete_user()
-        
+
     }
 
     const logout = event => {
@@ -61,6 +62,7 @@ function Account() {
             })
     }
     return (<Segment>
+            <br/>
                 <Grid columns={3} relaxed='very' stackable>
                     <Grid.Column>
                         <Form>
@@ -100,16 +102,16 @@ function Account() {
                             />
                         </Form>
                     </Grid.Column>
-                    <Grid.Column verticalAlign='middle' >
+                    <Grid.Column width={"2"}>
                         <Button content='Update User' primary onClick={update}/>
                     </Grid.Column>
-                    <Grid.Column verticalAlign='middle' >
+
+                    <Grid.Column width={"2"}>
                         <Button content='Delete User' secondary onClick={handle_delete_user}/>
                     </Grid.Column>
                 </Grid>
+            <br/><br/>
         </Segment>
-
-        // delete user button and logout
     )
 }
 export default Account;

@@ -67,7 +67,7 @@ function RoomSchedule() {
                 console.log(res)
             }).catch(
             err => {
-                window.alert("Failed: Unavailable Event Creation.")
+                window.alert(err)
                 console.log("Error:" + err)
             })
     }
@@ -177,7 +177,7 @@ function RoomSchedule() {
             </Button>
     </Container>
     </Container>
-            <br/><br/><br/>
+            <br/><br/><br/><br/>
         </Segment>
     )
 

@@ -60,7 +60,7 @@ function UserSchedule() {
                 console.log(res)
             }).catch(
             err => {
-                window.alert("Failed: Unavailable Event Creation.")
+                window.alert(err)
                 console.log(err)
             })
 

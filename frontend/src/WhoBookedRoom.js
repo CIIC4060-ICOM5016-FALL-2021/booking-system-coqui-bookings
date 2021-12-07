@@ -33,6 +33,12 @@ import Axios from "axios";
                     textarea_user.value = JSON.stringify(user)
                 }).catch(
                 err => {
+                    if(err.toString().substring(404)){
+                        window.alert("Success: No user has booked room at time frame. ")
+                    }
+                    else {
+                        window.alert(err)
+                    }
                     console.log(err)
                 })
         }
@@ -43,7 +49,8 @@ import Axios from "axios";
                         <Form>
                             <Form.Input
                                 id='room_id'
-                                icon='room'
+                                type={'number'}
+                                icon ={"building outline"}
                                 iconPosition='left'
                                 label='Room Id'
                                 placeholder='Room Id'
@@ -53,8 +60,8 @@ import Axios from "axios";
                             />
                             <Form.Input
                                 id='booking_start_date'
-                                icon='date'
-                                iconPosition='left'
+                                icon={'calendar alternate outline'}
+                                iconPosition={'left'}
                                 label='Start Date'
                                 placeholder='date'
                                 type='date'
@@ -64,9 +71,8 @@ import Axios from "axios";
                             />
                             <Form.Input
                                 id='booking_start_time'
-                                icon='time'
-                                ampm={false}
-                                iconPosition='left'
+                                icon={'clock outline'}
+                                iconPosition={'left'}
                                 label='Start Time'
                                 placeholder='00:00'
                                 //type='time'
@@ -76,8 +82,8 @@ import Axios from "axios";
                             />
                             <Form.Input
                                 id='booking_finish_date'
-                                icon='date'
-                                iconPosition='left'
+                                icon={'calendar alternate outline'}
+                                iconPosition={'left'}
                                 label='Finish Date'
                                 placeholder='date'
                                 type='date'
@@ -87,9 +93,8 @@ import Axios from "axios";
                             />
                             <Form.Input
                                 id="booking_finish_time"
-                                icon='time'
-                                ampm={false}
-                                iconPosition='left'
+                                icon={'clock outline'}
+                                iconPosition={'left'}
                                 label='Finish Time'
                                 placeholder='00:00'
                                 //type='time'
@@ -106,17 +111,19 @@ import Axios from "axios";
                         </Form>
                     </Grid.Column>
                 </Grid>
+                <br/><br/>
                 <TextArea
                     id={'textarea_user'}
                     style={{
                         cursor: "text",
-                        width: "48%",
+                        width: "48.6%",
                         height: "50%"
                     }}
                     value={user}
                     placeholder="User"
                     disabled
                 />
+                <br/><br/>
             </Segment>
 
         )
