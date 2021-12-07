@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
 import Axios from "axios";
 
-function CreateRoom() {
+function RoomManagement() {
 
     const [room_name, set_room_name] = useState("");
     const [room_type_id, set_room_type_id] = useState("");
@@ -19,10 +19,11 @@ function CreateRoom() {
         console.log(data)
         Axios.post("https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/rooms", data).then(
             res => {
-                window.alert("Room created successfully.")
+                window.alert("Success: Room has been created.")
                 console.log(res)
             }).catch(
             err => {
+                window.alert("Failed: Room creation.")
                 console.log(err)
             })
     }
@@ -37,11 +38,25 @@ function CreateRoom() {
         console.log(data)
         Axios.put(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/rooms/${room_id}`, data).then(
             res => {
-                window.alert("Room updated successfully.")
+                window.alert("Success: Room has been updated.")
                 console.log(res)
             }).catch(
             err => {
+                window.alert("Failed: Room update.")
                 console.log(err)
+            })
+    }
+    const deleteRoom = event => {
+        event.preventDefault();
+
+        Axios.delete("https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/rooms/" + room_id).then(
+            res => {
+                window.alert("Success: Room has been deleted.")
+                console.log(res)
+            }).catch(
+            err => {
+                window.alert("Failed: Room Deletion.")
+                console.log("Error:" + err)
             })
     }
 
@@ -49,9 +64,10 @@ function CreateRoom() {
                 <Grid columns={2} relaxed='very' stackable>
                     <Grid.Column>
                         <Form>
+                            <h2>Create Room:</h2>
                             <Form.Input
                                 id='room_name'
-                                icon='room'
+                                icon='building outline'
                                 iconPosition='left'
                                 label='Room Name'
                                 type='text'
@@ -60,7 +76,7 @@ function CreateRoom() {
                             />
                             <Form.Input
                                 id='room_type_id'
-                                icon='room'
+                                icon='building outline'
                                 type={'number'}
                                 iconPosition='left'
                                 label='Room Type Id'
@@ -73,13 +89,16 @@ function CreateRoom() {
                         <Button content={'Create Room'} primary  onClick={createRoom}/>
                     </Grid.Column>
                 </Grid>
+            <br/><br/>
             <hr/>
+            <br/>
         <Grid columns={2} relaxed='very' stackable>
             <Grid.Column>
                 <Form>
+                    <h2>Update Room:</h2>
                     <Form.Input
                         id='room_name'
-                        icon='room'
+                        icon='building outline'
                         iconPosition='left'
                         label='Room Name'
                         type='text'
@@ -88,7 +107,7 @@ function CreateRoom() {
                     />
                     <Form.Input
                         id='room_type_id'
-                        icon='room'
+                        icon='building outline'
                         type={'number'}
                         iconPosition='left'
                         label='Room Type Id'
@@ -97,7 +116,7 @@ function CreateRoom() {
                     />
                     <Form.Input
                         id='room_id'
-                        icon='room'
+                        icon='building outline'
                         type={'number'}
                         iconPosition='left'
                         label='Room Id'
@@ -110,7 +129,31 @@ function CreateRoom() {
                 <Button content={'Update Room'} primary  onClick={updateRoom}/>
             </Grid.Column>
         </Grid>
+            <br/><br/>
+            <hr/>
+            <br/>
+            <Grid columns={2} relaxed='very' stackable>
+                <Grid.Column>
+                    <h2>Delete Room:</h2>
+                    <Form>
+                        <Form.Input
+                            id='room_id'
+                            type={'number'}
+                            icon ={"building outline"}
+                            iconPosition='left'
+                            label='Room Id'
+                            onChange={(event) => {
+                                set_room_id(event.target.value);}}
+                        />
+                    </Form>
+                </Grid.Column>
+                <Grid.Column>
+                    <Button content={'Delete Room'} primary  onClick={deleteRoom}/>
+                </Grid.Column>
+            </Grid>
+            <br/>
+            <br/>
     </Segment>
     )
 }
-export default CreateRoom;
+export default RoomManagement;

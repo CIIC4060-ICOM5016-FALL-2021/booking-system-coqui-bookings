@@ -2,7 +2,7 @@ import React, {Component, useState} from 'react';
 import {Calendar, dateFormat, momentLocalizer, Views} from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
-import {Button, Card, Container, Form, Grid, Modal, Segment} from "semantic-ui-react";
+import {Button, Card, Container, Form, Grid, Modal, Segment, TextArea} from "semantic-ui-react";
 import Axios from "axios";
 
 function UserSchedule() {
@@ -59,25 +59,27 @@ function UserSchedule() {
         console.log(data)
         Axios.post(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/${user_id}/unavailable-time-slot/`, data).then(
             res => {
-                window.alert("Unavailable Time Slot has been created.")
+                window.alert("Success: Unavailable Event has been created.")
                 console.log(res)
             }).catch(
             err => {
-                window.alert(err)
+                window.alert( window.alert("Failed: Unavailable Event Creation."))
                 console.log("Error:" + err)
             })
 
     }
 
-    return <Container style={{ height: 800 }}><Calendar
+    return <Container style={{ height: 800 }}>
+        <br/><br/>
+        <Calendar
         localizer={localizer}
         startAccessor="start"
         events={evs}
         endAccessor="end"
         views={["month", "day"]}
         defaultDate={Date.now()}
-    >
-    </Calendar>
+        >
+        </Calendar>
     <Modal
             centered={false}
             open={mark_open}
@@ -85,13 +87,15 @@ function UserSchedule() {
             onOpen={() => setMarkOpen(true)}
             
         >
-            <Modal.Header>Mark Unavailable</Modal.Header>
+            <Modal.Header>Create Unavailable Event:</Modal.Header>
             <Modal.Content>
                 <Modal.Description>
                     <Form>
                     <Form.Input
                         id='StartDate'
                         label='StartDate'
+                        icon={'calendar alternate outline'}
+                        iconPosition={'left'}
                         type='date'
                         onChange={(event) => {
                             set_booking_start_date(event.target.value)
@@ -101,6 +105,8 @@ function UserSchedule() {
                         id='StartTime'
                         label='StartTime'
                         type='text'
+                        icon={'clock outline'}
+                        iconPosition={'left'}
                         placeholder='00:00'
                         onChange={(event) => {
                             set_booking_start_time(event.target.value)
@@ -110,6 +116,8 @@ function UserSchedule() {
                         id='EndDate'
                         label='EndDate'
                         type='date'
+                        icon={'calendar alternate outline'}
+                        iconPosition={'left'}
                         onChange={(event) => {
                             set_booking_finish_date(event.target.value)
                         }}
@@ -118,6 +126,8 @@ function UserSchedule() {
                         id='EndTime'
                         label='EndTime'
                         type='text'
+                        icon={'clock outline'}
+                        iconPosition={'left'}
                         placeholder='00:00'
                         onChange={(event) => {
                             set_booking_finish_time(event.target.value)
@@ -127,16 +137,18 @@ function UserSchedule() {
                 </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
-                <Button onClick={handleMarkClick}>Create</Button>
+                <Button primary onClick={handleMarkClick}>Create </Button>
             </Modal.Actions>
         </Modal>
-
-
+        <br/>
     <Container fluid>
-        <Button
+        <Button secondary
+                style={{
+                    height: "50%"
+                }}
             fluid
             onClick={() => {setMarkOpen(true)}}
-        > Mark as unavailable
+        > Create Unavailable Event
         </Button>
     </Container>
     </Container>

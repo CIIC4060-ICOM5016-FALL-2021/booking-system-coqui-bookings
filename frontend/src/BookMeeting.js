@@ -114,7 +114,7 @@ function BookMeeting(){
         console.log(data)
         Axios.delete(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/${booking_id}/BookingInvitee/bookingInvitees/delete/${invitee_id}`, data).then(
             res => {
-                window.alert("Invitee has been deleted.")
+                window.alert("res")
                 console.log(res)
             }).catch(
             err => {
@@ -132,11 +132,11 @@ function BookMeeting(){
         console.log(data)
         Axios.delete(`https://coqui-bookings-database.herokuapp.com/coqui-bookings/Booking/bookings/${booking_id}`, data).then(
             res => {
-                window.alert("Meeting has been deleted.")
+                window.alert(res)
                 console.log(res)
             }).catch(
             err => {
-                window.alert(err)
+                window.alert()
                 console.log(err)
             })
 

@@ -29,10 +29,11 @@ function HomePage() {
         console.log(data)
         Axios.post("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users", data).then(
             res => {
-                window.alert("User has been created.")
+                window.alert("Success: User has been created.")
                 console.log(res)
             }).catch(
             err => {
+                window.alert("Failed: Sign up.")
                 console.log("Error:" + err)
             })
     }
@@ -46,23 +47,20 @@ function HomePage() {
         console.log(data)
         Axios.post("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/login", data).then(
             res => {
-                window.alert("User has been logged in.")
+                window.alert("Success: User has been logged in.")
                 window.setInterval('window.location.href = "/UserView"', 1000);
                 localStorage.setItem("user_email",  user_email);
                 localStorage.setItem("user_password", user_password);
                 localStorage.setItem("user_id", res.data[1]);
                 localStorage.setItem("role_id",  res.data[2]);
 
-
-                
                 console.log(res.data)
             }).catch(
             err => {
                 console.log(err.response.data)
-                window.alert("User failed logged in.")
+                window.alert("Failed: User Log in.")
             })
     }
-
 
     localStorage.setItem("role_id",  role_id);
 
@@ -114,6 +112,7 @@ function HomePage() {
                             />
                              <Form.Input
                                  id='role_id'
+                                 icon='exclamation triangle'
                                  iconPosition='left'
                                  label='Role'
                                  type='number'

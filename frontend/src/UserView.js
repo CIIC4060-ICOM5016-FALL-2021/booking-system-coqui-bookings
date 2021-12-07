@@ -14,8 +14,9 @@ import RoomAvailability from "./RoomAvailability";
 import WhoBookedRoom from "./WhoBookedRoom";
 import UserAvailability from "./UserAvailability";
 import {useNavigate} from 'react-router-dom';
-import CreateRoom from "./CreateRoom";
+import CreateRoom from "./RoomManagement";
 import DeleteRoom from "./DeleteRoom";
+import RoomManagement from "./RoomManagement";
 
 
 function UserView(){
@@ -37,8 +38,11 @@ function UserView(){
     if (parseInt(localStorage.getItem("role_id")) === 3){
 
         panes = [
+            // {
+            //     menuItem: 'Create Room', render: () => <CreateRoom/>
+            // },
             {
-                menuItem: 'Create Room', render: () => <CreateRoom/>
+                menuItem: 'Room Management', render: () => <RoomManagement/>
             },
             {
                 menuItem: 'User Schedule', render: () => <UserSchedule/>
@@ -61,9 +65,9 @@ function UserView(){
             {
                 menuItem: 'Booked Room', render: () => <WhoBookedRoom/>
             },
-            {
-                menuItem: 'Delete Room', render: () => <DeleteRoom/>
-            },
+            // {
+            //     menuItem: 'Delete Room', render: () => <DeleteRoom/>
+            // },
             {
                 menuItem: 'Account', render: () => <Account/>
             },
