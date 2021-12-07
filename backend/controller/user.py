@@ -318,7 +318,7 @@ class BaseUser:
             user_dao.deleteUnavailableUserTimeFrame(user_id, slot[1], slot[2])  # Remove Unavailable Time From User
         all_bookings = booking_dao.getAllBookings()
         for booking in all_bookings:
-            if booking[0] == user_id:
+            if booking[4] == user_id:
                 booking_dao.deleteBooking(booking[0])  # Booking Without Creator Cannot Exist
                 room_dao.deleteUnavailableRoomTime(booking[5], booking[2], booking[3])  # Delete Unavailable Room Time
             invitees = invitee_dao.getInviteeIdListFromBooking(booking[0])
@@ -338,23 +338,22 @@ class BaseUser:
             return jsonify("User Not Found"), 404
         for booking in all_bookings:
             if booking[4] == user_id:
-                return jsonify("Cannot delete user because is host "), 404
+                return jsonify("Cannot delete user because is host in a meeting "), 409
 
-        # for booking_id, invitee_id in all_invitees:
-        #     if user_id == invitee_id:
-        #         return jsonify("Cannot delete user because is invitee "), 404
+        for invitee in all_invitees:
+            if user_id == invitee[1]:
+                return jsonify("Cannot delete user because is invitee in a meeting "), 409
         
-        # unavailable_user_slots = user_dao.getUnavailableTimeOfUserById(user_id)
-        # for slot in unavailable_user_slots:
-        #     user_dao.deleteUnavailableUserTimeFrame(user_id, slot[1], slot[2])  # Remove Unavailable Time From User
-        # all_bookings = booking_dao.getAllBookings()
-        # for booking in all_bookings:
-        #     if booking[0] == user_id:
-        #         booking_dao.deleteBooking(booking[0])  # Booking Without Creator Cannot Exist
-        #         room_dao.deleteUnavailableRoomTime(booking[5], booking[2], booking[3])  # Delete Unavailable Room Time
-        #     invitees = invitee_dao.getInviteeIdListFromBooking(booking[0])
-        #     if user_id in invitees:
-        #         invitee_dao.deleteInvitee(booking[0], user_id)  # Remove Invitee From Booking
+        unavailable_user_slots = user_dao.getUnavailableTimeOfUserById(user_id)
+        for slot in unavailable_user_slots:
+            user_dao.deleteUnavailableUserTimeFrame(user_id, slot[1], slot[2])  # Remove Unavailable Time From User
+        for booking in all_bookings:
+            if booking[4] == user_id:
+                booking_dao.deleteBooking(booking[0])  # Booking Without Creator Cannot Exist
+                room_dao.deleteUnavailableRoomTime(booking[5], booking[2], booking[3])  # Delete Unavailable Room Time
+            invitees = invitee_dao.getInviteeIdListFromBooking(booking[0])
+            if user_id in invitees:
+                invitee_dao.deleteInvitee(booking[0], user_id)  # Remove Invitee From Booking
         user_dao.deleteUser(user_id)
         return jsonify("User Deleted Successfully"), 200
     
