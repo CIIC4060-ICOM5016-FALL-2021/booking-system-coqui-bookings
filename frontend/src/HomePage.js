@@ -158,6 +158,9 @@ function HomePage() {
                 </Grid>
 
                 <Divider vertical>Or</Divider>
+                <div className="HomePage">
+                    <img src={require('./images/coqui.png').default} height={200} width={200}/>
+                </div>
             </Segment>
         </Segment>
     )
