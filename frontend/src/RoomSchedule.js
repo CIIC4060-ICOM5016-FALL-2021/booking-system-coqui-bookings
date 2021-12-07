@@ -17,7 +17,9 @@ function RoomSchedule() {
     const [booking_finish_time, set_booking_finish_time] = useState("");
 
     const evs = []
-    user_id: localStorage.getItem("user_id")
+    const data = {
+        user_id: localStorage.getItem("user_id")
+    }
     function getRoomSchedule() {
         if(evs.length !== 0) { // In case evs contain old data
             const len = evs.length
@@ -25,19 +27,17 @@ function RoomSchedule() {
                 evs.pop()
             }
         }
-        Axios.get('https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/unavailable-time-rooms/' + room)
+        Axios.get('http://127.0.0.1:5000/coqui-bookings/Room/unavailable-time-rooms/' + room)
             .then(function (response) {
                 console.log(response.data);
                 let appointments = response.data;
                 for (let i = 0; i < appointments.length; i++) {
                     evs.push({
-                        'title': "Unavailable",
+                        'title': appointments[i].booking_name,
                         'allDay': false,
-                        'start': new Date(appointments[i].unavailable_time_room_start),
-                        'end': new Date(appointments[i].unavailable_time_room_finish)
+                        'start': new Date(appointments[i].start_time),
+                        'end': new Date(appointments[i].finish_time)
                     })
-
-                    // TODO DO ANOTHER AXIOS TO VERIFY IF BOOKING OR MARKED BY USER
                 }
             }).catch(
             err => {

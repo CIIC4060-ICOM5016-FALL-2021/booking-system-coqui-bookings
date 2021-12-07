@@ -38,15 +38,15 @@ class BaseRoom:
         return result
 
     def build_time_slot_marked_as_busy(self, start_time, finish_time):
-        result = {'start_time': dt.datetime.strftime(start_time, '%Y-%m-%d %H:%M') + " AST",
-                  'finish_time': dt.datetime.strftime(finish_time, '%Y-%m-%d %H:%M') + " AST",
-                  'reason': "Room marked as busy by Admin"}
+        result = {'start_time': start_time,
+                  'finish_time': finish_time,
+                  'booking_name': "Room marked as busy by Admin"}
         return result
 
     def build_booking_map_dict_with_room(self, row):
         result = {'booking_id': row[0], 'booking_name': row[1],
-                  'booking_start': dt.datetime.strftime(row[2], '%Y-%m-%d %H:%M') + " AST",
-                  'booking_finish': dt.datetime.strftime(row[3], '%Y-%m-%d %H:%M') + " AST",
+                  'start_time': row[2],
+                  'finish_time': row[3],
                   'organizer_id': row[4], 'room_id': row[5], 'room_name': row[6]}
         return result
 
@@ -152,8 +152,8 @@ class BaseRoom:
                 return jsonify(result_list), 200
 
     def getAllUnavailableTimeOfRooms(self):  # MIGHT NOT BE NEEDED
-        dao = RoomDAO()
-        unavailable_rooms_list = dao.getAllUnavailableTimeOfRooms()
+        room_dao = RoomDAO()
+        unavailable_rooms_list = room_dao.getAllUnavailableTimeOfRooms()
         result_list = []
         for row in unavailable_rooms_list:
             obj = self.build_unavailable_time_room_map_dict(row)
@@ -161,18 +161,26 @@ class BaseRoom:
         return jsonify(result_list)
 
     def getUnavailableTimeOfRoomById(self, room_id):
-        dao = RoomDAO()
-        room = dao.getRoomById(room_id)
+        room_dao = RoomDAO()
+        booking_dao = BookingDAO()
+        room = room_dao.getRoomById(room_id)
         if not room:
             return jsonify("Room Not Found"), 404
-        unavailable_room_tuple = dao.getUnavailableTimeOfRoomById(room_id)
+        unavailable_room_tuple = room_dao.getUnavailableTimeOfRoomById(room_id)
         if not unavailable_room_tuple:  # Unavailable Room Not Found
             return jsonify("No Unavailable Time Slots Found for this Room"), 404
         else:
             result_list = []
             for row in unavailable_room_tuple:
-                obj = self.build_unavailable_time_room_map_dict(row)
-                result_list.append(obj)
+                booking_data = booking_dao.getBookingDataAtTimeFrame(row[1], row[2])
+                if not booking_data:  # No bookings found at this time frame
+                    obj = self.build_time_slot_marked_as_busy(row[1], row[2])
+                    result_list.append(obj)
+                    continue  # Nothing more to check
+                for column in booking_data:
+                    if column[5] == row[3]:
+                        obj = self.build_booking_map_dict_with_room(column)
+                        result_list.append(obj)
             return jsonify(result_list), 200
 
     def verifyAvailableRoomAtTimeFrame(self, room_id, start_time_to_verify, finish_time_to_verify):
