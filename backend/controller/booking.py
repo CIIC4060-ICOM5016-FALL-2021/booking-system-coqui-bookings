@@ -54,7 +54,7 @@ class BaseBooking:
         booking_name = json['booking_name']
         booking_start = json['booking_start_date'] + " " + json['booking_start_time']
         booking_finish = json['booking_finish_date'] + " " + json['booking_finish_time']
-        booking_invitees = json['booking_invitee_id'].split(",")
+        booking_invitees = json['booking_invitee_id']
         room_id = json['room_id']
 
         booking_dao = BookingDAO()

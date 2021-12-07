@@ -27,7 +27,7 @@ function RoomSchedule() {
                 evs.pop()
             }
         }
-        Axios.get('http://127.0.0.1:5000/coqui-bookings/Room/unavailable-time-rooms/' + room)
+        Axios.get('https://coqui-bookings-database.herokuapp.com/coqui-bookings/Room/unavailable-time-rooms/' + room)
             .then(function (response) {
                 console.log(response.data);
                 let appointments = response.data;
