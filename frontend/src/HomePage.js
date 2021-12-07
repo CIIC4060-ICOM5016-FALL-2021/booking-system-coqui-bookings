@@ -33,8 +33,8 @@ function HomePage() {
                 console.log(res)
             }).catch(
             err => {
-                window.alert("Failed: Sign up.")
-                console.log("Error:" + err)
+                window.alert(err)
+                console.log(err)
             })
     }
 
@@ -57,8 +57,8 @@ function HomePage() {
                 console.log(res.data)
             }).catch(
             err => {
-                console.log(err.response.data)
-                window.alert("Failed: User Log in.")
+                console.log(err)
+                window.alert(err)
             })
     }
 

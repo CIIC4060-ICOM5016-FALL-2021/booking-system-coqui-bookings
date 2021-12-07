@@ -82,7 +82,7 @@ function BookMeeting(){
             }).catch(
             err => {
                 window.alert(err)
-                console.log("Error:" + err)
+                console.log(err)
             })
 
     }

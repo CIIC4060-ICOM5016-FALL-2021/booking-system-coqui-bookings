@@ -54,6 +54,7 @@ function Dashboard(){
         localStorage.setItem('data_most_booked_room',JSON.stringify(data_most_booked_room))
     }).catch(
         err => {
+            window.alert(err)
             console.log(err)
     })
 

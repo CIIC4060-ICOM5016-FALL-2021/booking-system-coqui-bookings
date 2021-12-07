@@ -25,14 +25,16 @@ function Account() {
         console.log(data)
         Axios.put("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/" + user_id, data).then(
             res => {
-                window.alert("User credentials have been updated.")
+                window.alert("Success: User credentials have been updated.")
                 console.log(res)
             }).catch(
             err => {
-                console.log("Error:" + err)
+                window.alert(err)
+                console.log(err)
             })
     }
     return (<Segment>
+            <br/>
                 <Grid columns={2} relaxed='very' stackable>
                     <Grid.Column>
                         <Form>
@@ -76,7 +78,9 @@ function Account() {
                         <Button content='Update User' icon='signup' size='big' onClick={update}/>
                     </Grid.Column>
                 </Grid>
+            <br/><br/>
         </Segment>
+
     )
 }
 export default Account;

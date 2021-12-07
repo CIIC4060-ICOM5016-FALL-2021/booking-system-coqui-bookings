@@ -176,7 +176,7 @@ class BaseBooking:
         user_id = dao.getUserBookedRoomAtTimeFrame(room_id, booking_start, booking_finish)
 
         if not user_id:
-            return jsonify("User Not Found"), 404
+            return jsonify("No User has booked room at specified time frame."), 200
         else:
             return jsonify(f"User {user_id[0]} booked room {room_id} from {booking_start} to {booking_finish}"), 200
 

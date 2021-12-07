@@ -23,7 +23,7 @@ function RoomManagement() {
                 console.log(res)
             }).catch(
             err => {
-                window.alert("Failed: Room creation.")
+                window.alert(err)
                 console.log(err)
             })
     }
@@ -42,7 +42,7 @@ function RoomManagement() {
                 console.log(res)
             }).catch(
             err => {
-                window.alert("Failed: Room update.")
+                window.alert(err)
                 console.log(err)
             })
     }
@@ -55,7 +55,7 @@ function RoomManagement() {
                 console.log(res)
             }).catch(
             err => {
-                window.alert("Failed: Room Deletion.")
+                window.alert(err)
                 console.log("Error:" + err)
             })
     }
