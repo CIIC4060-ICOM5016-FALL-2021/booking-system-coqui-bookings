@@ -32,22 +32,19 @@ function Account() {
                 console.log("Error:" + err)
             })
     }
+
     const handle_delete_user = ()=>{
         delete_user()
-        logout()
         
     }
 
     const logout = event => {
-        event.preventDefault();
-        window.alert("User has been logged out.")
         localStorage.clear()
         window.setInterval('window.location.href = "/"', 1000);
 
     }
 
     const delete_user = event => {
-        event.preventDefault();
 
         const user_id = localStorage.getItem("user_id")
 
@@ -55,9 +52,12 @@ function Account() {
             res => {
                 window.alert("User has been deleted.")
                 console.log(res)
+                logout()
+
             }).catch(
             err => {
                 console.log(err)
+                window.alert(err)
             })
     }
     return (<Segment>
@@ -101,10 +101,10 @@ function Account() {
                         </Form>
                     </Grid.Column>
                     <Grid.Column verticalAlign='middle' >
-                        <Button content='Update User' icon='signup' size='big' onClick={update}/>
+                        <Button content='Update User' primary onClick={update}/>
                     </Grid.Column>
                     <Grid.Column verticalAlign='middle' >
-                        <Button content='Delete User' icon='signup' size='big' onClick={handle_delete_user}/>
+                        <Button content='Delete User' secondary onClick={handle_delete_user}/>
                     </Grid.Column>
                 </Grid>
         </Segment>
