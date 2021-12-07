@@ -383,7 +383,7 @@ class BaseBooking:
         if not existent_booking:
             return jsonify("Booking not Found"), 404
         elif user_id != existent_booking[4]:
-            return jsonify("Cannot delete booking because user is not host"), 404
+            return jsonify("Cannot delete booking because user is not host"), 401
         else:
             room_dao = RoomDAO()
             invitee_dao = BookingInviteeDAO()

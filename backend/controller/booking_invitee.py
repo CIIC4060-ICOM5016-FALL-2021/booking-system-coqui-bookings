@@ -204,7 +204,7 @@ class BaseBookingInvitee:
         if not invitee_dao.verifyInviteeInBooking(booking_id, invitee_id):
             return jsonify("Invitee is not in the Booking"), 409
         if user_id != existing_booking[4]:
-            return jsonify("Cannot delete invitee because user is not meeting host.")
+            return jsonify("Cannot delete invitee because user is not meeting host."), 401
         else:
             invitee_dao.deleteInvitee(booking_id, invitee_id)
             bookingTime = booking_dao.getBookingStartFinishTime(booking_id)
