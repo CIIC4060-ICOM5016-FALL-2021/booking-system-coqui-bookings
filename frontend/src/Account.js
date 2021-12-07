@@ -33,9 +33,37 @@ function Account() {
                 console.log(err)
             })
     }
+
+    const handle_delete_user = ()=>{
+        delete_user()
+
+    }
+
+    const logout = event => {
+        localStorage.clear()
+        window.setInterval('window.location.href = "/"', 1000);
+
+    }
+
+    const delete_user = event => {
+
+        const user_id = localStorage.getItem("user_id")
+
+        Axios.delete("https://coqui-bookings-database.herokuapp.com/coqui-bookings/User/users/" + user_id).then(
+            res => {
+                window.alert("User has been deleted.")
+                console.log(res)
+                logout()
+
+            }).catch(
+            err => {
+                console.log(err)
+                window.alert(err)
+            })
+    }
     return (<Segment>
             <br/>
-                <Grid columns={2} relaxed='very' stackable>
+                <Grid columns={3} relaxed='very' stackable>
                     <Grid.Column>
                         <Form>
                             <Form.Input
@@ -80,7 +108,6 @@ function Account() {
                 </Grid>
             <br/><br/>
         </Segment>
-
     )
 }
 export default Account;
